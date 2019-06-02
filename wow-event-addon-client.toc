@@ -1,5 +1,5 @@
 ## Interface: 40300
-## Title: Client
+## Title: wow-event-addon-client
 ## Author: Soleo
 ## Version: 0.1
 ## SavedVariables: _Client
