@@ -24,6 +24,9 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			    end
 			end
 
+			-- On joue un son qui annonce le début de l'event
+			PlaySound("ReadyCheck", "SFX");
+
 			-- On enregistre la clé reçue par message et on définit isStarted = true
 			vSave("key", string.gsub(message, "Clé d'évènement : ", ""))
 			vSave("isStarted", true)
@@ -79,8 +82,8 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			end
 		elseif string.find(message, " a retiré une récompense.") then
 			_Client["rewards"][getArraySize(vGet("rewards"))] = nil
-		elseif string.find(message, "Date de fin maximale : ") then
-			vSave("endTime", string.gsub(message, "Date de fin maximale : ", ""))
+		elseif string.find(message, "Date maximale de fin : ") then
+			vSave("endTime", string.gsub(message, "Date maximale de fin : ", ""))
 		end
 	end
 end)
@@ -131,6 +134,7 @@ o:RegisterEvent("ADDON_LOADED")
 o:SetScript("OnEvent", function(self, event, ...) 
 	if _Client["isStarted"] == true then
 		if _Client["key"] ~= "" and _Client["stade"] ~= 0 and _Client["key"] ~= nil and _Client["stade"] ~= nil then
+			main_frame:Show()
 			statusbar:SetValue(tonumber(_Client["stade"]) * 20)
 			statusbar.value:SetText(tostring(tonumber(_Client["stade"]) * 20) .. "%")
 
@@ -148,7 +152,6 @@ o:SetScript("OnEvent", function(self, event, ...)
 	else
 		reward_frame:Hide()
 	end
-
 
 	if _Client["endTime"] ~= nil then
 		local endTime = vGet("endTime")
