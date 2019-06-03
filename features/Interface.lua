@@ -9,7 +9,7 @@ main_frame:SetWidth(300)
 main_frame:SetHeight(400)
 
 main_frame:SetBackdrop({
-	bgFile="Interface\\Addons\\Client\\textures\\UI-Background", -- Interface/Tooltips/UI-Tooltip-Background
+	bgFile="Interface\\Addons\\wow-event-addon-client\\textures\\UI-Background", -- Interface/Tooltips/UI-Tooltip-Background
 	edgeFile="Interface/Tooltips/UI-Tooltip-Border", 
 	tile=false,
 	tileSize=64, 
@@ -159,7 +159,7 @@ reward_frame.value:SetTextColor(0, 0, 0, 0.8)
 reward_frame.value:SetText("Récompenses :")
 
 function displayRewards()
-	for i=0, getArraySize(_Client["rewards"]) - 1 do
+	for i=0, getArraySize(vGet("rewards")) - 1 do
 
 		local itemId = nil
 		

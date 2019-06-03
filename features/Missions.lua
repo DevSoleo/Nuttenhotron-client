@@ -6,7 +6,7 @@ function finishAllMissions(key, winnerName)
 	vSave("isStarted", false)
 	vSave("stade", 0)
 
-	for i=1, table.getn(missions_lines_array) do
+	for i=1, getArraySize(missions_lines_array) do
 	    missions_lines_array[i]:Hide()
 
 	    if missions_lines_array[i]["sub"] ~= nil then
@@ -14,6 +14,8 @@ function finishAllMissions(key, winnerName)
 	    end
 	end
 	
+	reward_frame:Hide()
+
 	SendChatMessage(winnerName .. " est le vainqueur de cet évènement !!! Voici sa clé de victoire : ", "GUILD")
 end
 
