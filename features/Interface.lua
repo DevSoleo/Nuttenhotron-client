@@ -1,4 +1,4 @@
-local main_frame = CreateFrame("Frame", nil, UIParent)
+main_frame = CreateFrame("Frame", nil, UIParent)
 main_frame:SetFrameStrata("BACKGROUND")
 main_frame:SetMovable(true) -- Permet le déplacement de la fenêtre
 main_frame:EnableMouse(true)
@@ -23,7 +23,7 @@ main_frame:SetBackdrop({
 })
 
 main_frame:SetPoint("TOP", 0, -20)
-main_frame:Show()
+main_frame:Hide()
 
 mission_line_list = CreateFrame("Frame", "MissionLineList", main_frame)
 mission_line_list:SetWidth(100)

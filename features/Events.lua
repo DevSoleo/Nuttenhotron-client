@@ -7,7 +7,7 @@ end)
 
 -- Lorsqu'un message est envoyé dans le tchat de guilde cet évènement se déclenche
 local onGuildMessage = CreateFrame("Frame")
-onGuildMessage:RegisterEvent("CHAT_MSG_GUILD") -- CHAT_MSG_SAY
+onGuildMessage:RegisterEvent("CHAT_MSG_GUILD", "CHAT_MSG_WHISPER") -- CHAT_MSG_SAY
 onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 	if sender == "Soleo" or sender == "Drubos" or "Aniwen" or sender == "Malacraer" or sender == "Binoom" or sender == "Lethar" then
 		if string.find(message, "Clé d'évènement : ") then
@@ -31,6 +31,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			-- On affiche les récompenses sur le journal
 			displayRewards(vGet("rewards"))
 
+			main_frame:Show()
 			reward_frame:Show()
 			
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
@@ -48,6 +49,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			vSave("stade", 0)
 			vSave("rewards", {})
 
+			main_frame:Hide()
 			StaticPopup_Hide("QUESTION")
 
 			for i=1, table.getn(missions_lines_array) do
@@ -83,6 +85,8 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 	end
 end)
 
+
+--[[
 local onWhisperMessage = CreateFrame("Frame")
 onWhisperMessage:RegisterEvent("CHAT_MSG_WHISPER") -- CHAT_MSG_SAY
 onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
@@ -108,6 +112,7 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 			-- On affiche les récompenses sur le journal
 			displayRewards(vGet("rewards"))
 
+			main_frame:Show()
 			reward_frame:Show()
 			
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
@@ -118,6 +123,7 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 		end
 	end
 end)
+]]
 
 -- Lorsque l'addon est (re)chargé cet évènement se déclenche
 local o = CreateFrame("Frame")
