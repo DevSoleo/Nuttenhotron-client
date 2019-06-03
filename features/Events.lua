@@ -19,7 +19,6 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 			displayRewards(vGet("rewards"))
 
 			reward_frame:Show()
-			itemFrame_GoldCoins:Show()
 			
 			-- L'évènement commence ici
 			startMission(_Client["key"], 1)
@@ -42,9 +41,8 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 					missions_lines_array[i]["sub"]:Hide()
 			    end
 			end
+			
 			reward_frame:Hide()
-
-			itemFrame_GoldCoins:Hide()
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			local amount = 5
 			local id = nil

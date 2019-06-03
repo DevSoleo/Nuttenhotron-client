@@ -201,31 +201,3 @@ function displayRewards()
 		itemFrame.text:SetText("5")
 	end
 end
-
-
-
-
-
-
-
-
-itemFrame_GoldCoins = CreateFrame("Frame", nil, reward_frame)
-itemFrame_GoldCoins:SetFrameStrata("BACKGROUND")
-itemFrame_GoldCoins:SetPoint("CENTER", 18, -45)
-itemFrame_GoldCoins:SetWidth(35) -- Set these to whatever height/width is needed 
-itemFrame_GoldCoins:SetHeight(35) -- for your Texture
-
-local t = itemFrame_GoldCoins:CreateTexture(nil,"BACKGROUND")
-t:SetTexture("Interface\\Icons\\INV_Misc_Coin_01") -- 03 Argent 05 Bronze
-t:SetAllPoints(itemFrame_GoldCoins)
-itemFrame_GoldCoins.texture = t
-
-itemFrame_GoldCoins:SetScript("OnEnter", function(self)
-  	GameTooltip:SetOwner(itemFrame_GoldCoins, "ANCHOR_CURSOR")
-  	GameTooltip:SetText("100 Pièce(s) d'or")
-  	GameTooltip:Show()
-end)
-
-itemFrame_GoldCoins:SetScript("OnLeave", function(self)
-  GameTooltip:Hide()
-end)
