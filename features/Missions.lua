@@ -109,19 +109,17 @@ function startMission(key, stade)
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("ITEM_PUSH")
 			i:SetScript("OnEvent", function(self, ...)
-				wait(0.2, function()
-					local newAmount = GetItemCount(itemId) - alreadyOwned
-					
-					loadLists()
-					if newAmount >= ITEMS_LIST["1"]["amount"] and is == true then
-				  		is = false
+				local newAmount = GetItemCount(itemId) - alreadyOwned
+				
+				loadLists()
+				if newAmount >= ITEMS_LIST["1"]["amount"] and is == true then
+			  		is = false
 
-				  		print("|cFF00FF00Mission accomplie !")
-				  		statusbar:SetValue(stade * 20)
-						statusbar.value:SetText(tostring(stade * 20) .. "%")
-				  		startMission(key, stade + 1)
-					end
-				end)
+			  		print("|cFF00FF00Mission accomplie !")
+			  		statusbar:SetValue(stade * 20)
+					statusbar.value:SetText(tostring(stade * 20) .. "%")
+			  		startMission(key, stade + 1)
+				end
 			end)
 		elseif mission_type == "4" then
 			print("Vous devez tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()])

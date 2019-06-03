@@ -6,11 +6,24 @@ on_party_change:SetScript("OnEvent", function(self, event, ...)
 end)
 
 -- Lorsqu'un message est envoyé dans le tchat de guilde cet évènement se déclenche
-local on_guild_message = CreateFrame("Frame")
-on_guild_message:RegisterEvent("CHAT_MSG_GUILD") -- CHAT_MSG_SAY
-on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...)
-	if sender == "Soleo" or sender == "Drubos" then
+local onGuildMessage = CreateFrame("Frame")
+onGuildMessage:RegisterEvent("CHAT_MSG_GUILD") -- CHAT_MSG_SAY
+onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
+	if sender == "Soleo" or sender == "Drubos" or "Aniwen" or sender == "Malacraer" or sender == "Binoom" or sender == "Lethar" then
 		if string.find(message, "Clé d'évènement : ") then
+			-- On "clear" les variables déjà présentes
+			vSave("key", "")
+			vSave("isStarted", false)
+			vSave("rewards", {})
+
+			for i=1, table.getn(missions_lines_array) - 1 do
+			    missions_lines_array[i]:Hide()
+
+			    if missions_lines_array[i]["sub"] ~= nil then
+					missions_lines_array[i]["sub"]:Hide()
+			    end
+			end
+
 			-- On enregistre la clé reçue par message et on définit isStarted = true
 			vSave("key", string.gsub(message, "Clé d'évènement : ", ""))
 			vSave("isStarted", true)
@@ -20,6 +33,9 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 
 			reward_frame:Show()
 			
+			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
+			SendChatMessage("[" .. addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
+
 			-- L'évènement commence ici
 			startMission(_Client["key"], 1)
 		elseif string.find(message, "L'évènement est terminé !") ~= nil and vGet("isStarted") == true then
@@ -41,7 +57,7 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 					missions_lines_array[i]["sub"]:Hide()
 			    end
 			end
-			
+
 			reward_frame:Hide()
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			local amount = 5
@@ -63,6 +79,42 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 			_Client["rewards"][getArraySize(vGet("rewards"))] = nil
 		elseif string.find(message, "Date de fin maximale : ") then
 			vSave("endTime", string.gsub(message, "Date de fin maximale : ", ""))
+		end
+	end
+end)
+
+local onWhisperMessage = CreateFrame("Frame")
+onWhisperMessage:RegisterEvent("CHAT_MSG_WHISPER") -- CHAT_MSG_SAY
+onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
+	if sender == "Soleo" or sender == "Drubos" or "Aniwen" or sender == "Malacraer" or sender == "Binoom" or sender == "Lethar" then
+		if string.find(message, "Clé d'évènement : ") then
+			-- On "clear" les variables déjà présentes
+			vSave("key", "")
+			vSave("isStarted", false)
+			vSave("rewards", {})
+
+			for i=1, table.getn(missions_lines_array) - 1 do
+			    missions_lines_array[i]:Hide()
+
+			    if missions_lines_array[i]["sub"] ~= nil then
+					missions_lines_array[i]["sub"]:Hide()
+			    end
+			end
+
+			-- On enregistre la clé reçue par message et on définit isStarted = true
+			vSave("key", string.gsub(message, "Clé d'évènement : ", ""))
+			vSave("isStarted", true)
+
+			-- On affiche les récompenses sur le journal
+			displayRewards(vGet("rewards"))
+
+			reward_frame:Show()
+			
+			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
+			SendChatMessage("[" .. addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
+
+			-- L'évènement commence ici
+			startMission(_Client["key"], 1)
 		end
 	end
 end)

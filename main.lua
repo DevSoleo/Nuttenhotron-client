@@ -1,0 +1,1 @@
+addonName = "Event-Client"
