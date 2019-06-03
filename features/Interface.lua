@@ -159,7 +159,7 @@ reward_frame.value:SetTextColor(0, 0, 0, 0.8)
 reward_frame.value:SetText("Récompenses :")
 
 function displayRewards()
-	for i=0, getArraySize(vGet("rewards")) - 1 do
+	for i=0, getArraySize(_Client["rewards"]) - 1 do
 
 		local itemId = nil
 		

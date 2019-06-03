@@ -18,6 +18,7 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 			-- On affiche les récompenses sur le journal
 			displayRewards(vGet("rewards"))
 
+			reward_frame:Show()
 			itemFrame_GoldCoins:Show()
 			
 			-- L'évènement commence ici
@@ -41,13 +42,18 @@ on_guild_message:SetScript("OnEvent", function(self, event, message, sender, ...
 					missions_lines_array[i]["sub"]:Hide()
 			    end
 			end
+			reward_frame:Hide()
 
 			itemFrame_GoldCoins:Hide()
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
-			local id = 78487
 			local amount = 5
-			
-			GetItemInfo(78487)
+			local id = nil
+
+			string.gsub(message, "%((.-)%)", function(o)
+				id = o
+			end)
+
+			GetItemInfo(id)
 
 			if getArraySize(vGet("rewards")) == nil then
 				vSave("rewards", {})
@@ -83,6 +89,8 @@ o:SetScript("OnEvent", function(self, event, ...)
 			_Client["key"] = ""
 			_Client["stade"] = 0
 		end
+	else
+		reward_frame:Hide()
 	end
 
 
