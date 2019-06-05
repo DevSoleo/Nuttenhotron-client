@@ -22,6 +22,8 @@ end
 function startMission(key, stade)
 	_Client["stade"] = stade
 
+	PlaySound("QUESTADDED", "SFX");
+	
 	addDescLine(stade)
 
 	if stade > 1 then
@@ -158,7 +160,6 @@ function startMission(key, stade)
 
 			      	if player_answer == mission_answer then
 			  			-- Next mission
-			  			PlaySound("LEVELUP", "SFX");
 			  			print("|cFF00FF00Mission accomplie !")
 			  			statusbar:SetValue(stade * 20)
 						statusbar.value:SetText(tostring(stade * 20) .. "%")
