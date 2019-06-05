@@ -14,7 +14,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			-- On "clear" les variables déjà présentes
 			vSave("key", "")
 			vSave("isStarted", false)
-			vSave("rewards", {})
+			-- vSave("rewards", {})
 
 			for i=1, table.getn(missions_lines_array) - 1 do
 			    missions_lines_array[i]:Hide()
@@ -74,9 +74,14 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 
 			GetItemInfo(id)
 
-			if getArraySize(vGet("rewards")) == nil then
+			if getArraySize(vGet("rewards")) == nil or getArraySize(vGet("rewards")) == 0 then
 				vSave("rewards", {})
-				_Client["rewards"]["0"] = {id=id, amount=amount}
+
+				local rewards = {}
+
+				rewards[0] = {id=id, amount=amount}
+
+				vSave("rewards", rewards)
 			else
 				_Client["rewards"][getArraySize(vGet("rewards"))] = {id=id, amount=amount}
 			end
