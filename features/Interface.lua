@@ -153,10 +153,10 @@ statusbar.value:SetTextColor(255, 255, 0)
 statusbar.value:SetText("0%")
 
 reward_frame.value = reward_frame:CreateFontString(nil, "OVERLAY")
-reward_frame.value:SetPoint("CENTER", reward_frame, "TOP", 50, 20)
-reward_frame.value:SetFont("Fonts\\ARIALN.ttf", 16)
+reward_frame.value:SetPoint("CENTER", reward_frame, "TOP", 100, 20)
+reward_frame.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
 reward_frame.value:SetTextColor(0, 0, 0, 0.8)
-reward_frame.value:SetText("Récompenses :")
+reward_frame.value:SetText("Le vainqueur remportera :")
 
 function displayRewards(rewards)
 	for i=0, getArraySize(rewards) - 1 do

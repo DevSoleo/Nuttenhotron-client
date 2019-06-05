@@ -50,8 +50,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			vSave("isStarted", false)
 			vSave("key", "")
 			vSave("stade", 0)
-			vSave("rewards", {})
-
+			
 			main_frame:Hide()
 			StaticPopup_Hide("QUESTION")
 

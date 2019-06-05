@@ -158,6 +158,7 @@ function startMission(key, stade)
 
 			      	if player_answer == mission_answer then
 			  			-- Next mission
+			  			PlaySound("LEVELUP", "SFX");
 			  			print("|cFF00FF00Mission accomplie !")
 			  			statusbar:SetValue(stade * 20)
 						statusbar.value:SetText(tostring(stade * 20) .. "%")
