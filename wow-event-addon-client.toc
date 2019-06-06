@@ -1,9 +1,12 @@
 ## Interface: 40300
 ## Title: wow-event-addon-client
 ## Author: Soleo
-## Version: 0.1
+## Version: 2.0.0
 ## SavedVariables: _Client
 ## SavedVariablesPerCharacter: _CClient
+## X-Category: Guild, Quest
+
+main.lua
 
 functions\system_fn.lua
 functions\math_fn.lua
@@ -21,4 +24,3 @@ features\Keys.lua
 features\Interface.lua
 features\Missions.lua
 
-main.lua

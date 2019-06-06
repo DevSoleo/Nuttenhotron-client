@@ -1,47 +1,57 @@
+-- Cette fonction doit être déclenchée lorsqu'un joueur termine l'event
 function finishAllMissions(key, winnerName)
+	-- On remet à zéro la barre de progression
 	statusbar:SetValue(0)
 	statusbar.value:SetText("0%")
 
+	-- On "clear" les toutes variables
 	vSave("key", "")
 	vSave("isStarted", false)
 	vSave("stade", 0)
 
-	for i=1, getArraySize(missions_lines_array) do
-	    missions_lines_array[i]:Hide()
+	-- On efface les missions présentes dans le journal
+	for i=1, getArraySize(NuttenhClient.missions_lines_array) do
+	    NuttenhClient.missions_lines_array[i]:Hide()
 
-	    if missions_lines_array[i]["sub"] ~= nil then
-			missions_lines_array[i]["sub"]:Hide()
+	    if NuttenhClient.missions_lines_array[i]["sub"] ~= nil then
+			NuttenhClient.missions_lines_array[i]["sub"]:Hide()
 	    end
 	end
 	
-	reward_frame:Hide()
+	-- On masque les récompenses
+	NuttenhClient.reward_frame:Hide()
 
 	SendChatMessage(winnerName .. " est le vainqueur de cet évènement !!! Voici sa clé de victoire : ", "GUILD")
 end
 
 function startMission(key, stade)
-	_Client["stade"] = stade
+	vSave("stade", stade)
 
 	PlaySound("QUESTADDED", "SFX");
 	
 	addDescLine(stade)
 
+	-- On actualise les missions, lorsqu'elle sont terminées
 	if stade > 1 then
-		missions_lines_array[stade - 1]:SetText("|cFF4A4A4A" .. missions_lines_array[stade - 1]:GetText())
+		NuttenhClient.missions_lines_array[stade - 1]:SetText("|cFF4A4A4A" .. NuttenhClient.missions_lines_array[stade - 1]:GetText())
 		
-		if missions_lines_array[stade - 1]["sub"] ~= nil then
-			missions_lines_array[stade - 1]["sub"]:SetText("|cFF4A4A4A" .. missions_lines_array[stade - 1]["sub"]:GetText())
+		if NuttenhClient.missions_lines_array[stade - 1]["sub"] ~= nil then
+			NuttenhClient.missions_lines_array[stade - 1]["sub"]:SetText("|cFF4A4A4A" .. NuttenhClient.missions_lines_array[stade - 1]["sub"]:GetText())
 		end
 	end
 
+	--[[
 	if isInParty() == true and stade == "5" then
 		for i=0, get_array_size(get_party_player_list()) do
 			print(get_party_player_list()[i])
 		end
 		SendChatMessage("Je suis au stade " .. stade, "PARTY")
 	end
+	]]
 
+	-- Si le joueur n'a pas fini l'event et qu'il y a un event en cours
 	if stade <= 5 and _Client["isStarted"] == true then
+		-- On lit la clé et on récupère le type de mission et le paramètre associé en fonction du stade
 		local readed_key = readKey(key, stade)
 		local mission_type = readed_key["mission_type"]
 		local setting = tostring(readed_key["setting"])
@@ -108,7 +118,7 @@ function startMission(key, stade)
 
 			-- print("Vous devez ramasser : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()])
 				
-			missions_lines_array[stade]["sub"]:SetText("- Compteur : 0/" .. ITEMS_LIST["1"]["amount"])
+			NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : 0/" .. ITEMS_LIST["1"]["amount"])
 
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("ITEM_PUSH")
@@ -117,7 +127,7 @@ function startMission(key, stade)
 				local oldAmount = GetItemCount(itemId) - newAmount
 
 				print(oldAmount)
-					missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. oldAmount .. "/" .. ITEMS_LIST[setting]["amount"])
+					NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. oldAmount .. "/" .. ITEMS_LIST[setting]["amount"])
 
 				print(setting)
 				-- ICI PROBLEME

@@ -1,2 +1,2 @@
-addonName = "Event-Client"
-
+NuttenhClient = {}
+NuttenhClient.addonName = "Event-Client"

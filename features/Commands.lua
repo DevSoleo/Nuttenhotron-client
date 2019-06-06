@@ -1,5 +1,4 @@
 SLASH_COORDS1 = "/coords"
--- SLASH_HERE1 = "/here"
 SLASH_PARTICIPER1 = "/participer"
 
 SlashCmdList["COORDS"] = function(msg)
@@ -7,7 +6,7 @@ SlashCmdList["COORDS"] = function(msg)
 end
 
 SlashCmdList["PARTICIPER"] = function(msg)
-	if _Client["isStarted"] ~= true then
+	if vGet("isStarted") ~= true then
 		SendChatMessage(UnitName("player") .. " souhaite aussi participer à l'event !", "GUILD")
 	end
 end
