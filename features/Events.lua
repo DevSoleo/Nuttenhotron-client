@@ -25,7 +25,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			end
 
 			-- On joue un son qui annonce le début de l'event
-			PlaySound("ReadyCheck", "SFX");
+			PlaySound("ReadyCheck", "SFX")
 
 			-- On enregistre la clé reçue par message et on définit isStarted = true
 			vSave("key", string.gsub(message, "Clé d'évènement : ", ""))
@@ -39,9 +39,15 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
 			SendChatMessage("[" .. addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
-
-			-- L'évènement commence ici
-			startMission(_Client["key"], 1)
+		elseif string.find(message, "---- Départ de l'évènement dans .... 1 ----") then
+			PlaySound("RaidWarning", "SFX")
+				
+			wait(1.3, function()
+				-- L'évènement commence ici
+				startMission(_Client["key"], 1)
+			end)
+		elseif string.find(message, "---- Départ de l'évènement dans ....") then
+			PlaySound("RaidWarning", "SFX")
 		elseif string.find(message, "L'évènement est terminé !") ~= nil and vGet("isStarted") == true then
 			statusbar:SetValue(0)
 			statusbar.value:SetText("0%")

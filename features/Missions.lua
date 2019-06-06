@@ -47,7 +47,7 @@ function startMission(key, stade)
 		local setting = tostring(readed_key["setting"])
 
 		if mission_type == "1" then
-		  	print("Vous devez parler à : " .. NPC_LIST[setting]["indication"])
+		  	-- print("Vous devez parler à : " .. NPC_LIST[setting]["indication"])
 
 		  	local t = CreateFrame("Frame")
 			t:RegisterEvent("UNIT_TARGET")
@@ -56,14 +56,14 @@ function startMission(key, stade)
 					t:UnregisterEvent("UNIT_TARGET")
 
 			  		-- Next mission 
-			  		print("|cFF00FF00Mission accomplie !")
+			  		-- print("|cFF00FF00Mission accomplie !")
 			  		statusbar:SetValue(stade * 20)
 					statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  		startMission(key, stade + 1)
 			  	end
 			end)
 		elseif mission_type == "2" then
-			print("Vous devez trouver : " .. LOCATIONS_LIST[setting]["indication"])
+			-- print("Vous devez trouver : " .. LOCATIONS_LIST[setting]["indication"])
 
 			local is = true
 			local function hookPlayerMove(...)
@@ -91,7 +91,7 @@ function startMission(key, stade)
 						is = false
 
 				  		-- Next mission
-				  		print("|cFF00FF00Mission accomplie !")
+				  		-- print("|cFF00FF00Mission accomplie !")
 				  		statusbar:SetValue(stade * 20)
 						statusbar.value:SetText(tostring(stade * 20) .. "%")
 				  		startMission(key, stade + 1)
@@ -103,28 +103,36 @@ function startMission(key, stade)
 		elseif mission_type == "3" then
 			local is = true
 			local itemId = ITEMS_LIST[setting]["id"]
-			alreadyOwned = GetItemCount(itemId)
+			local alreadyOwned = GetItemCount(itemId)
 			alreadyOwned = alreadyOwned + 0
 
-			print("Vous devez ramasser : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()])
+			-- print("Vous devez ramasser : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()])
+				
+			missions_lines_array[stade]["sub"]:SetText("- Compteur : 0/" .. ITEMS_LIST["1"]["amount"])
 
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("ITEM_PUSH")
 			i:SetScript("OnEvent", function(self, ...)
 				local newAmount = GetItemCount(itemId) - alreadyOwned
-				
+				local oldAmount = GetItemCount(itemId) - newAmount
+
+				print(oldAmount)
+					missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. oldAmount .. "/" .. ITEMS_LIST[setting]["amount"])
+
+				print(setting)
+				-- ICI PROBLEME
 				loadLists()
-				if newAmount >= ITEMS_LIST["1"]["amount"] and is == true then
+				if newAmount >= ITEMS_LIST[setting]["amount"] and is == true then
 			  		is = false
 
-			  		print("|cFF00FF00Mission accomplie !")
+			  		-- print("|cFF00FF00Mission accomplie !")
 			  		statusbar:SetValue(stade * 20)
 					statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  		startMission(key, stade + 1)
 				end
 			end)
 		elseif mission_type == "4" then
-			print("Vous devez tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()])
+			-- print("Vous devez tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()])
 
 			local kills = 0
 			local i = CreateFrame("Frame")
@@ -133,7 +141,7 @@ function startMission(key, stade)
 				if sourceGUID == true then
 					kills = kills + 1
 					if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
-				  		print("|cFF00FF00Mission accomplie !")
+				  		-- print("|cFF00FF00Mission accomplie !")
 				  		statusbar:SetValue(stade * 20)
 						statusbar.value:SetText(tostring(stade * 20) .. "%")
 				  		startMission(key, stade + 1)
@@ -141,7 +149,7 @@ function startMission(key, stade)
 				end
 			end)
 		elseif mission_type == "5" then
-			print("Vous devez répondre à cette question : " .. ANSWER_LIST["1"]["question"])
+			-- print("Vous devez répondre à cette question : " .. ANSWER_LIST["1"]["question"])
 			
 			mission_answer = ANSWER_LIST["1"]["answer"]
 
@@ -160,7 +168,7 @@ function startMission(key, stade)
 
 			      	if player_answer == mission_answer then
 			  			-- Next mission
-			  			print("|cFF00FF00Mission accomplie !")
+			  			-- print("|cFF00FF00Mission accomplie !")
 			  			statusbar:SetValue(stade * 20)
 						statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  			startMission(key, stade + 1)
@@ -181,7 +189,7 @@ function startMission(key, stade)
 			b:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
 			b:SetScript("OnEvent", function(self, event, message, sender, ...)
 				if message ~= "Vous envoyez un baiser dans le vent." and string.find(message, "Vous envoyez un baiser à") ~= nil then
-			  		print("|cFF00FF00Mission accomplie !")
+			  		-- print("|cFF00FF00Mission accomplie !")
 			  		statusbar:SetValue(stade * 20)
 					statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  		startMission(key, stade + 1)

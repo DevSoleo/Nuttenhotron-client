@@ -54,7 +54,7 @@ function addDescLine(id)
 		line = line + 1
 		loadLists()
 		addLine(ITEMS_LIST[readed_key["setting"]]["indication"], id)
-		addSubLine("Compteur : 0/5", id)
+		addSubLine("", id)
 	elseif readed_key["mission_type"] == "4" then
 		line = line + 1
 		addLine(KILL_LIST[readed_key["setting"]]["indication"], id)
@@ -73,6 +73,10 @@ function addSubLine(text, lineNumber)
 	missions_lines_array[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 	missions_lines_array[lineNumber]["sub"]:SetWidth(200)
 	missions_lines_array[lineNumber]["sub"]:SetHeight(15)
+
+	if lineNumber == 3 then
+		missions_lines_array[lineNumber]["sub"]:SetPoint("LEFT", -16, 0 - 60 - (lineNumber * 35) - 17)
+	end
 end
 
 reward_frame = CreateFrame("Frame", nil, main_frame)
