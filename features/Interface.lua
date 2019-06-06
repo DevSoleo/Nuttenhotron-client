@@ -104,7 +104,7 @@ end
 
 local close_button = CreateFrame("Button", "CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")
 close_button:SetPoint("TOPRIGHT", 0, 0)
-close_button:SetFrameStrata('HIGH')
+close_button:SetFrameStrata("HIGH")
 close_button:SetFrameLevel(4)
 close_button:SetHeight(27)
 close_button:SetWidth(27)

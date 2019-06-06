@@ -123,23 +123,25 @@ function startMission(key, stade)
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("ITEM_PUSH")
 			i:SetScript("OnEvent", function(self, ...)
-				local newAmount = GetItemCount(itemId) - alreadyOwned
-				local oldAmount = GetItemCount(itemId) - newAmount
+				wait(0.1, function()
+					local newAmount = GetItemCount(itemId) - alreadyOwned
+					local oldAmount = GetItemCount(itemId) - newAmount
 
-				print(oldAmount)
-					NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. oldAmount .. "/" .. ITEMS_LIST[setting]["amount"])
+					if newAmount <= ITEMS_LIST[setting]["amount"] then
+						NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. newAmount .. "/" .. ITEMS_LIST[setting]["amount"])
+					end
+					print(setting)
+					-- ICI PROBLEME
+					loadLists()
+					if newAmount >= ITEMS_LIST[setting]["amount"] and is == true then
+				  		is = false
 
-				print(setting)
-				-- ICI PROBLEME
-				loadLists()
-				if newAmount >= ITEMS_LIST[setting]["amount"] and is == true then
-			  		is = false
-
-			  		-- print("|cFF00FF00Mission accomplie !")
-			  		statusbar:SetValue(stade * 20)
-					statusbar.value:SetText(tostring(stade * 20) .. "%")
-			  		startMission(key, stade + 1)
-				end
+				  		-- print("|cFF00FF00Mission accomplie !")
+				  		statusbar:SetValue(stade * 20)
+						statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		startMission(key, stade + 1)
+					end
+				end)
 			end)
 		elseif mission_type == "4" then
 			-- print("Vous devez tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()])

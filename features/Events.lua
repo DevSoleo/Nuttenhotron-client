@@ -51,31 +51,38 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			end)
 		elseif string.find(message, "---- Départ de l'évènement dans ....") then
 			PlaySound("RaidWarning", "SFX")
-		elseif string.find(message, "L'évènement est terminé !") ~= nil and vGet("isStarted") == true then
-			-- On actualise l'affichage, en remettant tout à zéro
-			statusbar:SetValue(0)
-			statusbar.value:SetText("0%")
+		elseif string.find(message, "L'évènement est terminé !") ~= nil then
+			if vGet("isStarted") == true then
+				-- On actualise l'affichage, en remettant tout à zéro
+				statusbar:SetValue(0)
+				statusbar.value:SetText("0%")
 
-			-- On arrête l'évènement en réinitialisant toutes les variables
-			vSave("isStarted", false)
-			vSave("key", "")
-			vSave("stade", 0)
-			
-			-- On masque le journal (et la question en cours si il y en a une)
-			NuttenhClient.main_frame:Hide()
-			StaticPopup_Hide("QUESTION")
+				-- On arrête l'évènement en réinitialisant toutes les variables
+				vSave("isStarted", false)
+				vSave("key", "")
+				vSave("stade", 0)
 
-			-- On efface les missions déjà présentes dans le journal
-			for i=1, table.getn(NuttenhClient.missions_lines_array) do
-			    NuttenhClient.missions_lines_array[i]:Hide()
+				-- On efface les missions déjà présentes dans le journal
+				for i=1, table.getn(NuttenhClient.missions_lines_array) do
+				    NuttenhClient.missions_lines_array[i]:Hide()
 
-			    if NuttenhClient.missions_lines_array[i]["sub"] ~= nil then
-					NuttenhClient.missions_lines_array[i]["sub"]:Hide()
-			    end
+				    if NuttenhClient.missions_lines_array[i]["sub"] ~= nil then
+						NuttenhClient.missions_lines_array[i]["sub"]:Hide()
+				    end
+				end
+
+				print("")
+				-- ATTENTION
+				vSave("rewards", nil)
+				vSave("rewards", {})
+
+				-- On masque les récompenses
+				NuttenhClient.reward_frame:Hide()
+			else
+				-- On masque le journal (et la question en cours si il y en a une)
+				NuttenhClient.main_frame:Hide()
+				StaticPopup_Hide("QUESTION")
 			end
-
-			-- On masque les récompenses
-			NuttenhClient.reward_frame:Hide()
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			local amount = 5
 			local id = nil
