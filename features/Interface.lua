@@ -59,6 +59,7 @@ function addDescLine(id)
 	elseif readed_key["mission_type"] == "4" then
 		line = line + 1
 		addLine(KILL_LIST[readed_key["setting"]]["indication"], id)
+		addSubLine("", id)
 	elseif readed_key["mission_type"] == "5" then 
 		line = line + 1
 		loadLists()
@@ -80,24 +81,24 @@ function addSubLine(text, lineNumber)
 	end
 end
 
-NuttenhClient.reward_frame = CreateFrame("Frame", nil, NuttenhClient.main_frame)
-NuttenhClient.reward_frame:SetPoint("BOTTOMLEFT", 0, 60)
-NuttenhClient.reward_frame:SetHeight(27)
-NuttenhClient.reward_frame:SetWidth(27)
+NuttenhClient.main_frame.reward = CreateFrame("Frame", nil, NuttenhClient.main_frame)
+NuttenhClient.main_frame.reward:SetPoint("BOTTOMLEFT", 0, 60)
+NuttenhClient.main_frame.reward:SetHeight(27)
+NuttenhClient.main_frame.reward:SetWidth(27)
 
 isMinimized = false
 function toggleFrameSize()
 	if isMinimized == false then
 		NuttenhClient.mission_line_list:Hide()
 		NuttenhClient.main_frame:SetHeight(60)
-		NuttenhClient.reward_frame:Hide()
-		NuttenhClient.reward_frame.value:Hide()
+		NuttenhClient.main_frame.reward:Hide()
+		NuttenhClient.main_frame.reward.value:Hide()
 		isMinimized = true
 	else
 		NuttenhClient.mission_line_list:Show()
 		NuttenhClient.main_frame:SetHeight(400)
-		NuttenhClient.reward_frame:Show()
-		NuttenhClient.reward_frame.value:Show()
+		NuttenhClient.main_frame.reward:Show()
+		NuttenhClient.main_frame.reward.value:Show()
 		isMinimized = false
 	end
 end
@@ -131,37 +132,37 @@ close_button:SetScript("OnClick", function(self, arg1)
 	toggleFrameSize()
 end)
 
-statusbar = CreateFrame("StatusBar", nil, NuttenhClient.main_frame)
-statusbar:SetPoint("TOP", NuttenhClient.main_frame, "TOP", 0, -30)
-statusbar:SetWidth(200)
-statusbar:SetHeight(16)
-statusbar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
-statusbar:SetStatusBarColor(0, 0.65, 0)
-statusbar:SetMinMaxValues(0, 100)
-statusbar:SetValue(0)
+NuttenhClient.main_frame.statusbar = CreateFrame("StatusBar", nil, NuttenhClient.main_frame)
+NuttenhClient.main_frame.statusbar:SetPoint("TOP", NuttenhClient.main_frame, "TOP", 0, -30)
+NuttenhClient.main_frame.statusbar:SetWidth(200)
+NuttenhClient.main_frame.statusbar:SetHeight(16)
+NuttenhClient.main_frame.statusbar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
+NuttenhClient.main_frame.statusbar:SetStatusBarColor(0, 0.65, 0)
+NuttenhClient.main_frame.statusbar:SetMinMaxValues(0, 100)
+NuttenhClient.main_frame.statusbar:SetValue(0)
 
-statusbar.text = statusbar:CreateFontString(nil, "ARTWORK")
-statusbar.text:SetFont("Fonts\\ARIALN.ttf", 15)
-statusbar.text:SetPoint("TOP", 0, 20)
-statusbar.text:SetText("Progression :")
-statusbar.text:SetTextColor(0, 0, 0, 1)
+NuttenhClient.main_frame.statusbar.text = NuttenhClient.main_frame.statusbar:CreateFontString(nil, "ARTWORK")
+NuttenhClient.main_frame.statusbar.text:SetFont("Fonts\\ARIALN.ttf", 15)
+NuttenhClient.main_frame.statusbar.text:SetPoint("TOP", 0, 20)
+NuttenhClient.main_frame.statusbar.text:SetText("Progression :")
+NuttenhClient.main_frame.statusbar.text:SetTextColor(0, 0, 0, 1)
 
-statusbar.bg = statusbar:CreateTexture(nil, "BACKGROUND")
-statusbar.bg:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
-statusbar.bg:SetAllPoints(true)
-statusbar.bg:SetVertexColor(0, 0, 0)
+NuttenhClient.main_frame.statusbar.bg = NuttenhClient.main_frame.statusbar:CreateTexture(nil, "BACKGROUND")
+NuttenhClient.main_frame.statusbar.bg:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
+NuttenhClient.main_frame.statusbar.bg:SetAllPoints(true)
+NuttenhClient.main_frame.statusbar.bg:SetVertexColor(0, 0, 0)
 
-statusbar.value = statusbar:CreateFontString(nil, "OVERLAY")
-statusbar.value:SetPoint("CENTER", statusbar, "TOP", 0, -8)
-statusbar.value:SetFont("Fonts\\FRIZQT__.TTF", 13, "OUTLINE")
-statusbar.value:SetTextColor(255, 255, 0)
-statusbar.value:SetText("0%")
+NuttenhClient.main_frame.statusbar.value = NuttenhClient.main_frame.statusbar:CreateFontString(nil, "OVERLAY")
+NuttenhClient.main_frame.statusbar.value:SetPoint("CENTER", NuttenhClient.main_frame.statusbar, "TOP", 0, -8)
+NuttenhClient.main_frame.statusbar.value:SetFont("Fonts\\FRIZQT__.TTF", 13, "OUTLINE")
+NuttenhClient.main_frame.statusbar.value:SetTextColor(255, 255, 0)
+NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
-NuttenhClient.reward_frame.value = NuttenhClient.reward_frame:CreateFontString(nil, "OVERLAY")
-NuttenhClient.reward_frame.value:SetPoint("CENTER", NuttenhClient.reward_frame, "TOP", 100, 20)
-NuttenhClient.reward_frame.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
-NuttenhClient.reward_frame.value:SetTextColor(0, 0, 0, 0.8)
-NuttenhClient.reward_frame.value:SetText("Le vainqueur remportera :")
+NuttenhClient.main_frame.reward.value = NuttenhClient.main_frame.reward:CreateFontString(nil, "OVERLAY")
+NuttenhClient.main_frame.reward.value:SetPoint("CENTER", NuttenhClient.main_frame.reward, "TOP", 100, 20)
+NuttenhClient.main_frame.reward.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
+NuttenhClient.main_frame.reward.value:SetTextColor(0, 0, 0, 0.8)
+NuttenhClient.main_frame.reward.value:SetText("Le vainqueur remportera :")
 
 function displayRewards(rewards)
 	for i=0, getArraySize(rewards) - 1 do
@@ -176,7 +177,7 @@ function displayRewards(rewards)
 		
 		local x = ((i) * 42) + 18
 
-		local itemFrame = CreateFrame("Frame", nil, NuttenhClient.reward_frame)
+		local itemFrame = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
 		itemFrame:SetFrameStrata("BACKGROUND")
 		itemFrame:SetBackdropBorderColor(255, 0, 0, 1)
 		itemFrame:SetPoint("CENTER", x, 0)

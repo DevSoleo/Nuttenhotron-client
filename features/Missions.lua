@@ -1,8 +1,8 @@
 -- Cette fonction doit être déclenchée lorsqu'un joueur termine l'event
 function finishAllMissions(key, winnerName)
 	-- On remet à zéro la barre de progression
-	statusbar:SetValue(0)
-	statusbar.value:SetText("0%")
+	NuttenhClient.main_frame.statusbar:SetValue(0)
+	NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
 	-- On "clear" les toutes variables
 	vSave("key", "")
@@ -67,8 +67,8 @@ function startMission(key, stade)
 
 			  		-- Next mission 
 			  		-- print("|cFF00FF00Mission accomplie !")
-			  		statusbar:SetValue(stade * 20)
-					statusbar.value:SetText(tostring(stade * 20) .. "%")
+			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+					NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  		startMission(key, stade + 1)
 			  	end
 			end)
@@ -102,8 +102,8 @@ function startMission(key, stade)
 
 				  		-- Next mission
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		statusbar:SetValue(stade * 20)
-						statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
 				  		startMission(key, stade + 1)
 					end
 				end
@@ -123,23 +123,26 @@ function startMission(key, stade)
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("ITEM_PUSH")
 			i:SetScript("OnEvent", function(self, ...)
-				wait(0.1, function()
-					local newAmount = GetItemCount(itemId) - alreadyOwned
-					local oldAmount = GetItemCount(itemId) - newAmount
+				vSave("pickuploot", nil)
 
-					if newAmount <= ITEMS_LIST[setting]["amount"] then
-						NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. newAmount .. "/" .. ITEMS_LIST[setting]["amount"])
+				wait(0.1, function()
+					vSave("pickuploot", GetItemCount(itemId) - alreadyOwned)
+
+					if vGet("pickuploot") <= ITEMS_LIST[setting]["amount"] then
+						NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. vGet("pickuploot") .. "/" .. ITEMS_LIST[setting]["amount"])
 					end
-					print(setting)
+
 					-- ICI PROBLEME
 					loadLists()
-					if newAmount >= ITEMS_LIST[setting]["amount"] and is == true then
+					if vGet("pickuploot") >= ITEMS_LIST[setting]["amount"] and is == true then
 				  		is = false
 
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		statusbar:SetValue(stade * 20)
-						statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
 				  		startMission(key, stade + 1)
+
+				  		i:UnregisterEvent("ITEM_PUSH")
 					end
 				end)
 			end)
@@ -152,10 +155,15 @@ function startMission(key, stade)
 			i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
 				if sourceGUID == true then
 					kills = kills + 1
+					
+					if kills <= KILL_LIST[setting]["amount"] then
+						print(kills .. "/" .. KILL_LIST[setting]["amount"])
+					end
+
 					if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		statusbar:SetValue(stade * 20)
-						statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
 				  		startMission(key, stade + 1)
 					end
 				end
@@ -181,8 +189,8 @@ function startMission(key, stade)
 			      	if player_answer == mission_answer then
 			  			-- Next mission
 			  			-- print("|cFF00FF00Mission accomplie !")
-			  			statusbar:SetValue(stade * 20)
-						statusbar.value:SetText(tostring(stade * 20) .. "%")
+			  			NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  			startMission(key, stade + 1)
 			      	end
 			  	end,
@@ -202,8 +210,8 @@ function startMission(key, stade)
 			b:SetScript("OnEvent", function(self, event, message, sender, ...)
 				if message ~= "Vous envoyez un baiser dans le vent." and string.find(message, "Vous envoyez un baiser à") ~= nil then
 			  		-- print("|cFF00FF00Mission accomplie !")
-			  		statusbar:SetValue(stade * 20)
-					statusbar.value:SetText(tostring(stade * 20) .. "%")
+			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+					NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
 			  		startMission(key, stade + 1)
 				end
 			end)

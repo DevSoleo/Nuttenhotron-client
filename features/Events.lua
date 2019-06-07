@@ -38,7 +38,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 
 			-- On affiche le journal
 			NuttenhClient.main_frame:Show()
-			NuttenhClient.reward_frame:Show()
+			NuttenhClient.main_frame.reward:Show()
 			
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
 			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
@@ -54,8 +54,8 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 		elseif string.find(message, "L'évènement est terminé !") ~= nil then
 			if vGet("isStarted") == true then
 				-- On actualise l'affichage, en remettant tout à zéro
-				statusbar:SetValue(0)
-				statusbar.value:SetText("0%")
+				NuttenhClient.main_frame.statusbar:SetValue(0)
+				NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
 				-- On arrête l'évènement en réinitialisant toutes les variables
 				vSave("isStarted", false)
@@ -77,7 +77,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				vSave("rewards", {})
 
 				-- On masque les récompenses
-				NuttenhClient.reward_frame:Hide()
+				NuttenhClient.main_frame.reward:Hide()
 			else
 				-- On masque le journal (et la question en cours si il y en a une)
 				NuttenhClient.main_frame:Hide()
@@ -126,12 +126,12 @@ o:SetScript("OnEvent", function(self, event, ...)
 		if vGet("isStarted") ~= "" and _Client["stade"] ~= 0 and _Client["key"] ~= nil and _Client["stade"] ~= nil then
 			-- On affiche le journal et on actualise la barre de progression
 			NuttenhClient.main_frame:Show()
-			statusbar:SetValue(tonumber(_Client["stade"]) * 20)
-			statusbar.value:SetText(tostring(tonumber(_Client["stade"]) * 20) .. "%")
+			NuttenhClient.main_frame.statusbar:SetValue(tonumber(_Client["stade"]) * 20)
+			NuttenhClient.main_frame.statusbar.value:SetText(tostring(tonumber(_Client["stade"]) * 20) .. "%")
 
-			--[[for i=1, tonumber(_Client["stade"]) - 1 do
+			for i=1, tonumber(_Client["stade"]) - 1 do
 				addDescLine(i)
-			end]]
+			end
 
 			displayRewards(_Client["rewards"])
 
@@ -141,7 +141,7 @@ o:SetScript("OnEvent", function(self, event, ...)
 			_Client["stade"] = 0
 		end
 	else
-		NuttenhClient.reward_frame:Hide()
+		NuttenhClient.main_frame.reward:Hide()
 	end
 
 	if _Client["endTime"] ~= nil then
