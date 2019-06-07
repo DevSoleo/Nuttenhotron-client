@@ -1,12 +1,16 @@
+NuttenhClient = {}
+NuttenhClient.addonName = "Event-Client"
+
+-- Main frame
 NuttenhClient.main_frame = CreateFrame("Frame", nil, UIParent)
 NuttenhClient.main_frame:SetFrameStrata("BACKGROUND") -- Définit le z-index de la frame sur le niveau le plus bas (BACKGROUND)
 NuttenhClient.main_frame:SetMovable(true) -- Permet le déplacement de la fenêtre
 NuttenhClient.main_frame:EnableMouse(true)
 NuttenhClient.main_frame:RegisterForDrag("LeftButton") -- Définit le clic gauche comme le bouton à utiliser pour déplacer la fenêtre
-NuttenhClient.main_frame:SetScript("OnDragStart", frame.StartMoving)
-NuttenhClient.main_frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+NuttenhClient.main_frame:SetScript("OnDragStart", NuttenhClient.main_frame.StartMoving)
+NuttenhClient.main_frame:SetScript("OnDragStop", NuttenhClient.main_frame.StopMovingOrSizing)
 NuttenhClient.main_frame:SetWidth(300)
-NuttenhClient.main_frame:SetHeight(400)
+NuttenhClient.main_frame:SetHeight(450)
 
 NuttenhClient.main_frame:SetBackdrop({
 	bgFile="Interface\\Addons\\wow-event-addon-client\\textures\\UI-Background", -- Interface/Tooltips/UI-Tooltip-Background
@@ -22,87 +26,11 @@ NuttenhClient.main_frame:SetBackdrop({
 	}
 })
 
-NuttenhClient.main_frame:SetPoint("TOP", 0, -20)
-NuttenhClient.main_frame:Hide()
+NuttenhClient.main_frame:SetPoint("TOP", 20, -20)
 
-NuttenhClient.mission_line_list = CreateFrame("Frame", "MissionLineList", NuttenhClient.main_frame)
-NuttenhClient.mission_line_list:SetWidth(100)
-NuttenhClient.mission_line_list:SetHeight(15)
-NuttenhClient.mission_line_list:SetPoint("TOPLEFT", 0, 0)
+NuttenhClient.main_frame:Show()
 
-NuttenhClient.missions_lines_array = {}
-
-function addLine(text, lineNumber)
-	NuttenhClient.missions_lines_array[lineNumber] = NuttenhClient.mission_line_list:CreateFontString(nil, "ARTWORK")
-	NuttenhClient.missions_lines_array[lineNumber]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.missions_lines_array[lineNumber]:SetPoint("LEFT", 20, -60 - (lineNumber * 35))
-	NuttenhClient.missions_lines_array[lineNumber]:SetText("- " .. tostring(text))
-	NuttenhClient.missions_lines_array[lineNumber]:SetTextColor(0, 0, 0, 1)
-end
-
-function addDescLine(id)
-	local line = 0
-	local readed_key = readKey(_Client["key"], id)
-	if readed_key["mission_type"] == "1" then
-		line = line + 1
-		loadLists()
-		addLine(NPC_LIST[readed_key["setting"]]["indication"], id)
-	elseif readed_key["mission_type"] == "2" then
-		line = line + 1
-		addLine("Vous devez trouver " .. LOCATIONS_LIST[readed_key["setting"]]["indication"], id)
-		addSubLine("Localisation : " .. LOCATIONS_LIST[readed_key["setting"]]["zoneText"][GetLocale()] .. ", " .. LOCATIONS_LIST[readed_key["setting"]]["subZoneText"][GetLocale()], id)
-	elseif readed_key["mission_type"] == "3" then
-		line = line + 1
-		loadLists()
-		addLine(ITEMS_LIST[readed_key["setting"]]["indication"], id)
-		addSubLine("", id)
-	elseif readed_key["mission_type"] == "4" then
-		line = line + 1
-		addLine(KILL_LIST[readed_key["setting"]]["indication"], id)
-		-- addSubLine("", id)
-	elseif readed_key["mission_type"] == "5" then 
-		line = line + 1
-		loadLists()
-		addLine(ANSWER_LIST[readed_key["setting"]]["indication"], id)
-	end
-end
-
-function addSubLine(text, lineNumber)
-	NuttenhClient.missions_lines_array[lineNumber]["sub"] = NuttenhClient.mission_line_list:CreateFontString(NuttenhClient.missions_lines_array[lineNumber], "ARTWORK")
-	NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetPoint("LEFT", 30, 0 - 60 - (lineNumber * 35) - 17)
-	NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetText("- " .. tostring(text))
-	NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
-	NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetWidth(200)
-	NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetHeight(15)
-
-	if lineNumber == 3 then
-		NuttenhClient.missions_lines_array[lineNumber]["sub"]:SetPoint("LEFT", -16, 0 - 60 - (lineNumber * 35) - 17)
-	end
-end
-
-NuttenhClient.main_frame.reward = CreateFrame("Frame", nil, NuttenhClient.main_frame)
-NuttenhClient.main_frame.reward:SetPoint("BOTTOMLEFT", 0, 60)
-NuttenhClient.main_frame.reward:SetHeight(27)
-NuttenhClient.main_frame.reward:SetWidth(27)
-
-isMinimized = false
-function toggleFrameSize()
-	if isMinimized == false then
-		NuttenhClient.mission_line_list:Hide()
-		NuttenhClient.main_frame:SetHeight(60)
-		NuttenhClient.main_frame.reward:Hide()
-		NuttenhClient.main_frame.reward.value:Hide()
-		isMinimized = true
-	else
-		NuttenhClient.mission_line_list:Show()
-		NuttenhClient.main_frame:SetHeight(400)
-		NuttenhClient.main_frame.reward:Show()
-		NuttenhClient.main_frame.reward.value:Show()
-		isMinimized = false
-	end
-end
-
+-- Close button
 local close_button = CreateFrame("Button", "CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")
 close_button:SetPoint("TOPRIGHT", 0, 0)
 close_button:SetFrameStrata("HIGH")
@@ -120,6 +48,21 @@ fontString:SetText("-")
 close_button.fontString = fontString
 
 isMinimized = false
+
+function toggleFrameSize()
+	if isMinimized == false then
+		NuttenhClient.main_frame:SetHeight(60)
+		NuttenhClient.main_frame.mission_list:Hide()
+		NuttenhClient.main_frame.reward:Hide()
+		isMinimized = true
+	else
+		NuttenhClient.main_frame:SetHeight(450)
+		NuttenhClient.main_frame.mission_list:Show()
+		NuttenhClient.main_frame.reward:Show()
+		isMinimized = false
+	end
+end
+
 close_button:SetScript("OnClick", function(self, arg1)
 	if isMinimized == true then 
 		fontString:SetText("-")
@@ -129,9 +72,18 @@ close_button:SetScript("OnClick", function(self, arg1)
 		fontString:SetFont("Fonts\\FRIZQT__.TTF", 16)
 		PlaySound("igQuestLogOpen", "SFX");
 	end
+
 	toggleFrameSize()
 end)
 
+-- Title
+NuttenhClient.main_frame.title = NuttenhClient.main_frame:CreateFontString(nil, "ARTWORK")
+NuttenhClient.main_frame.title:SetFont("Fonts\\ARIALN.ttf", 15)
+NuttenhClient.main_frame.title:SetPoint("TOP", 0, -10)
+NuttenhClient.main_frame.title:SetText("Progression :")
+NuttenhClient.main_frame.title:SetTextColor(0, 0, 0, 1)
+
+-- Status bar
 NuttenhClient.main_frame.statusbar = CreateFrame("StatusBar", nil, NuttenhClient.main_frame)
 NuttenhClient.main_frame.statusbar:SetPoint("TOP", NuttenhClient.main_frame, "TOP", 0, -30)
 NuttenhClient.main_frame.statusbar:SetWidth(200)
@@ -140,12 +92,6 @@ NuttenhClient.main_frame.statusbar:SetStatusBarTexture("Interface\\TARGETINGFRAM
 NuttenhClient.main_frame.statusbar:SetStatusBarColor(0, 0.65, 0)
 NuttenhClient.main_frame.statusbar:SetMinMaxValues(0, 100)
 NuttenhClient.main_frame.statusbar:SetValue(0)
-
-NuttenhClient.main_frame.statusbar.text = NuttenhClient.main_frame.statusbar:CreateFontString(nil, "ARTWORK")
-NuttenhClient.main_frame.statusbar.text:SetFont("Fonts\\ARIALN.ttf", 15)
-NuttenhClient.main_frame.statusbar.text:SetPoint("TOP", 0, 20)
-NuttenhClient.main_frame.statusbar.text:SetText("Progression :")
-NuttenhClient.main_frame.statusbar.text:SetTextColor(0, 0, 0, 1)
 
 NuttenhClient.main_frame.statusbar.bg = NuttenhClient.main_frame.statusbar:CreateTexture(nil, "BACKGROUND")
 NuttenhClient.main_frame.statusbar.bg:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
@@ -158,15 +104,75 @@ NuttenhClient.main_frame.statusbar.value:SetFont("Fonts\\FRIZQT__.TTF", 13, "OUT
 NuttenhClient.main_frame.statusbar.value:SetTextColor(255, 255, 0)
 NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
+-- Mission List
+NuttenhClient.main_frame.mission_list = CreateFrame("Frame", "MissionList", NuttenhClient.main_frame)
+NuttenhClient.main_frame.mission_list:SetWidth(250)
+NuttenhClient.main_frame.mission_list:SetHeight(250)
+NuttenhClient.main_frame.mission_list:SetPoint("TOP", 0, -70)
+
+local bg = NuttenhClient.main_frame.mission_list:CreateTexture(nil, "BACKGROUND") 
+bg:SetAllPoints(NuttenhClient.main_frame.mission_list) 
+bg:SetTexture(0, 0, 0, 0.1) 
+
+-- Mission list scroll bar
+local scrollframe = CreateFrame("ScrollFrame", nil, NuttenhClient.main_frame.mission_list) 
+scrollframe:SetPoint("TOPLEFT", 10, -10) 
+scrollframe:SetPoint("BOTTOMRIGHT", -10, 10)
+
+
+local texture = scrollframe:CreateTexture() 
+texture:SetAllPoints() 
+-- texture:SetTexture(0.5, 0.5, 0.5, 1) 
+NuttenhClient.main_frame.mission_list.scrollframe = scrollframe 
+
+--scrollbar 
+local scrollbar = CreateFrame("Slider", nil, scrollframe, "UIPanelScrollBarTemplate") 
+scrollbar:SetPoint("TOPLEFT", NuttenhClient.main_frame.mission_list, "TOPRIGHT", -16, -16) 
+scrollbar:SetPoint("BOTTOMLEFT", NuttenhClient.main_frame.mission_list, "BOTTOMRIGHT", -16, 16) 
+scrollbar:SetMinMaxValues(1, 200) 
+scrollbar.scrollStep = 200 / 100
+scrollbar:SetValueStep(scrollbar.scrollStep) 
+scrollbar:SetValue(0) 
+scrollbar:SetWidth(16) 
+scrollbar:SetScript("OnValueChanged", function (self, value) 
+	self:GetParent():SetVerticalScroll(value) 
+end)
+
+local scrollbg = scrollbar:CreateTexture(nil, "BACKGROUND") 
+scrollbg:SetAllPoints(scrollbar) 
+scrollbg:SetTexture(0, 0, 0, 0) 
+NuttenhClient.main_frame.mission_list.scrollbar = scrollbar 
+
+--content frame 
+NuttenhClient.main_frame.mission_list.content = CreateFrame("Frame", nil, scrollframe) 
+NuttenhClient.main_frame.mission_list.content:SetSize(250, 250) 
+
+scrollframe:SetScrollChild(NuttenhClient.main_frame.mission_list.content)
+
+-- Rewards
+NuttenhClient.main_frame.reward = CreateFrame("Frame", nil, NuttenhClient.main_frame)
+NuttenhClient.main_frame.reward:SetPoint("BOTTOMLEFT", 0, 60)
+NuttenhClient.main_frame.reward:SetHeight(27)
+NuttenhClient.main_frame.reward:SetWidth(27)
+
 NuttenhClient.main_frame.reward.value = NuttenhClient.main_frame.reward:CreateFontString(nil, "OVERLAY")
 NuttenhClient.main_frame.reward.value:SetPoint("CENTER", NuttenhClient.main_frame.reward, "TOP", 100, 20)
 NuttenhClient.main_frame.reward.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
 NuttenhClient.main_frame.reward.value:SetTextColor(0, 0, 0, 0.8)
 NuttenhClient.main_frame.reward.value:SetText("Le vainqueur remportera :")
 
+function addLine(text, lineNumber)
+	NuttenhClient.main_frame.mission_list.content[lineNumber] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetFont("Fonts\\ARIALN.ttf", 15)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetPoint("TOPLEFT", 0, 0 - 6 - (lineNumber * 10))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetText("- " .. text)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetTextColor(0, 0, 0, 1)
+end
+
+addLine("Je suis michel !", 1)
+
 function displayRewards(rewards)
 	for i=0, getArraySize(rewards) - 1 do
-
 		local itemId = nil
 		
 		if i == 0 then
@@ -197,7 +203,7 @@ function displayRewards(rewards)
 		end)
 
 		itemFrame:SetScript("OnLeave", function(self)
-		  GameTooltip:Hide()
+			GameTooltip:Hide()
 		end)
 
 		itemFrame.text = itemFrame:CreateFontString(nil, "OVERLAY")
