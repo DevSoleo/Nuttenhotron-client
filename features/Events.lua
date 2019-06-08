@@ -29,7 +29,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			PlaySound("ReadyCheck", "SFX")
 
 			-- On enregistre la clé reçue par message et on définit isStarted = true
-			vSave("key", string.gsub(message, "Clé d'évènement : ", ""))
+			vSave("key", uncrypt(string.gsub(message, "Clé d'évènement : ", "")))
 			vSave("isStarted", true)
 			vSave("stade", 1)
 

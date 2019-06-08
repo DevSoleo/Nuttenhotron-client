@@ -225,20 +225,6 @@ function startMission(key, stade)
 			}
 
 			StaticPopup_Show("QUESTION")
-		elseif mission_type == "6" then
-
-			print("Vous devez faire un /bisou !")
-
-			local b = CreateFrame("Frame")
-			b:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
-			b:SetScript("OnEvent", function(self, event, message, sender, ...)
-				if message ~= "Vous envoyez un baiser dans le vent." and string.find(message, "Vous envoyez un baiser à") ~= nil then
-			  		-- print("|cFF00FF00Mission accomplie !")
-			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-					NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
-			  		startMission(key, stade + 1)
-				end
-			end)
 		end
 	else
 		finishAllMissions(key, UnitName("player"))
