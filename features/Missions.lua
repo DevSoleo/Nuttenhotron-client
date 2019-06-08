@@ -42,8 +42,10 @@ function startMission(key, stade)
 		end
 	end
 
+	local maxStade = #key / 2
+
 	-- Si le joueur n'a pas fini l'event et qu'il y a un event en cours
-	if stade <= 5 and _Client["isStarted"] == true then
+	if stade <= maxStade and _Client["isStarted"] == true then
 		-- On lit la clé et on récupère le type de mission et le paramètre associé en fonction du stade
 		local readed_key = readKey(key, stade)
 		local mission_type = readed_key["mission_type"]

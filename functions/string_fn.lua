@@ -41,8 +41,5 @@ function uncrypt(k)
 	    c = c .. getArrayIndex(t, v)
 	end
 
-	c = tonumber(c)
-	c = c - 293943699 * 4
-
 	return tostring(c)
 end
