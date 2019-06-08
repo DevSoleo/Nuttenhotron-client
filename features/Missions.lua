@@ -10,16 +10,16 @@ function finishAllMissions(key, winnerName)
 	vSave("stade", 0)
 
 	-- On efface les missions présentes dans le journal
-	for i=1, getArraySize(NuttenhClient.missions_lines_array) do
-	    NuttenhClient.missions_lines_array[i]:Hide()
+	for i=1, table.getn(getLines()) do
+	   getLine(i):Hide()
 
-	    if NuttenhClient.missions_lines_array[i]["sub"] ~= nil then
-			NuttenhClient.missions_lines_array[i]["sub"]:Hide()
+	    if getLine(i)["sub"] ~= nil then
+			getLine(i)["sub"]:Hide()
 	    end
 	end
 	
 	-- On masque les récompenses
-	NuttenhClient.reward_frame:Hide()
+	NuttenhClient.main_frame.reward:Hide()
 
 	SendChatMessage(winnerName .. " est le vainqueur de cet évènement !!! Voici sa clé de victoire : ", "GUILD")
 end
@@ -32,12 +32,17 @@ function startMission(key, stade)
 	addDescLine(stade)
 
 	-- On actualise les missions, lorsqu'elle sont terminées
+
 	if stade > 1 then
-		NuttenhClient.missions_lines_array[stade - 1]:SetText("|cFF4A4A4A" .. NuttenhClient.missions_lines_array[stade - 1]:GetText())
-		
-		if NuttenhClient.missions_lines_array[stade - 1]["sub"] ~= nil then
-			NuttenhClient.missions_lines_array[stade - 1]["sub"]:SetText("|cFF4A4A4A" .. NuttenhClient.missions_lines_array[stade - 1]["sub"]:GetText())
+		for p=1, getArraySize(getLines()) - 2 do
+			getLine(p):SetText("|cFF4A4A4A" .. getLine(p):GetText())
 		end
+		--[[
+		getLine(stade - 1):SetText("|cFF4A4A4A" .. getLine(stade - 1):GetText())
+		
+		if getLine(stade - 1)["sub"] ~= nil then
+			getLine(stade - 1)["sub"]:SetText("|cFF4A4A4A" .. getLine(stade - 1)["sub"]:GetText())
+		end]]
 	end
 
 	--[[
@@ -164,6 +169,7 @@ function startMission(key, stade)
 				  		-- print("|cFF00FF00Mission accomplie !")
 				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
 						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		
 				  		startMission(key, stade + 1)
 					end
 				end

@@ -14,7 +14,7 @@ NuttenhClient.main_frame:SetHeight(450)
 
 NuttenhClient.main_frame:SetBackdrop({
 	bgFile="Interface\\Addons\\wow-event-addon-client\\textures\\UI-Background", -- Interface/Tooltips/UI-Tooltip-Background
-	edgeFile="Interface/Tooltips/UI-Tooltip-Border", 
+	edgeFile="Interface/DialogFrame/UI-DialogBox-Border",
 	tile=false,
 	tileSize=64, 
 	edgeSize=16, 
@@ -109,6 +109,18 @@ NuttenhClient.main_frame.mission_list = CreateFrame("Frame", "MissionList", Nutt
 NuttenhClient.main_frame.mission_list:SetWidth(250)
 NuttenhClient.main_frame.mission_list:SetHeight(250)
 NuttenhClient.main_frame.mission_list:SetPoint("TOP", 0, -70)
+NuttenhClient.main_frame.mission_list:SetBackdrop({
+	edgeFile="Interface/Tooltips/UI-Tooltip-Border", 
+	tile=false,
+	tileSize=64, 
+	edgeSize=10, 
+	insets={
+		left=4,
+		right=4,
+		top=4,
+		bottom=4
+	}
+})
 
 local bg = NuttenhClient.main_frame.mission_list:CreateTexture(nil, "BACKGROUND") 
 bg:SetAllPoints(NuttenhClient.main_frame.mission_list) 
@@ -119,7 +131,6 @@ local scrollframe = CreateFrame("ScrollFrame", nil, NuttenhClient.main_frame.mis
 scrollframe:SetPoint("TOPLEFT", 10, -10) 
 scrollframe:SetPoint("BOTTOMRIGHT", -10, 10)
 
-
 local texture = scrollframe:CreateTexture() 
 texture:SetAllPoints() 
 -- texture:SetTexture(0.5, 0.5, 0.5, 1) 
@@ -127,8 +138,8 @@ NuttenhClient.main_frame.mission_list.scrollframe = scrollframe
 
 --scrollbar 
 local scrollbar = CreateFrame("Slider", nil, scrollframe, "UIPanelScrollBarTemplate") 
-scrollbar:SetPoint("TOPLEFT", NuttenhClient.main_frame.mission_list, "TOPRIGHT", -16, -16) 
-scrollbar:SetPoint("BOTTOMLEFT", NuttenhClient.main_frame.mission_list, "BOTTOMRIGHT", -16, 16) 
+scrollbar:SetPoint("TOPLEFT", NuttenhClient.main_frame.mission_list, "TOPRIGHT", -20, -18) 
+scrollbar:SetPoint("BOTTOMLEFT", NuttenhClient.main_frame.mission_list, "BOTTOMRIGHT", -20, 18) 
 scrollbar:SetMinMaxValues(1, 200) 
 scrollbar.scrollStep = 200 / 100
 scrollbar:SetValueStep(scrollbar.scrollStep) 
@@ -137,6 +148,7 @@ scrollbar:SetWidth(16)
 scrollbar:SetScript("OnValueChanged", function (self, value) 
 	self:GetParent():SetVerticalScroll(value) 
 end)
+
 
 local scrollbg = scrollbar:CreateTexture(nil, "BACKGROUND") 
 scrollbg:SetAllPoints(scrollbar) 
@@ -164,12 +176,46 @@ NuttenhClient.main_frame.reward.value:SetText("Le vainqueur remportera :")
 function addLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetPoint("TOPLEFT", 0, 0 - 6 - (lineNumber * 10))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetPoint("TOPLEFT", 0, 0 - (lineNumber * 30))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetTextColor(0, 0, 0, 1)
 end
 
-addLine("Je suis michel !", 1)
+function getLine(lineNumber)
+	return NuttenhClient.main_frame.mission_list.content[lineNumber]
+end
+
+function getLines()
+	return NuttenhClient.main_frame.mission_list.content
+end
+
+function addDescLine(id)
+	local line = 0
+	local readed_key = readKey(_Client["key"], id)
+	if readed_key["mission_type"] == "1" then
+		line = line + 1
+		loadLists()
+		addLine(NPC_LIST[readed_key["setting"]]["indication"], id)
+	elseif readed_key["mission_type"] == "2" then
+		line = line + 1
+		loadLists()
+		addLine("Vous devez trouver " .. LOCATIONS_LIST[readed_key["setting"]]["indication"], id)
+		-- addSubLine("Localisation : " .. LOCATIONS_LIST[readed_key["setting"]]["zoneText"][GetLocale()] .. ", " .. LOCATIONS_LIST[readed_key["setting"]]["subZoneText"][GetLocale()], id)
+	elseif readed_key["mission_type"] == "3" then
+		line = line + 1
+		loadLists()
+		addLine(ITEMS_LIST[readed_key["setting"]]["indication"], id)
+		-- addSubLine("", id)
+	elseif readed_key["mission_type"] == "4" then
+		line = line + 1
+		addLine(KILL_LIST[readed_key["setting"]]["indication"], id)
+		-- addSubLine("", id)
+	elseif readed_key["mission_type"] == "5" then 
+		line = line + 1
+		loadLists()
+		addLine(ANSWER_LIST[readed_key["setting"]]["indication"], id)
+	end
+end
 
 function displayRewards(rewards)
 	for i=0, getArraySize(rewards) - 1 do

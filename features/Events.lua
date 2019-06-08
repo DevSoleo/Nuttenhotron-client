@@ -17,11 +17,11 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			-- vSave("rewards", {})
 
 			-- On efface les missions déjà présentes dans le journal
-			for i=1, table.getn(NuttenhClient.missions_lines_array) - 1 do
-			    NuttenhClient.missions_lines_array[i]:Hide()
+			for i=1, table.getn(getLines()) do
+			   getLine(i):Hide()
 
-			    if NuttenhClient.missions_lines_array[i]["sub"] ~= nil then
-					NuttenhClient.missions_lines_array[i]["sub"]:Hide()
+			    if getLine(i)["sub"] ~= nil then
+					getLine(i)["sub"]:Hide()
 			    end
 			end
 
@@ -63,11 +63,11 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				vSave("stade", 0)
 
 				-- On efface les missions déjà présentes dans le journal
-				for i=1, table.getn(NuttenhClient.missions_lines_array) do
-				    NuttenhClient.missions_lines_array[i]:Hide()
+				for i=1, table.getn(getLines()) do
+				   getLine(i):Hide()
 
-				    if NuttenhClient.missions_lines_array[i]["sub"] ~= nil then
-						NuttenhClient.missions_lines_array[i]["sub"]:Hide()
+				    if getLine(i)["sub"] ~= nil then
+						getLine(i)["sub"]:Hide()
 				    end
 				end
 
