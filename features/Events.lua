@@ -62,6 +62,10 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				vSave("key", "")
 				vSave("stade", 0)
 
+				-- On définit toute les variables de missions sur 0
+				vSave("kills", 0)
+
+
 				-- On efface les missions déjà présentes dans le journal
 				for i=1, table.getn(getLines()) do
 				   getLine(i):Hide()
@@ -71,7 +75,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				    end
 				end
 
-				print("")
+				print("azeazeaz")
 				-- ATTENTION
 				vSave("rewards", nil)
 				vSave("rewards", {})
@@ -84,12 +88,18 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				StaticPopup_Hide("QUESTION")
 			end
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
-			local amount = 5
+			local amount = 0
 			local id = nil
 
 			-- On récupère l'ID de l'item ajouté en récompense
 			string.gsub(message, "%((.-)%)", function(o)
 				id = o
+			end)
+
+			-- On récupère la quantité d'item ajouté en récompense
+			string.gsub(message, "x%d+", function(o)
+				local i = string.gsub(o, "x", "")
+				amount = i
 			end)
 
 			-- On précharge l'item demandé

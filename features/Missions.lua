@@ -32,13 +32,12 @@ function startMission(key, stade)
 	addDescLine(stade)
 
 	-- On actualise les missions, lorsqu'elle sont terminées
-
 	if stade > 1 then
 		for p=1, getArraySize(getLines()) - 2 do
 			getLine(p):SetText("|cFF4A4A4A" .. getLine(p):GetText())
 
 			if getSubLine(p) ~= nil then
-				getSubLine(p):SetText("|cFF4A4A4A" .. getSubLine(p):GetText())
+				getSubLine(p):SetText("|cFF4A4A4A- Terminé !")
 			end
 		end
 	end
@@ -105,26 +104,46 @@ function startMission(key, stade)
 
 			hooksecurefunc("MoveForwardStop", hookPlayerMove)
 		elseif mission_type == "3" then
-			local is = true
+			local reqItemId = ITEMS_LIST[setting]["id"]
+			local alreadyOwned = GetItemCount(reqItemId)
+			local checked = true
+
+			local e = CreateFrame("Frame")
+			e:RegisterEvent("ITEM_PUSH")
+			e:SetScript("OnEvent", function(self, ...)
+				wait(0.1, function()
+					local loot = GetItemCount(reqItemId) - alreadyOwned
+
+					print(loot .. "/" .. ITEMS_LIST[setting]["amount"])
+					getSubLine(stade):SetText("- Compteur : " .. loot .. "/" .. ITEMS_LIST[setting]["amount"])
+				  		
+					if loot >= ITEMS_LIST[setting]["amount"] and checked == true then
+				  		checked = false
+
+				  		-- print("|cFF00FF00Mission accomplie !")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		startMission(key, stade + 1)
+
+				  		e:UnregisterEvent("ITEM_PUSH")
+					end
+				end)
+			end)
+
+			--[[local is = true
 			local itemId = ITEMS_LIST[setting]["id"]
 			local alreadyOwned = GetItemCount(itemId)
 			alreadyOwned = alreadyOwned + 0
 
-			-- print("Vous devez ramasser : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()])
-				
-			NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : 0/" .. ITEMS_LIST["1"]["amount"])
+			local loot = 0
 
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("ITEM_PUSH")
 			i:SetScript("OnEvent", function(self, ...)
-				vSave("pickuploot", nil)
+				-- vSave("pickuploot", nil)
 
 				wait(0.1, function()
 					vSave("pickuploot", GetItemCount(itemId) - alreadyOwned)
-
-					if vGet("pickuploot") <= ITEMS_LIST[setting]["amount"] then
-						NuttenhClient.missions_lines_array[stade]["sub"]:SetText("- Compteur : " .. vGet("pickuploot") .. "/" .. ITEMS_LIST[setting]["amount"])
-					end
 
 					-- ICI PROBLEME
 					loadLists()
@@ -139,25 +158,35 @@ function startMission(key, stade)
 				  		i:UnregisterEvent("ITEM_PUSH")
 					end
 				end)
-			end)
+			end)]]
 		elseif mission_type == "4" then
 			-- print("Vous devez tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()])
 
 			local kills = 0
+
+			if vGet("kills") ~= nil and vGet("kills") ~= 0 then
+				kills = vGet("kills")
+			end
+
 			local i = CreateFrame("Frame")
 			i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED") -- CHAT_MSG_GUILD
 			i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
-				if sourceGUID == true then
+				if sourceGUID == true and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
 					kills = kills + 1
-					
+					vSave("kills", kills)
+
 					if kills <= KILL_LIST[setting]["amount"] then
+						RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"][GetLocale()] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
 						print(kills .. "/" .. KILL_LIST[setting]["amount"])
+						getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. KILL_LIST[setting]["amount"])
 					end
 
 					if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
 				  		-- print("|cFF00FF00Mission accomplie !")
 				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
 						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+			
+						vSave("kills", 0)
 				  		
 				  		startMission(key, stade + 1)
 					end

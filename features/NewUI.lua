@@ -217,31 +217,48 @@ function addDescLine(id)
 		line = line + 1
 		loadLists()
 		addLine("Vous devez trouver " .. LOCATIONS_LIST[readed_key["setting"]]["indication"], id)
+		addSubLine("", id)
 		-- addSubLine("Localisation : " .. LOCATIONS_LIST[readed_key["setting"]]["zoneText"][GetLocale()] .. ", " .. LOCATIONS_LIST[readed_key["setting"]]["subZoneText"][GetLocale()], id)
 	elseif readed_key["mission_type"] == "3" then
 		line = line + 1
 		loadLists()
 		addLine(ITEMS_LIST[readed_key["setting"]]["indication"], id)
+		addSubLine("Compteur : 0/" .. ITEMS_LIST[readed_key["setting"]]["amount"], id)
 		-- addSubLine("", id)
 	elseif readed_key["mission_type"] == "4" then
 		line = line + 1
 		addLine(KILL_LIST[readed_key["setting"]]["indication"], id)
-		-- addSubLine("", id)
+
+		local kills = 0
+
+		if vGet("kills") ~= nil and vGet("kills") ~= 0 then
+			kills = vGet("kills")
+		end
+
+		addSubLine("Compteur : " .. kills .. "/" .. KILL_LIST[readed_key["setting"]]["amount"], id)
 	elseif readed_key["mission_type"] == "5" then 
 		line = line + 1
 		loadLists()
 		addLine(ANSWER_LIST[readed_key["setting"]]["indication"], id)
+		addSubLine("", id)
 	end
 end
 
 function displayRewards(rewards)
 	for i=0, getArraySize(rewards) - 1 do
+		local amount = 0
 		local itemId = nil
 		
 		if i == 0 then
 			itemId = _Client["rewards"][0]["id"]
 		else
 			itemId = _Client["rewards"][i]["id"]
+		end
+
+		if i == 0 then
+			amount = _Client["rewards"][0]["amount"]
+		else
+			amount = _Client["rewards"][i]["amount"]
 		end
 		
 		local x = ((i) * 42) + 18
@@ -273,6 +290,6 @@ function displayRewards(rewards)
 		itemFrame.text:SetPoint("BOTTOMRIGHT", itemFrame, 0, 0)
 		itemFrame.text:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
 		itemFrame.text:SetTextColor(255, 255, 255)
-		itemFrame.text:SetText("5")
+		itemFrame.text:SetText(amount)
 	end
 end

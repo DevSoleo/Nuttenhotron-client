@@ -16,7 +16,7 @@ function loadLists()
 	ITEMS_LIST["1"] = {id=2070, name={frFR="Bleu de Darnassus", enUS="Darnassian Bleu"}, amount=10, indication="Bleu de Darnassus"}
 
 	KILL_LIST["1"] = {name={frFR="Pourceau adulte sauvage", enUS=""}, amount=5, indication="Devant Orgrimmar !"}
-	KILL_LIST["2"] = {name={frFR="Ecrevisse boueuse", enUS="Muddy Crawfish"}, amount=5, indication="Petites ecrevisses !"}
+	KILL_LIST["2"] = {name={frFR="Ecrevisse boueuse", enUS="Muddy Crawfish", esES="Centollo fangoso"}, amount=5, indication="Petites ecrevisses !"}
 end
 
 loadLists()
