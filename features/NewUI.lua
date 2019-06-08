@@ -1,7 +1,7 @@
 NuttenhClient = {}
 NuttenhClient.addonName = "Event-Client"
 
--- Main frame
+-- On créer la fenêtre principale
 NuttenhClient.main_frame = CreateFrame("Frame", nil, UIParent)
 NuttenhClient.main_frame:SetFrameStrata("BACKGROUND") -- Définit le z-index de la frame sur le niveau le plus bas (BACKGROUND)
 NuttenhClient.main_frame:SetMovable(true) -- Permet le déplacement de la fenêtre
@@ -28,7 +28,7 @@ NuttenhClient.main_frame:SetBackdrop({
 
 NuttenhClient.main_frame:SetPoint("TOP", 20, -20)
 
-NuttenhClient.main_frame:Show()
+NuttenhClient.main_frame:Hide()
 
 -- Close button
 local close_button = CreateFrame("Button", "CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")
@@ -176,9 +176,17 @@ NuttenhClient.main_frame.reward.value:SetText("Le vainqueur remportera :")
 function addLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetPoint("TOPLEFT", 0, 0 - (lineNumber * 30))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetPoint("TOPLEFT", 0, 0 - ((lineNumber - 1) * 35))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetTextColor(0, 0, 0, 1)
+end
+
+function addSubLine(text, lineNumber)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 end
 
 function getLine(lineNumber)
@@ -189,6 +197,14 @@ function getLines()
 	return NuttenhClient.main_frame.mission_list.content
 end
 
+function getSubLine(lineNumber)
+	if NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] ~= nil then
+		return NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]
+	else
+		return nil
+	end
+end
+
 function addDescLine(id)
 	local line = 0
 	local readed_key = readKey(_Client["key"], id)
@@ -196,6 +212,7 @@ function addDescLine(id)
 		line = line + 1
 		loadLists()
 		addLine(NPC_LIST[readed_key["setting"]]["indication"], id)
+		addSubLine(NPC_LIST[readed_key["setting"]]["indication"], id)
 	elseif readed_key["mission_type"] == "2" then
 		line = line + 1
 		loadLists()

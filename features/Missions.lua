@@ -36,23 +36,12 @@ function startMission(key, stade)
 	if stade > 1 then
 		for p=1, getArraySize(getLines()) - 2 do
 			getLine(p):SetText("|cFF4A4A4A" .. getLine(p):GetText())
-		end
-		--[[
-		getLine(stade - 1):SetText("|cFF4A4A4A" .. getLine(stade - 1):GetText())
-		
-		if getLine(stade - 1)["sub"] ~= nil then
-			getLine(stade - 1)["sub"]:SetText("|cFF4A4A4A" .. getLine(stade - 1)["sub"]:GetText())
-		end]]
-	end
 
-	--[[
-	if isInParty() == true and stade == "5" then
-		for i=0, get_array_size(get_party_player_list()) do
-			print(get_party_player_list()[i])
+			if getSubLine(p) ~= nil then
+				getSubLine(p):SetText("|cFF4A4A4A" .. getSubLine(p):GetText())
+			end
 		end
-		SendChatMessage("Je suis au stade " .. stade, "PARTY")
 	end
-	]]
 
 	-- Si le joueur n'a pas fini l'event et qu'il y a un event en cours
 	if stade <= 5 and _Client["isStarted"] == true then

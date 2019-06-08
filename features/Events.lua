@@ -35,10 +35,6 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 
 			-- On affiche les récompenses sur le journal
 			displayRewards(vGet("rewards"))
-
-			-- On affiche le journal
-			NuttenhClient.main_frame:Show()
-			NuttenhClient.main_frame.reward:Show()
 			
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
 			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
@@ -48,6 +44,10 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			wait(1.3, function()
 				-- L'évènement commence ici
 				startMission(_Client["key"], 1)
+
+				-- On affiche le journal
+				NuttenhClient.main_frame:Show()
+				NuttenhClient.main_frame.reward:Show()
 			end)
 		elseif string.find(message, "---- Départ de l'évènement dans ....") then
 			PlaySound("RaidWarning", "SFX")
@@ -77,7 +77,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				vSave("rewards", {})
 
 				-- On masque les récompenses
-				NuttenhClient.main_frame.reward:Hide()
+				NuttenhClient.main_frame:Hide()
 			else
 				-- On masque le journal (et la question en cours si il y en a une)
 				NuttenhClient.main_frame:Hide()
