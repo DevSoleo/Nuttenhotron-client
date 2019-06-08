@@ -62,8 +62,8 @@ function startMission(key, stade)
 
 			  		-- Next mission 
 			  		-- print("|cFF00FF00Mission accomplie !")
-			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-					NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+					NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 			  		startMission(key, stade + 1)
 			  	end
 			end)
@@ -97,8 +97,8 @@ function startMission(key, stade)
 
 				  		-- Next mission
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				  		startMission(key, stade + 1)
 					end
 				end
@@ -123,8 +123,8 @@ function startMission(key, stade)
 				  		checked = false
 
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				  		startMission(key, stade + 1)
 
 				  		e:UnregisterEvent("ITEM_PUSH")
@@ -153,8 +153,8 @@ function startMission(key, stade)
 				  		is = false
 
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				  		startMission(key, stade + 1)
 
 				  		i:UnregisterEvent("ITEM_PUSH")
@@ -185,8 +185,8 @@ function startMission(key, stade)
 
 					if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
 				  		-- print("|cFF00FF00Mission accomplie !")
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 			
 						vSave("kills", 0)
 				  		
@@ -215,8 +215,8 @@ function startMission(key, stade)
 			      	if player_answer == mission_answer then
 			  			-- Next mission
 			  			-- print("|cFF00FF00Mission accomplie !")
-			  			NuttenhClient.main_frame.statusbar:SetValue(stade * 20)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(stade * 20) .. "%")
+			  			NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 			  			startMission(key, stade + 1)
 			      	end
 			  	end,
