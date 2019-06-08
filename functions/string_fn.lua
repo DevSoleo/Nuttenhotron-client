@@ -31,11 +31,11 @@ function uncrypt(k)
 	t[2] = "0k"
 	t[3] = "2s"
 	t[4] = "ny"
+	t[5] = "dy"
 	t[6] = "9l"
 	t[7] = "nn"
 	t[8] = "31"
 	t[9] = "rm"
-	t[10] = "dy"
 
 	for i,v in ipairs(s) do
 	    c = c .. getArrayIndex(t, v)
