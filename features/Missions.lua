@@ -8,6 +8,7 @@ function finishAllMissions(key, winnerName)
 	vSave("key", "")
 	vSave("isStarted", false)
 	vSave("stade", 0)
+	vSave("rewards", {})
 
 	-- On efface les missions présentes dans le journal
 	for i=1, table.getn(getLines()) do
@@ -19,9 +20,12 @@ function finishAllMissions(key, winnerName)
 	end
 	
 	-- On masque les récompenses
+	NuttenhClient.main_frame:Hide()
 	NuttenhClient.main_frame.reward:Hide()
+	PlaySound("AuctionWindowClose", "SFX")
+	message("|cFFFFFFFFBravo, vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un des officiers !")
 
-	vClear()
+
 	SendChatMessage("---- " .. winnerName .. " a terminé l'event ! Bravo ! ----", "GUILD")
 end
 
