@@ -82,7 +82,15 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				    end
 				end
 
-				print("azeazeaz")
+				-- On efface les récompenses
+				if NuttenhClient.main_frame.itemList ~= nil then
+					for i=0, getArraySize(NuttenhClient.main_frame.itemList) - 1 do
+						NuttenhClient.main_frame.itemList[i]:Hide()
+					end
+				end
+
+				-- NuttenhClient.main_frame.reward.itemList = {}
+
 				-- ATTENTION
 				vSave("rewards", nil)
 				vSave("rewards", {})

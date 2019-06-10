@@ -244,6 +244,8 @@ function addDescLine(id)
 	end
 end
 
+NuttenhClient.main_frame.itemList = {}
+
 function displayRewards(rewards)
 	for i=0, getArraySize(rewards) - 1 do
 		local amount = 0
@@ -262,34 +264,35 @@ function displayRewards(rewards)
 		end
 		
 		local x = ((i) * 42) + 18
+		local nList = getArraySize(NuttenhClient.main_frame.itemList)
 
-		local itemFrame = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
-		itemFrame:SetFrameStrata("BACKGROUND")
-		itemFrame:SetBackdropBorderColor(255, 0, 0, 1)
-		itemFrame:SetPoint("CENTER", x, 0)
-		itemFrame:SetWidth(35) -- Set these to whatever height/width is needed 
-		itemFrame:SetHeight(35) -- for your Texture
+		NuttenhClient.main_frame.itemList[nList] = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
+		NuttenhClient.main_frame.itemList[nList]:SetFrameStrata("BACKGROUND")
+		NuttenhClient.main_frame.itemList[nList]:SetBackdropBorderColor(255, 0, 0, 1)
+		NuttenhClient.main_frame.itemList[nList]:SetPoint("CENTER", x, 0)
+		NuttenhClient.main_frame.itemList[nList]:SetWidth(35) -- Set these to whatever height/width is needed 
+		NuttenhClient.main_frame.itemList[nList]:SetHeight(35) -- for your Texture
 
-		local t = itemFrame:CreateTexture(nil,"BACKGROUND")
+		local t = NuttenhClient.main_frame.itemList[nList]:CreateTexture(nil,"BACKGROUND")
 		t:SetTexture(GetItemIcon(itemId))
-		t:SetAllPoints(itemFrame)
-		itemFrame.texture = t
+		t:SetAllPoints(NuttenhClient.main_frame.itemList[nList])
+		NuttenhClient.main_frame.itemList[nList].texture = t
 
-		itemFrame:SetScript("OnEnter", function(self)
+		NuttenhClient.main_frame.itemList[nList]:SetScript("OnEnter", function(self)
 			local name, link = GetItemInfo(itemId)
-		  	GameTooltip:SetOwner(itemFrame, "ANCHOR_CURSOR")
+		  	GameTooltip:SetOwner(NuttenhClient.main_frame.itemList[nList], "ANCHOR_CURSOR")
 		  	GameTooltip:SetHyperlink(link)
 		  	GameTooltip:Show()
 		end)
 
-		itemFrame:SetScript("OnLeave", function(self)
+		NuttenhClient.main_frame.itemList[nList]:SetScript("OnLeave", function(self)
 			GameTooltip:Hide()
 		end)
 
-		itemFrame.text = itemFrame:CreateFontString(nil, "OVERLAY")
-		itemFrame.text:SetPoint("BOTTOMRIGHT", itemFrame, 0, 0)
-		itemFrame.text:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
-		itemFrame.text:SetTextColor(255, 255, 255)
-		itemFrame.text:SetText(amount)
+		NuttenhClient.main_frame.itemList[nList].text = NuttenhClient.main_frame.itemList[nList]:CreateFontString(nil, "OVERLAY")
+		NuttenhClient.main_frame.itemList[nList].text:SetPoint("BOTTOMRIGHT", NuttenhClient.main_frame.itemList[nList], 0, 0)
+		NuttenhClient.main_frame.itemList[nList].text:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
+		NuttenhClient.main_frame.itemList[nList].text:SetTextColor(255, 255, 255)
+		NuttenhClient.main_frame.itemList[nList].text:SetText(amount)
 	end
 end

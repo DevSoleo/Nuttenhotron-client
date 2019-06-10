@@ -25,17 +25,7 @@ function uncrypt(k)
 	local s = splitByChunk(k, 2)
 	local c = ""
 
-	local t = {}
-	t[0] = "tk"
-	t[1] = "u4"
-	t[2] = "0k"
-	t[3] = "2s"
-	t[4] = "ny"
-	t[5] = "dy"
-	t[6] = "9l"
-	t[7] = "nn"
-	t[8] = "31"
-	t[9] = "rm"
+	local t = {"tk", "u4", "0k", "2s", "ny", "dy", "9l", "nn", "31", "rm"}
 
 	for i,v in ipairs(s) do
 	    c = c .. getArrayIndex(t, v)
