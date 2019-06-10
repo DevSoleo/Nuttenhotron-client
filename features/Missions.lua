@@ -21,7 +21,8 @@ function finishAllMissions(key, winnerName)
 	-- On masque les récompenses
 	NuttenhClient.main_frame.reward:Hide()
 
-	SendChatMessage(winnerName .. " est le vainqueur de cet évènement !!! Voici sa clé de victoire : ", "GUILD")
+	vClear()
+	SendChatMessage("---- " .. winnerName .. " a terminé l'event ! Bravo ! ----", "GUILD")
 end
 
 function startMission(key, stade)

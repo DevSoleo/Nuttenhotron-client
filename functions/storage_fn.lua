@@ -11,3 +11,7 @@ end
 function vDelete(name)
 	_Client[name] = nil
 end
+
+function vClear()
+	_Client = {}
+end
