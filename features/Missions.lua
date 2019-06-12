@@ -38,7 +38,7 @@ function startMission(key, stade)
 
 	-- On actualise les missions, lorsqu'elle sont terminées
 	if stade > 1 then
-		print(stade)
+		--print(stade)
 		for p=1, getArraySize(getLines()) - 2 do
 			getLine(p):SetText("|cFF4A4A4A" .. getLine(p):GetText())
 
@@ -113,6 +113,8 @@ function startMission(key, stade)
 			hooksecurefunc("MoveForwardStop", hookPlayerMove)
 		elseif mission_type == "3" then
 			local reqItemId = ITEMS_LIST[setting]["id"]
+					
+			getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
 
 			if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
 		  		wait(0.1, function()
@@ -124,13 +126,18 @@ function startMission(key, stade)
 				local i = CreateFrame("Frame")
 				i:RegisterEvent("ITEM_PUSH")
 				i:SetScript("OnEvent", function(self, ...)
-					if GetItemCount(reqItemId) >=  ITEMS_LIST[setting]["amount"] then
-				  		-- print("|cFF00FF00Mission accomplie !")
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-				  		startMission(key, stade + 1)
-						i:UnregisterEvent("ITEM_PUSH")
-					end
+
+			  		wait(0.1, function()
+
+						getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+
+						if GetItemCount(reqItemId) >=  ITEMS_LIST[setting]["amount"] then
+					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+					  		startMission(key, stade + 1)
+							i:UnregisterEvent("ITEM_PUSH")
+						end
+					end)
 				end)
 			end
 
