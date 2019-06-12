@@ -23,7 +23,7 @@ function finishAllMissions(key, winnerName)
 	NuttenhClient.main_frame:Hide()
 	NuttenhClient.main_frame.reward:Hide()
 	PlaySound("AuctionWindowClose", "SFX")
-	message("|cFFFFFFFFBravo, vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un des officiers !")
+	message("|cFFFFFFFFBravo ! Vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un officier !")
 
 
 	SendChatMessage("---- " .. winnerName .. " a terminé l'event ! Bravo ! ----", "GUILD")

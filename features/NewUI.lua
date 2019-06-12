@@ -11,6 +11,7 @@ NuttenhClient.main_frame:SetScript("OnDragStart", NuttenhClient.main_frame.Start
 NuttenhClient.main_frame:SetScript("OnDragStop", NuttenhClient.main_frame.StopMovingOrSizing)
 NuttenhClient.main_frame:SetWidth(300)
 NuttenhClient.main_frame:SetHeight(450)
+NuttenhClient.main_frame:SetFrameLevel(0)
 
 NuttenhClient.main_frame:SetBackdrop({
 	bgFile="Interface\\Addons\\wow-event-addon-client\\textures\\UI-Background", -- Interface/Tooltips/UI-Tooltip-Background
@@ -31,10 +32,9 @@ NuttenhClient.main_frame:SetPoint("TOP", 20, -20)
 NuttenhClient.main_frame:Hide()
 
 -- Close button
-local close_button = CreateFrame("Button", "CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")
+local close_button = CreateFrame("Button", "CloseButton1", NuttenhClient.main_frame, "GameMenuButtonTemplate")
 close_button:SetPoint("TOPRIGHT", 0, 0)
-close_button:SetFrameStrata("HIGH")
-close_button:SetFrameLevel(4)
+close_button:SetFrameLevel(1)
 close_button:SetHeight(27)
 close_button:SetWidth(27)
 
@@ -54,11 +54,13 @@ function toggleFrameSize()
 		NuttenhClient.main_frame:SetHeight(60)
 		NuttenhClient.main_frame.mission_list:Hide()
 		NuttenhClient.main_frame.reward:Hide()
+		NuttenhClient.main_frame.noReward:Hide()
 		isMinimized = true
 	else
 		NuttenhClient.main_frame:SetHeight(450)
 		NuttenhClient.main_frame.mission_list:Show()
 		NuttenhClient.main_frame.reward:Show()
+		NuttenhClient.main_frame.noReward:Show()
 		isMinimized = false
 	end
 end
@@ -145,6 +147,7 @@ scrollbar.scrollStep = 200 / 100
 scrollbar:SetValueStep(scrollbar.scrollStep) 
 scrollbar:SetValue(0) 
 scrollbar:SetWidth(16) 
+scrollbar:SetFrameLevel(1)
 scrollbar:SetScript("OnValueChanged", function (self, value) 
 	self:GetParent():SetVerticalScroll(value) 
 end)

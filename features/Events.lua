@@ -121,15 +121,19 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			GetItemInfo(id)
 
 			-- On ajoute l'item dans la liste des récompenses
+			-- Si la liste est vide
 			if getArraySize(vGet("rewards")) == nil or getArraySize(vGet("rewards")) == 0 then
+				-- On efface la liste des récompenses déjà enregistrées
 				vSave("rewards", {})
 
+				-- On crée un tableau pour stocker les récompenses
 				local rewards = {}
 
 				rewards[0] = {id=id, amount=amount}
 
+				-- On enregistre les récompenses sur le disque dur
 				vSave("rewards", rewards)
-			else
+			else -- Si elle n'est pas vide
 				_Client["rewards"][getArraySize(vGet("rewards"))] = {id=id, amount=amount}
 			end
 		elseif string.find(message, " a retiré une récompense.") then -- Lorsque une récompense est retirée
@@ -137,7 +141,15 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			_Client["rewards"][getArraySize(vGet("rewards"))] = nil
 		elseif string.find(message, "Date maximale de fin : ") then
 			-- On affiche l'heure de fin de l'event
-			vSave("endTime", string.gsub(message, "Date maximale de fin : ", ""))
+			local endTime = string.gsub(message, "Date maximale de fin : ", "")
+			endTime = string.gsub(endTime, "/", "")
+			endTime = string.gsub(endTime, " ", "")
+			endTime = string.gsub(endTime, "h", "")
+
+			-- On enregistre l'heure de fin de l'event
+			vSave("endTime", endTime)
+
+			-- /g Date maximale de fin : 11/06/2019 21h35
 		end
 	end
 end)
@@ -146,34 +158,65 @@ end)
 local o = CreateFrame("Frame")
 o:RegisterEvent("ADDON_LOADED")
 o:SetScript("OnEvent", function(self, event, ...)
-	-- Si un évent est en cours
-	if vGet("isStarted") == true then
-		if vGet("isStarted") ~= "" and _Client["stade"] ~= 0 and _Client["key"] ~= nil and _Client["stade"] ~= nil then
-			-- On affiche le journal et on actualise la barre de progression
-			NuttenhClient.main_frame:Show()
-			NuttenhClient.main_frame.statusbar:SetValue(tonumber(_Client["stade"]) * 20)
-			NuttenhClient.main_frame.statusbar.value:SetText(tostring(tonumber(_Client["stade"]) * 20) .. "%")
+	-- On récupère l'heure du serveur sous cette forme : 
+	-- [clé] [date] [heure] [[quantité]x[récompense id]] ...
+	local day = getServerDate("%d")
+	local month = getServerDate("%m")
+	local year = getServerDate("%y")
 
-			for i=1, tonumber(_Client["stade"]) - 1 do
-				addDescLine(i)
-			end
+	local hour = getServerDate("%H")
+	local minute = getServerDate("%M")
 
-			displayRewards(_Client["rewards"])
-
-			startMission(_Client["key"], _Client["stade"])
-		else
-			_Client["key"] = ""
-			_Client["stade"] = 0
-		end
-	else
-		NuttenhClient.main_frame.reward:Hide()
+	if #tostring(day) == 1 then
+		day = "0" .. tostring(day)
 	end
 
-	if _Client["endTime"] ~= nil then
-		local endTime = vGet("endTime")
-		endTime = string.gsub(endTime, "h", "")
+	if #tostring(month) == 1 then
+		month = "0" .. tostring(month)
+	end
 
-		print(endTime)
+	if #tostring(hour) == 1 then
+		hour = "0" .. tostring(hour)
+	end
+
+	if #tostring(minute) == 1 then
+		minute = "0" .. tostring(minute)
+	end
+
+	local playerDate = tonumber(day .. month .. year .. hour .. minute)
+
+	if vGet("endTime") ~= nil then
+		if playerDate < tonumber(vGet("endTime")) then
+			print("Event en cours !")
+		else
+			print("Event terminé !")
+			-- On arrête l'évènement en réinitialisant toutes les variables
+			vSave("isStarted", false)
+			vSave("key", "")
+			vSave("stade", 0)
+			vSave("endTime", nil)
+			vSave("kills", 0)
+		end
+	end
+
+	if vGet("isStarted") ~= "" and _Client["stade"] ~= 0 and _Client["key"] ~= nil and _Client["stade"] ~= nil then
+		local maxStade = #vGet("key") / 2
+		local stade = tonumber(vGet("stade")) - 1
+		-- On affiche le journal et on actualise la barre de progression
+		NuttenhClient.main_frame:Show()
+		NuttenhClient.main_frame.statusbar:SetValue(tonumber(stade * 100 / maxStade))
+		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+
+		for i=1, tonumber(_Client["stade"]) - 1 do
+			addDescLine(i)
+		end
+
+		displayRewards(_Client["rewards"])
+
+		startMission(_Client["key"], _Client["stade"])
+	else
+		_Client["key"] = ""
+		_Client["stade"] = 0
 	end
 
 	o:UnregisterEvent("ADDON_LOADED")
