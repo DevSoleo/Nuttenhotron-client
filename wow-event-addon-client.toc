@@ -1,7 +1,7 @@
 ## Interface: 40300
 ## Title: wow-event-addon-client
 ## Author: Soleo
-## Version: 2.0.0
+## Version: 1.0.0
 ## SavedVariables: _Client
 ## SavedVariablesPerCharacter: _CClient
 ## X-Category: Guild, Quest
