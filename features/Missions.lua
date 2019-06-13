@@ -1,14 +1,12 @@
--- Cette fonction doit être déclenchée lorsqu'un joueur termine l'event
+
+		-- Cette fonction doit être déclenchée lorsqu'un joueur termine l'event
 function finishAllMissions(key, winnerName)
 	-- On remet à zéro la barre de progression
 	NuttenhClient.main_frame.statusbar:SetValue(0)
 	NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
-	-- On "clear" les toutes variables
-	vSave("key", "")
-	vSave("isStarted", false)
-	vSave("stade", 0)
-	vSave("rewards", {})
+	-- On clear toutes les variables
+	vSmoothClear()
 
 	-- On efface les missions présentes dans le journal
 	for i=1, table.getn(getLines()) do
@@ -22,6 +20,7 @@ function finishAllMissions(key, winnerName)
 	-- On masque les récompenses
 	NuttenhClient.main_frame:Hide()
 	NuttenhClient.main_frame.reward:Hide()
+
 	PlaySound("AuctionWindowClose", "SFX")
 	message("|cFFFFFFFFBravo ! Vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un officier !")
 
@@ -31,6 +30,8 @@ end
 
 function startMission(key, stade)
 	vSave("stade", stade)
+
+	local maxStade = #key / 2
 
 	PlaySound("QUESTADDED", "SFX");
 	
@@ -45,13 +46,15 @@ function startMission(key, stade)
 			if getSubLine(p) ~= nil then
 				getSubLine(p):SetText("|cFF4A4A4A- Terminé !")
 			end
+
+			if getIndication(p) ~= nil then
+				getIndication(p):Hide()
+			end
 		end
 	end
 
-	local maxStade = #key / 2
-
 	-- Si le joueur n'a pas fini l'event et qu'il y a un event en cours
-	if stade <= maxStade and _Client["isStarted"] == true then
+	if stade <= maxStade and vGet("isStarted") == true then
 		-- On lit la clé et on récupère le type de mission et le paramètre associé en fonction du stade
 		local readed_key = readKey(key, stade)
 		local mission_type = readed_key["mission_type"]
@@ -63,7 +66,7 @@ function startMission(key, stade)
 		  	local t = CreateFrame("Frame")
 			t:RegisterEvent("UNIT_TARGET")
 			t:SetScript("OnEvent", function(pUnit, ...)
-				if tostring(UnitName("target")):sub(1, -1) == tostring(NPC_LIST[setting]["name"]) then 
+				if tostring(UnitName("target")):sub(1, -1) == tostring(NPC_LIST[setting]["name"][GetLocale()]) then 
 					t:UnregisterEvent("UNIT_TARGET")
 
 			  		-- Next mission 

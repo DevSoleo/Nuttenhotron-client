@@ -53,14 +53,21 @@ function toggleFrameSize()
 	if isMinimized == false then
 		NuttenhClient.main_frame:SetHeight(60)
 		NuttenhClient.main_frame.mission_list:Hide()
-		NuttenhClient.main_frame.reward:Hide()
+
 		NuttenhClient.main_frame.noReward:Hide()
+		NuttenhClient.main_frame.reward:Hide()
+	
 		isMinimized = true
 	else
 		NuttenhClient.main_frame:SetHeight(450)
 		NuttenhClient.main_frame.mission_list:Show()
-		NuttenhClient.main_frame.reward:Show()
-		NuttenhClient.main_frame.noReward:Show()
+
+		if getArraySize(NuttenhClient.main_frame.itemList) == 0 then
+			NuttenhClient.main_frame.noReward:Show()
+		else
+			NuttenhClient.main_frame.reward:Show()
+		end
+
 		isMinimized = false
 	end
 end
@@ -95,6 +102,19 @@ NuttenhClient.main_frame.statusbar:SetStatusBarColor(0, 0.65, 0)
 NuttenhClient.main_frame.statusbar:SetMinMaxValues(0, 100)
 NuttenhClient.main_frame.statusbar:SetValue(0)
 
+NuttenhClient.main_frame.statusbar:SetBackdrop({
+	edgeFile="Interface/Tooltips/UI-Tooltip-Border", 
+	tile=false,
+	tileSize=64, 
+	edgeSize=10, 
+	insets={
+		left=4,
+		right=4,
+		top=4,
+		bottom=4
+	}
+})
+
 NuttenhClient.main_frame.statusbar.bg = NuttenhClient.main_frame.statusbar:CreateTexture(nil, "BACKGROUND")
 NuttenhClient.main_frame.statusbar.bg:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
 NuttenhClient.main_frame.statusbar.bg:SetAllPoints(true)
@@ -105,6 +125,8 @@ NuttenhClient.main_frame.statusbar.value:SetPoint("CENTER", NuttenhClient.main_f
 NuttenhClient.main_frame.statusbar.value:SetFont("Fonts\\FRIZQT__.TTF", 13, "OUTLINE")
 NuttenhClient.main_frame.statusbar.value:SetTextColor(255, 255, 0)
 NuttenhClient.main_frame.statusbar.value:SetText("0%")
+
+
 
 -- Mission List
 NuttenhClient.main_frame.mission_list = CreateFrame("Frame", "MissionList", NuttenhClient.main_frame)
@@ -193,9 +215,41 @@ end
 function addSubLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+end
+
+-- Cette fonction sert à afficher un tooltip au passage de la souris sur la sub line
+function addSubLineT(text, tooltip, lineNumber)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 15))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon = CreateFrame("Frame", nil, NuttenhClient.main_frame.mission_list.content)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetFrameStrata("BACKGROUND")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetBackdropBorderColor(255, 0, 0, 1)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetPoint("TOPLEFT", 75, 0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetWidth(15) -- Set these to whatever height/width is needed 
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetHeight(15) -- for your Texture
+
+	local t = NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:CreateTexture(nil,"BACKGROUND")
+	t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+	t:SetAllPoints(NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon.texture = t
+
+
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetScript("OnEnter", function(self)
+	  	GameTooltip:SetOwner(NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon, "ANCHOR_CURSOR")
+	  	GameTooltip:SetText(tooltip)
+	  	GameTooltip:Show()
+	end)
+
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon:SetScript("OnLeave", function(self)
+		GameTooltip:Hide()
+	end)
 end
 
 function getLine(lineNumber)
@@ -214,29 +268,37 @@ function getSubLine(lineNumber)
 	end
 end
 
+function getIndication(lineNumber)
+	if NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon ~= nil then
+		return NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"].icon
+	else
+		return nil
+	end
+end
 function addDescLine(id)
 	local line = 0
 	local readed_key = readKey(_Client["key"], id)
 	if readed_key["mission_type"] == "1" then
 		line = line + 1
 		loadLists()
-		addLine(NPC_LIST[readed_key["setting"]]["indication"], id)
-		addSubLine(NPC_LIST[readed_key["setting"]]["indication"], id)
+		addLine("Parlez à : " .. NPC_LIST[readed_key["setting"]]["name"][GetLocale()], id)
+		addSubLineT("INDICE :", NPC_LIST[readed_key["setting"]]["indication"], id)
+		--addSubLine(NPC_LIST[readed_key["setting"]]["indication"], id)
 	elseif readed_key["mission_type"] == "2" then
 		line = line + 1
 		loadLists()
-		addLine("Vous devez trouver " .. LOCATIONS_LIST[readed_key["setting"]]["indication"], id)
-		addSubLine("", id)
+		addLine("Trouvez : " .. LOCATIONS_LIST[readed_key["setting"]]["zoneText"][GetLocale()], id)
+		addSubLineT("INDICE :", LOCATIONS_LIST[readed_key["setting"]]["indication"], id)
 		-- addSubLine("Localisation : " .. LOCATIONS_LIST[readed_key["setting"]]["zoneText"][GetLocale()] .. ", " .. LOCATIONS_LIST[readed_key["setting"]]["subZoneText"][GetLocale()], id)
 	elseif readed_key["mission_type"] == "3" then
 		line = line + 1
 		loadLists()
-		addLine(ITEMS_LIST[readed_key["setting"]]["indication"], id)
+		addLine("Possédez : ".. ITEMS_LIST[readed_key["setting"]]["indication"], id)
 		addSubLine("Compteur : 0/" .. ITEMS_LIST[readed_key["setting"]]["amount"], id)
 		-- addSubLine("", id)
 	elseif readed_key["mission_type"] == "4" then
 		line = line + 1
-		addLine(KILL_LIST[readed_key["setting"]]["indication"], id)
+		addLine("Tuez : " .. KILL_LIST[readed_key["setting"]]["name"][GetLocale()], id)
 
 		local kills = 0
 
@@ -291,6 +353,8 @@ function displayRewards(rewards)
 				t:SetTexture(GetItemIcon(itemId))
 				t:SetAllPoints(NuttenhClient.main_frame.itemList[nList])
 				NuttenhClient.main_frame.itemList[nList].texture = t
+
+				GetItemInfo(itemId)
 
 				NuttenhClient.main_frame.itemList[nList]:SetScript("OnEnter", function(self)
 					local name, link = GetItemInfo(itemId)

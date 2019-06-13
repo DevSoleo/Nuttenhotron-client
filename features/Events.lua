@@ -65,13 +65,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
 				-- On arrête l'évènement en réinitialisant toutes les variables
-				vSave("isStarted", false)
-				vSave("key", "")
-				vSave("stade", 0)
-
-				-- On définit toute les variables de missions sur 0
-				vSave("kills", 0)
-
+				vSmoothClear()
 
 				-- On efface les missions déjà présentes dans le journal
 				for i=1, table.getn(getLines()) do
@@ -191,11 +185,7 @@ o:SetScript("OnEvent", function(self, event, ...)
 		else
 			print("Event terminé !")
 			-- On arrête l'évènement en réinitialisant toutes les variables
-			vSave("isStarted", false)
-			vSave("key", "")
-			vSave("stade", 0)
-			vSave("endTime", nil)
-			vSave("kills", 0)
+			vSmoothClear()
 		end
 	end
 
@@ -211,6 +201,7 @@ o:SetScript("OnEvent", function(self, event, ...)
 			addDescLine(i)
 		end
 
+		NuttenhClient.main_frame.itemList = {}
 		displayRewards(_Client["rewards"])
 
 		startMission(_Client["key"], _Client["stade"])
