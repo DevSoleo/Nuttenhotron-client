@@ -1,214 +1,96 @@
--- Lorsqu'un joueur rejoint/quitte le groupe cet évènement se déclenche
-local on_party_change = CreateFrame("Frame")
-on_party_change:RegisterEvent("PARTY_MEMBERS_CHANGED")
-on_party_change:SetScript("OnEvent", function(self, event, ...) 
-
-end)
-
 -- Lorsqu'un message est envoyé dans le tchat de guilde cet évènement se déclenche
 local onGuildMessage = CreateFrame("Frame")
 onGuildMessage:RegisterEvent("CHAT_MSG_GUILD", "CHAT_MSG_WHISPER") -- CHAT_MSG_SAY
 onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
-	if sender == "Soleo" or sender == "Drubos" or "Aniwen" or sender == "Malacraer" or sender == "Binoom" or sender == "Lethar" then
+	if sender == "Soleo" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" or sender == "Lethar" then
 		if string.find(message, "Clé d'évènement : ") then
-			-- On "clear" les variables déjà présentes
-			vSave("key", "")
-			vSave("isStarted", false)
-			-- vSave("rewards", {})
-
-			-- On efface les missions déjà présentes dans le journal
-			for i=1, table.getn(getLines()) do
-			   getLine(i):Hide()
-
-			    if getLine(i)["sub"] ~= nil then
-					getLine(i)["sub"]:Hide()
-			    end
-			end
-
 			-- On joue un son qui annonce le début de l'event
 			PlaySound("ReadyCheck", "SFX")
 
-			-- On enregistre la clé reçue par message et on définit isStarted = true
-			local s = split(string.gsub(message, "Clé d'évènement : ", ""), " ")
-			local c = ""
+			-- On récupère la clé reçue par message
+			local splitedMessage = split(string.gsub(message, "Clé d'évènement : ", ""), " ")
+			local key = ""
 
-			for i,v in ipairs(s) do
-			    c = c .. uncrypt(v)
+			for i,v in ipairs(splitedMessage) do
+			    key = key .. uncrypt(v, "letterToNumber")
 			end
 
-			vSave("key", c)
-			vSave("isStarted", true)
-			vSave("stade", 1)
+			-- On enregistre la clé
+			vSave("key", key)
 
-			-- On affiche les récompenses sur le journal
-			displayRewards(vGet("rewards"))
-			
+			-- On définit l'event comme : démarré
+			vSave("isStarted", true)
+
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
 			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
-		elseif string.find(message, "---- Départ de l'évènement dans .... 1 ----") then
-			PlaySound("RaidWarning", "SFX")
-				
-			wait(1.3, function()
-				-- L'évènement commence ici
-				startMission(_Client["key"], 1)
-
-				-- On affiche le journal
-				NuttenhClient.main_frame:Show()
-				NuttenhClient.main_frame.reward:Show()
-			end)
 		elseif string.find(message, "---- Départ de l'évènement dans ....") then
+			-- On joue un son qui annonce le départ de l'event
 			PlaySound("RaidWarning", "SFX")
+		elseif string.find(message, "---- L'évènement Nuttenh Ayms automatisé débute ! ----") then
+			-- On affiche le journal
+			NuttenhClient.main_frame:Show()
+
+			-- L'évènement commence ici
+			startMission(vGet("key"), 1)
 		elseif string.find(message, "L'évènement est terminé !") ~= nil then
 			if vGet("isStarted") == true then
-				-- On actualise l'affichage, en remettant tout à zéro
-				NuttenhClient.main_frame.statusbar:SetValue(0)
-				NuttenhClient.main_frame.statusbar.value:SetText("0%")
-
-				-- On arrête l'évènement en réinitialisant toutes les variables
+				-- On clear les variables stockées pendant l'event
 				vSmoothClear()
 
-				-- On efface les missions déjà présentes dans le journal
-				for i=1, table.getn(getLines()) do
-				   getLine(i):Hide()
-
-				    if getLine(i)["sub"] ~= nil then
-						getLine(i)["sub"]:Hide()
-				    end
-				end
-
-				-- On efface les récompenses
-				if NuttenhClient.main_frame.itemList ~= nil then
-					for i=0, getArraySize(NuttenhClient.main_frame.itemList) - 1 do
-						NuttenhClient.main_frame.itemList[i]:Hide()
-					end
-				end
-
-				-- NuttenhClient.main_frame.reward.itemList = {}
-
-				-- ATTENTION
-				vSave("rewards", nil)
-				vSave("rewards", {})
-
-				-- On masque les récompenses
+				-- On masque le journal
 				NuttenhClient.main_frame:Hide()
-			else
-				-- On masque le journal (et la question en cours si il y en a une)
-				NuttenhClient.main_frame:Hide()
-				StaticPopup_Hide("QUESTION")
+
+				vSave("isStarted", false)
 			end
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
-			local amount = 0
-			local id = nil
+			if vGet("isStarted") == false then
+				local amount = 0
+				local id = nil
 
-			-- On récupère l'ID de l'item ajouté en récompense
-			string.gsub(message, "%((.-)%)", function(o)
-				id = o
-			end)
+				-- On récupère l'ID de l'item ajouté en récompense
+				string.gsub(message, "%((.-)%)", function(o)
+					id = o
+				end)
 
-			-- On récupère la quantité d'item ajouté en récompense
-			string.gsub(message, "x%d+", function(o)
-				local i = string.gsub(o, "x", "")
-				amount = i
-			end)
+				-- On récupère la quantité d'item ajouté en récompense
+				string.gsub(message, "x%d+", function(o)
+					amount = string.gsub(o, "x", "")
+				end)
 
-			-- On précharge l'item demandé
-			GetItemInfo(id)
+				-- On précharge l'item demandé
+				GetItemInfo(id)
 
-			-- On ajoute l'item dans la liste des récompenses
-			-- Si la liste est vide
-			if getArraySize(vGet("rewards")) == nil or getArraySize(vGet("rewards")) == 0 then
-				-- On efface la liste des récompenses déjà enregistrées
-				vSave("rewards", {})
+				-- On ajoute l'item dans la liste des récompenses
+				local rewards = vGet("rewards")
+				table.insert(rewards, {id=id, amount=amount})
 
-				-- On crée un tableau pour stocker les récompenses
-				local rewards = {}
-
-				rewards[0] = {id=id, amount=amount}
-
-				-- On enregistre les récompenses sur le disque dur
 				vSave("rewards", rewards)
-			else -- Si elle n'est pas vide
-				_Client["rewards"][getArraySize(vGet("rewards"))] = {id=id, amount=amount}
 			end
 		elseif string.find(message, " a retiré une récompense.") then -- Lorsque une récompense est retirée
-			-- On retire cette récompense de la liste
-			_Client["rewards"][getArraySize(vGet("rewards"))] = nil
+			-- On ajoute l'item dans la liste des récompenses
+			local rewards = vGet("rewards")
+			table.remove(rewards, getArraySize(rewards))
+
+			vSave("rewards", rewards)
 		elseif string.find(message, "Date maximale de fin : ") then
-			-- On affiche l'heure de fin de l'event
-			local endTime = string.gsub(message, "Date maximale de fin : ", "")
-			endTime = string.gsub(endTime, "/", "")
-			endTime = string.gsub(endTime, " ", "")
-			endTime = string.gsub(endTime, "h", "")
 
-			-- On enregistre l'heure de fin de l'event
-			vSave("endTime", endTime)
-
-			-- /g Date maximale de fin : 11/06/2019 21h35
 		end
 	end
 end)
 
 -- Lorsque l'addon est (re)chargé cet évènement se déclenche
-local o = CreateFrame("Frame")
-o:RegisterEvent("ADDON_LOADED")
-o:SetScript("OnEvent", function(self, event, ...)
-	-- On récupère l'heure du serveur sous cette forme : 
-	-- [clé] [date] [heure] [[quantité]x[récompense id]] ...
-	local day = getServerDate("%d")
-	local month = getServerDate("%m")
-	local year = getServerDate("%y")
-
-	local hour = getServerDate("%H")
-	local minute = getServerDate("%M")
-
-	if #tostring(day) == 1 then
-		day = "0" .. tostring(day)
-	end
-
-	if #tostring(month) == 1 then
-		month = "0" .. tostring(month)
-	end
-
-	if #tostring(hour) == 1 then
-		hour = "0" .. tostring(hour)
-	end
-
-	if #tostring(minute) == 1 then
-		minute = "0" .. tostring(minute)
-	end
-
-	local playerDate = tonumber(day .. month .. year .. hour .. minute)
-
-	if vGet("endTime") ~= nil then
-		if playerDate < tonumber(vGet("endTime")) then
-			print("Event en cours !")
-		else
-			print("Event terminé !")
-			-- On arrête l'évènement en réinitialisant toutes les variables
-			vSmoothClear()
-		end
-	end
-
-	if vGet("isStarted") ~= "" and _Client["stade"] ~= 0 and _Client["key"] ~= nil and _Client["stade"] ~= nil then
-		local maxStade = #vGet("key") / 2
-		local stade = tonumber(vGet("stade")) - 1
-		-- On affiche le journal et on actualise la barre de progression
-		NuttenhClient.main_frame:Show()
-		NuttenhClient.main_frame.statusbar:SetValue(tonumber(stade * 100 / maxStade))
-		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-
-		for i=1, tonumber(_Client["stade"]) - 1 do
-			addDescLine(i)
-		end
-
-		NuttenhClient.main_frame.itemList = {}
-		displayRewards(_Client["rewards"])
-
-		startMission(_Client["key"], _Client["stade"])
+local onLoading = CreateFrame("Frame")
+onLoading:RegisterEvent("ADDON_LOADED")
+onLoading:SetScript("OnEvent", function(self, event, ...)
+	
+	if getArraySize(_AClient) == 0 then
+		vSmoothClear()
 	else
-		_Client["key"] = ""
-		_Client["stade"] = 0
+		if vGet("isStarted") == true then
+			-- On affiche le journal
+			NuttenhClient.main_frame:Show()
+ 		end
 	end
 
-	o:UnregisterEvent("ADDON_LOADED")
+	onLoading:UnregisterEvent("ADDON_LOADED")
 end)

@@ -21,15 +21,17 @@ function splitByChunk(text, chunkSize)
     return s
 end
 
-function uncrypt(k)
-	local s = splitByChunk(k, 2)
-	local c = ""
+function uncrypt(k, cType)
+    if cType == "letterToNumber" then
+    	local s = splitByChunk(k, 2)
+    	local c = ""
 
-	local t = {"tk", "u4", "0k", "2s", "ny", "dy", "9l", "nn", "31", "rm"}
+    	local t = {"tk", "u4", "0k", "2s", "ny", "dy", "9l", "nn", "31", "rm"}
 
-	for i,v in ipairs(s) do
-	    c = c .. getArrayIndex(t, v)
-	end
+    	for i,v in ipairs(s) do
+    	    c = c .. getArrayIndex(t, v)
+    	end
 
-	return tostring(c)
+    	return tostring(c)
+    end
 end

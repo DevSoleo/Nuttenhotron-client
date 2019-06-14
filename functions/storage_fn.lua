@@ -1,19 +1,21 @@
-_Client = {}
+if _AClient == nil then
+	_AClient = {}
+end
 
 function vSave(name, value)
-	_Client[name] = value
+	_AClient[name] = value
 end
 
 function vGet(name)
-	return _Client[name]
+	return _AClient[name]
 end
 
 function vDelete(name)
-	_Client[name] = nil
+	_AClient[name] = nil
 end
 
 function vClear()
-	_Client = {}
+	_AClient = {}
 end
 
 function vSmoothClear()
@@ -23,10 +25,10 @@ function vSmoothClear()
 	wait(0.1, vSave("rewards", {}))
 	wait(0.1, vSave("kills", 0))
 	wait(0.1, vSave("endTime", nil))
-
-	for p=1, getArraySize(getLines()) - 1 do
-		if getIndication(p) ~= nil then
-			getIndication(p):Hide()
-		end
-	end
 end
+
+--[[function vDebug()
+	table.foreach(_AClient, function(k, v)
+		print(k .. "=" .. v)
+	end)
+end]]
