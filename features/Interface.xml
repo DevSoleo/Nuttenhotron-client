@@ -25,6 +25,18 @@
 				<AbsValue val="16"/>
 			</EdgeSize>
 		</Backdrop>
+
+	    <FontString name="OK" parent="FrameTestFrame" font="Fonts\FRIZQT__.TTF" text="Example Text">
+		  	<Color r="1" g="0.8" b="1" a="1"/>
+		  	<FontHeight val="12"/>
+		  	<Anchors>
+		   		<Anchor point="TOPLEFT" relativeTo="FrameTestFrame" x="20" y="-20" />
+		  	</Anchors>
+		  	<Shadow>
+	    		<Offset x="1" y="1" />
+	    		<Color r="0" g="0" b="0"/>
+	  		</Shadow>
+		</FontString>
     </Frame>
 
     <Button name="NCloseButton" parent="FrameTestFrame" inherits="GameMenuButtonTemplate" text="-">

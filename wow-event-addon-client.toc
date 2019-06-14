@@ -22,4 +22,4 @@ functions\player_fn.lua
 features\Missions.lua
 features\Events.lua
 
-features\Interface.xml
+features\Interface.lua
