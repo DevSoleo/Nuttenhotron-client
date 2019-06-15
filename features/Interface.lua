@@ -205,12 +205,13 @@ end
 function displayMissions()
 	local missions = splitByChunk(vGet("key"), 2)
 
-	for i=1, vGet("stade") do
+	for i=1, vGet("stade") - 1 do
+		print("i = " .. i)
 		local mission_type = splitByChunk(missions[i], 1)[1]
 		local setting = splitByChunk(missions[i], 1)[2]
 
-		addMissionLine(getIndication(mission_type, setting), vGet("stade"))
-		addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
+		addMissionLine(getIndication(mission_type, setting), i)
+		addMissionSubLine(getSubIndication(mission_type, setting), i)
 	end
 end
 
