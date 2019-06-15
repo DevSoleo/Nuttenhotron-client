@@ -30,17 +30,15 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			-- On affiche le journal
 			NuttenhClient.main_frame:Show()
 
+			-- On affiche les récompenses dans le journal
+			displayRewards()
+
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
 		elseif string.find(message, "L'évènement est terminé !") ~= nil then
 			if vGet("isStarted") == true then
-				-- On clear les variables stockées pendant l'event
-				vSmoothClear()
-
-				-- On masque le journal
-				NuttenhClient.main_frame:Hide()
-
-				vSave("isStarted", false)
+				-- On force l'arrêt de l'event
+				finishAllMissions(false)
 			end
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			if vGet("isStarted") == false then
@@ -82,15 +80,19 @@ end)
 local onLoading = CreateFrame("Frame")
 onLoading:RegisterEvent("ADDON_LOADED")
 onLoading:SetScript("OnEvent", function(self, event, ...)
-	
-	if getArraySize(_AClient) == 0 then
-		vSmoothClear()
-	else
-		if vGet("isStarted") == true then
-			-- On affiche le journal
-			NuttenhClient.main_frame:Show()
- 		end
-	end
+	if vGet("isStarted") == true then
+		-- On affiche le journal
+		NuttenhClient.main_frame:Show()
 
+		-- On affiche les missions effectuées
+		displayMissions()
+
+		-- On démarre la mission qui été en cours avant le reload
+		startMission(vGet("key"), vGet("stade"))
+	else
+		NuttenhClient.main_frame:Hide()
+		vSmoothClear()
+	end
+	
 	onLoading:UnregisterEvent("ADDON_LOADED")
 end)

@@ -1,4 +1,4 @@
--- On créer la fenêtre principale
+-- On crée la fenêtre principale
 NuttenhClient.main_frame = CreateFrame("Frame", nil, UIParent)
 NuttenhClient.main_frame:SetFrameStrata("BACKGROUND") -- Définit le z-index de la frame sur le niveau le plus bas (BACKGROUND)
 NuttenhClient.main_frame:SetMovable(true) -- Permet le déplacement de la fenêtre
@@ -43,7 +43,7 @@ NuttenhClient.main_frame.close_button.fontString:SetText("-")
 
 local isMinimized = false
 
-function NuttenhClient.main_frame:toggleSize()
+NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 	if isMinimized == false then
 		NuttenhClient.main_frame:SetHeight(60)
 		-- NuttenhClient.main_frame.mission_list:Hide()
@@ -73,10 +73,6 @@ function NuttenhClient.main_frame:toggleSize()
 
 		isMinimized = false
 	end
-end
-
-NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
-	NuttenhClient.main_frame:toggleSize()
 end)
 
 -- Status bar
@@ -148,7 +144,7 @@ NuttenhClient.main_frame.mission_list.scrollframe.scrollbar.background:SetAllPoi
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar.background:SetTexture(0, 0, 0, 0) 
 
 --content frame 
-NuttenhClient.main_frame.mission_list.content = CreateFrame("Frame", nil, NuttenhClient.main_frame.mission_list.scrollframe) 
+NuttenhClient.main_frame.mission_list.content = CreateFrame("Frame", "ContentFrame", NuttenhClient.main_frame.mission_list.scrollframe) 
 NuttenhClient.main_frame.mission_list.content:SetSize(250, 250) 
 
 NuttenhClient.main_frame.mission_list.scrollframe:SetScrollChild(NuttenhClient.main_frame.mission_list.content)
@@ -171,13 +167,7 @@ NuttenhClient.main_frame.noReward:SetPoint("BOTTOM", 0, 55)
 NuttenhClient.main_frame.noReward:SetText("Les officiers n'ont déterminé \n aucune récompense pour cet évènement")
 NuttenhClient.main_frame.noReward:SetTextColor(0, 0, 0, 1)
 
-if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
-	NuttenhClient.main_frame.noReward:Show()
-	NuttenhClient.main_frame.reward:Hide()
-else
-	NuttenhClient.main_frame.noReward:Hide()
-	NuttenhClient.main_frame.reward:Show()
-end
+NuttenhClient.main_frame.itemList = {}
 
 function addMissionLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
@@ -185,4 +175,111 @@ function addMissionLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetPoint("TOPLEFT", 0, 0 - ((lineNumber - 1) * 35))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]:SetTextColor(0, 0, 0, 1)
+end
+
+function addMissionSubLine(text, lineNumber)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+end
+
+function getLine(lineNumber)
+	return NuttenhClient.main_frame.mission_list.content[lineNumber]
+end
+
+function getLines()
+	return NuttenhClient.main_frame.mission_list.content
+end
+
+function getSubLine(lineNumber)
+	if NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] ~= nil then
+		return NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]
+	else
+		return nil
+	end
+end
+
+-- Cette fonction permet d'afficher toutes les missions effectuées SAUF celle en cours
+function displayMissions()
+	local missions = splitByChunk(vGet("key"), 2)
+
+	for i=1, vGet("stade") do
+		local mission_type = splitByChunk(missions[i], 1)[1]
+		local setting = splitByChunk(missions[i], 1)[2]
+
+		addMissionLine(getIndication(mission_type, setting), vGet("stade"))
+		addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
+	end
+end
+
+-- Cette fonction permet d'afficher la mission en cours
+function displayNewMission()
+	local missions = splitByChunk(vGet("key"), 2)
+
+	local mission_type = splitByChunk(missions[vGet("stade")], 1)[1]
+	local setting = splitByChunk(missions[vGet("stade")], 1)[2]
+
+	addMissionLine(getIndication(mission_type, setting), vGet("stade"))
+	addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
+end
+
+function clearMissions()
+	-- On efface les missions présentes dans le journal
+	for i=1, table.getn(getLines()) do
+	   getLine(i):Hide()
+
+	    if getLine(i)["sub"] ~= nil then
+			getLine(i)["sub"]:Hide()
+	    end
+	end
+end
+
+function displayRewards()
+	if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
+		NuttenhClient.main_frame.noReward:Show()
+		NuttenhClient.main_frame.reward:Hide()
+	else
+		NuttenhClient.main_frame.noReward:Hide()
+		NuttenhClient.main_frame.reward:Show()
+
+		for i=1, getArraySize(vGet("rewards")) do
+			local amount = _AClient["rewards"][i]["amount"]
+			local itemId = _AClient["rewards"][i]["id"]
+
+			local nList = getArraySize(NuttenhClient.main_frame.itemList)
+
+			NuttenhClient.main_frame.itemList[nList] = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
+			NuttenhClient.main_frame.itemList[nList]:SetFrameStrata("BACKGROUND")
+			NuttenhClient.main_frame.itemList[nList]:SetBackdropBorderColor(255, 0, 0, 1)
+			NuttenhClient.main_frame.itemList[nList]:SetPoint("CENTER", ((i - 1) * 42) + 18, 0)
+			NuttenhClient.main_frame.itemList[nList]:SetWidth(35) -- Set these to whatever height/width is needed 
+			NuttenhClient.main_frame.itemList[nList]:SetHeight(35) -- for your Texture
+
+			local t = NuttenhClient.main_frame.itemList[nList]:CreateTexture(nil,"BACKGROUND")
+			t:SetTexture(GetItemIcon(itemId))
+			t:SetAllPoints(NuttenhClient.main_frame.itemList[nList])
+			NuttenhClient.main_frame.itemList[nList].texture = t
+
+			GetItemInfo(itemId)
+
+			NuttenhClient.main_frame.itemList[nList]:SetScript("OnEnter", function(self)
+				local name, link = GetItemInfo(itemId)
+			  	GameTooltip:SetOwner(NuttenhClient.main_frame.itemList[nList], "ANCHOR_CURSOR")
+			  	GameTooltip:SetHyperlink(link)
+			  	GameTooltip:Show()
+			end)
+
+			NuttenhClient.main_frame.itemList[nList]:SetScript("OnLeave", function(self)
+				GameTooltip:Hide()
+			end)
+
+			NuttenhClient.main_frame.itemList[nList].text = NuttenhClient.main_frame.itemList[nList]:CreateFontString(nil, "OVERLAY")
+			NuttenhClient.main_frame.itemList[nList].text:SetPoint("BOTTOMRIGHT", NuttenhClient.main_frame.itemList[nList], 0, 0)
+			NuttenhClient.main_frame.itemList[nList].text:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
+			NuttenhClient.main_frame.itemList[nList].text:SetTextColor(255, 255, 255)
+			NuttenhClient.main_frame.itemList[nList].text:SetText(amount)
+		end
+	end
 end
