@@ -87,6 +87,16 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		-- On affiche les missions effectuées
 		displayMissions()
 
+		NuttenhClient.main_frame.noReward:Hide()
+		NuttenhClient.main_frame.reward:Hide()
+
+		if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
+			NuttenhClient.main_frame.noReward:Show()
+		else
+			NuttenhClient.main_frame.reward:Show()
+		end
+
+		displayRewards()
 		-- On démarre la mission qui été en cours avant le reload
 		startMission(vGet("key"), vGet("stade"))
 	else

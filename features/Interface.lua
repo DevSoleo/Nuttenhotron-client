@@ -46,10 +46,10 @@ local isMinimized = false
 NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 	if isMinimized == false then
 		NuttenhClient.main_frame:SetHeight(60)
-		-- NuttenhClient.main_frame.mission_list:Hide()
+		NuttenhClient.main_frame.mission_list:Hide()
 
-		-- NuttenhClient.main_frame.noReward:Hide()
-		-- NuttenhClient.main_frame.reward:Hide()
+		NuttenhClient.main_frame.noReward:Hide()
+		NuttenhClient.main_frame.reward:Hide()
 			
 		NuttenhClient.main_frame.close_button.fontString:SetText("+")
 		NuttenhClient.main_frame.close_button.fontString:SetFont("Fonts\\FRIZQT__.TTF", 16)
@@ -59,13 +59,13 @@ NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 		isMinimized = true
 	else
 		NuttenhClient.main_frame:SetHeight(450)
-		-- NuttenhClient.main_frame.mission_list:Show()
+		NuttenhClient.main_frame.mission_list:Show()
 
-		--[[if getArraySize(NuttenhClient.main_frame.itemList) == 0 then
+		if getArraySize(NuttenhClient.main_frame.itemList) == 0 then
 			NuttenhClient.main_frame.noReward:Show()
 		else
 			NuttenhClient.main_frame.reward:Show()
-		end]]
+		end
 
 		NuttenhClient.main_frame.close_button.fontString:SetText("-")
 
@@ -206,7 +206,6 @@ function displayMissions()
 	local missions = splitByChunk(vGet("key"), 2)
 
 	for i=1, vGet("stade") - 1 do
-		print("i = " .. i)
 		local mission_type = splitByChunk(missions[i], 1)[1]
 		local setting = splitByChunk(missions[i], 1)[2]
 
