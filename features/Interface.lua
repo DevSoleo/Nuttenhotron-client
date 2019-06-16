@@ -282,7 +282,7 @@ function displayNewMission()
 	print(mission_type, setting)
 	addMissionLine(getIndication(mission_type, setting), vGet("stade"))
 	-- addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
-	addIndication("INDICE :", getSubIndication(mission_type, setting), vGet("stade"))
+	addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"))
 end
 
 function clearMissions()

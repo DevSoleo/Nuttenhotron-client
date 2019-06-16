@@ -49,25 +49,61 @@ function startMission(key, stade)
 				if tostring(UnitName("target")):sub(1, -1) == tostring(NPC_LIST[setting]["name"][GetLocale()]) then 
 					t:UnregisterEvent("UNIT_TARGET")
 
-			  		-- Next mission 
-			  		-- print("|cFF00FF00Mission accomplie !")
 			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 					NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 			  		startMission(key, stade + 1)
 			  	end
 			end)
+		elseif mission_type == "2" then
+			local is = true
+			local function hookPlayerMove(...)
+				if is == true then
+					local margin = 0.2
+					local x = round(getPlayerCoords()["x"], 3)
+					local y = round(getPlayerCoords()["y"], 3)
+					local zoneText = getPlayerCoords()["zoneText"]
+
+					-- local subZoneText = getPlayerCoords()["subZoneText"]
+
+					local px = LOCATIONS_LIST[setting]["x"]
+					local py = LOCATIONS_LIST[setting]["y"]
+					local pZoneText = LOCATIONS_LIST[setting]["zoneText"][language]
+					-- local pSubZoneText = LOCATIONS_LIST[setting]["subZoneText"]
+
+					local minPx = px - margin
+					local maxPx = px + margin
+
+					local minPy = py - margin
+					local maxPy = py + margin
+					
+					-- and subZoneText == pSubZoneText
+					if x >= minPx and x <= maxPx and y >= minPy and y <= maxPy and zoneText == pZoneText then 
+						is = false
+
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+				  		startMission(key, stade + 1)
+					end
+				end
+			end
+
+			hooksecurefunc("MoveForwardStop", hookPlayerMove)
 		end
 	end
 end
 
 function getIndication(mission_type, setting)
 	if mission_type == "1" then
-		return NPC_LIST[setting]["name"][GetLocale()]
+		return "Vous devez parler à : " .. NPC_LIST[setting]["name"][GetLocale()]
+	elseif mission_type == "2" then
+		return "Vous devez vous rendre à : " .. LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
 	end
 end
 
 function getSubIndication(mission_type, setting)
 	if mission_type == "1" then
 		return NPC_LIST[setting]["indication"]
+	elseif mission_type == "2" then
+		return LOCATIONS_LIST[setting]["indication"]
 	end
 end

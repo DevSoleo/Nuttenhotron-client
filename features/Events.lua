@@ -40,7 +40,6 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 				text = "L'évènement est terminé, merci de cliquer sur le bouton ci-dessous :",
 				button1 = "Recharger l'interface !",
 
-				enterClicksFirstButton = true,
 				timeout = 0,
 				whileDead = true,
 				hideOnEscape = false,
