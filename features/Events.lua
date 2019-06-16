@@ -35,9 +35,24 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
-		elseif string.find(message, "L'évènement est terminé !") ~= nil then
-			-- On force l'arrêt de l'event
-			finishAllMissions(false)
+		elseif string.find(message, "L'évènement est terminé !") then
+			StaticPopupDialogs["RELOAD"] = {
+				text = "L'évènement est terminé, merci de cliquer sur le bouton ci-dessous :",
+				button1 = "Recharger l'interface !",
+
+				enterClicksFirstButton = true,
+				timeout = 0,
+				whileDead = true,
+				hideOnEscape = false,
+
+				OnAccept = function(self)
+					-- On force l'arrêt de l'event
+					finishAllMissions(false)
+					ReloadUI()
+				end
+			}
+
+			StaticPopup_Show("RELOAD")
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			if vGet("isStarted") == false then
 				local amount = 0

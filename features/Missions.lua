@@ -1,10 +1,10 @@
 -- Cette fonction se déclenche lorsqu'un joueur termine l'event
 function finishAllMissions(isWinner)
+		-- On clear toutes les variables
+	vSmoothClear()
+
 	-- On masque supprime toutes le missions présentes dans le journal
 	clearMissions()
-	
-	-- On clear toutes les variables
-	vSmoothClear()
 
 	-- On remet à zéro la barre de progression
 	NuttenhClient.main_frame.statusbar:SetValue(0)
@@ -16,14 +16,10 @@ function finishAllMissions(isWinner)
 	PlaySound("AuctionWindowClose", "SFX")
 
 	if isWinner == true then
-		win()
+		message("|cFFFFFFFFBravo ! Vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un officier !")
+
+		SendChatMessage("---- " .. UnitName("player") .. " a terminé l'event ! Bravo ! ----", "GUILD")
 	end
-end
-
-function win()
-	message("|cFFFFFFFFBravo ! Vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un officier !")
-
-	SendChatMessage("---- " .. UnitName("player") .. " a terminé l'event ! Bravo ! ----", "GUILD")
 end
 
 function startMission(key, stade)
