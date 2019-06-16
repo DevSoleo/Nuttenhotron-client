@@ -1,14 +1,14 @@
 -- Cette fonction se déclenche lorsqu'un joueur termine l'event
 function finishAllMissions(isWinner)
+	-- On masque supprime toutes le missions présentes dans le journal
+	clearMissions()
+	
 	-- On clear toutes les variables
 	vSmoothClear()
 
 	-- On remet à zéro la barre de progression
 	NuttenhClient.main_frame.statusbar:SetValue(0)
 	NuttenhClient.main_frame.statusbar.value:SetText("0%")
-
-	-- On masque supprime toutes le missions présentes dans le journal
-	clearMissions()
 
 	-- On masque le journal
 	NuttenhClient.main_frame:Hide()
@@ -39,8 +39,6 @@ function startMission(key, stade)
 
 	local mission_type = splitByChunk(mission, 1)[1]
 	local setting = splitByChunk(mission, 1)[2]
-
-	-- On affiche une nouvelle mission
 
 	if stade > maxStade then
 		finishAllMissions(true)

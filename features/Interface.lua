@@ -75,6 +75,13 @@ NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 	end
 end)
 
+-- Title
+NuttenhClient.main_frame.title = NuttenhClient.main_frame:CreateFontString(nil, "ARTWORK")
+NuttenhClient.main_frame.title:SetFont("Fonts\\ARIALN.ttf", 15)
+NuttenhClient.main_frame.title:SetPoint("TOP", 0, -10)
+NuttenhClient.main_frame.title:SetText("Progression :")
+NuttenhClient.main_frame.title:SetTextColor(0, 0, 0, 1)
+
 -- Status bar
 NuttenhClient.main_frame.statusbar = CreateFrame("StatusBar", nil, NuttenhClient.main_frame)
 NuttenhClient.main_frame.statusbar:SetPoint("TOP", NuttenhClient.main_frame, "TOP", 0, -30)
@@ -185,6 +192,37 @@ function addMissionSubLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 end
 
+-- Cette fonction sert à afficher un tooltip au passage de la souris sur la sub line
+function addIndication(text, tooltip, lineNumber)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] = CreateFrame("Frame", nil, NuttenhClient.main_frame.mission_list.content)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetFrameStrata("BACKGROUND")
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetBackdropBorderColor(255, 0, 0, 1)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 75, 0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetWidth(15)
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetHeight(15)
+
+	local t = NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:CreateTexture(nil,"BACKGROUND")
+	t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+	t:SetAllPoints(NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"])
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"].texture = t
+
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnEnter", function(self)
+	  	GameTooltip:SetOwner(NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"], "ANCHOR_CURSOR")
+	  	GameTooltip:SetText(tooltip)
+	  	GameTooltip:Show()
+	end)
+
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnLeave", function(self)
+		GameTooltip:Hide()
+	end)
+end
+
 function getLine(lineNumber)
 	return NuttenhClient.main_frame.mission_list.content[lineNumber]
 end
@@ -201,6 +239,14 @@ function getSubLine(lineNumber)
 	end
 end
 
+function getIcon(lineNumber)
+	if NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] ~= nil then
+		return NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]
+	else
+		return nil
+	end
+end
+
 -- Cette fonction permet d'afficher toutes les missions effectuées SAUF celle en cours
 function displayMissions()
 	local missions = splitByChunk(vGet("key"), 2)
@@ -209,30 +255,46 @@ function displayMissions()
 		local mission_type = splitByChunk(missions[i], 1)[1]
 		local setting = splitByChunk(missions[i], 1)[2]
 
-		addMissionLine(getIndication(mission_type, setting), i)
-		addMissionSubLine(getSubIndication(mission_type, setting), i)
+		addMissionLine("|cFF4A4A4A" .. getIndication(mission_type, setting), i)
+		addMissionSubLine("|cFF4A4A4ATerminé !", i)
 	end
 end
 
 -- Cette fonction permet d'afficher la mission en cours
 function displayNewMission()
+	if vGet("stade") > 1 then
+		getLine(vGet("stade") - 1):SetText("|cFF4A4A4A" .. getLine(vGet("stade") - 1):GetText())
+		
+		if getSubLine(vGet("stade") - 1) ~= nil then
+			getSubLine(vGet("stade") - 1):SetText("|cFF4A4A4A- Terminé !")
+		end 
+		
+		if getIcon(vGet("stade") - 1) ~= nil then
+			getIcon(vGet("stade") - 1):Hide()
+		end
+	end
+
 	local missions = splitByChunk(vGet("key"), 2)
 
 	local mission_type = splitByChunk(missions[vGet("stade")], 1)[1]
 	local setting = splitByChunk(missions[vGet("stade")], 1)[2]
 
+	print(mission_type, setting)
 	addMissionLine(getIndication(mission_type, setting), vGet("stade"))
-	addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
+	-- addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
+	addIndication("INDICE :", getSubIndication(mission_type, setting), vGet("stade"))
 end
 
 function clearMissions()
 	-- On efface les missions présentes dans le journal
-	for i=1, table.getn(getLines()) do
-	   getLine(i):Hide()
+	for i=1, #vGet("key") / 2 do
+		if getLine(i) ~= nil then
+			getLine(i):Hide()
+		end
 
-	    if getLine(i)["sub"] ~= nil then
-			getLine(i)["sub"]:Hide()
-	    end
+		if getSubLine(i) ~= nil then
+			getSubLine(i):Hide()
+		end
 	end
 end
 

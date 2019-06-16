@@ -36,10 +36,8 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
 		elseif string.find(message, "L'évènement est terminé !") ~= nil then
-			if vGet("isStarted") == true then
-				-- On force l'arrêt de l'event
-				finishAllMissions(false)
-			end
+			-- On force l'arrêt de l'event
+			finishAllMissions(false)
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			if vGet("isStarted") == false then
 				local amount = 0
