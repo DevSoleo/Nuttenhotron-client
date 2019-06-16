@@ -88,15 +88,79 @@ function startMission(key, stade)
 			end
 
 			hooksecurefunc("MoveForwardStop", hookPlayerMove)
+		elseif mission_type == "3" then
+			local reqItemId = ITEMS_LIST[setting]["id"]
+					
+			getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+
+			if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
+		  		wait(0.1, function()
+			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+					NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+			  		startMission(key, stade + 1)
+			  	end)
+			else
+				local i = CreateFrame("Frame")
+				i:RegisterEvent("ITEM_PUSH")
+				i:SetScript("OnEvent", function(self, ...)
+
+			  		wait(0.1, function()
+
+						getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+
+						if GetItemCount(reqItemId) >=  ITEMS_LIST[setting]["amount"] then
+					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+					  		startMission(key, stade + 1)
+							i:UnregisterEvent("ITEM_PUSH")
+						end
+					end)
+				end)
+			end
+		elseif mission_type == "4" then
+						local kills = 0
+
+			if vGet("kills") ~= nil and vGet("kills") ~= 0 then
+				kills = vGet("kills")
+			end
+
+			local i = CreateFrame("Frame")
+			i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED") -- CHAT_MSG_GUILD
+			i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
+				if sourceGUID == true and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
+					kills = kills + 1
+					vSave("kills", kills)
+
+					if kills <= KILL_LIST[setting]["amount"] then
+						RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"][GetLocale()] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
+						print(kills .. "/" .. KILL_LIST[setting]["amount"])
+						getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. KILL_LIST[setting]["amount"])
+					end
+
+					if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
+				  		-- print("|cFF00FF00Mission accomplie !")
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+			
+						vSave("kills", 0)
+				  		
+				  		startMission(key, stade + 1)
+					end
+				end
+			end)
 		end
 	end
 end
 
 function getIndication(mission_type, setting)
 	if mission_type == "1" then
-		return "Vous devez parler à : " .. NPC_LIST[setting]["name"][GetLocale()]
+		return "Cibler : " .. NPC_LIST[setting]["name"][GetLocale()]
 	elseif mission_type == "2" then
-		return "Vous devez vous rendre à : " .. LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
+		return "Trouver : " .. LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
+	elseif mission_type == "3" then
+		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()]
+	elseif mission_type == "4" then
+		return "Tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()]
 	end
 end
 
@@ -105,5 +169,9 @@ function getSubIndication(mission_type, setting)
 		return NPC_LIST[setting]["indication"]
 	elseif mission_type == "2" then
 		return LOCATIONS_LIST[setting]["indication"]
+	elseif mission_type == "3" then
+		return ITEMS_LIST[setting]["indication"]
+	elseif mission_type == "4" then 
+		return KILL_LIST[setting]["indication"]
 	end
 end
