@@ -12,8 +12,10 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			local key = ""
 
 			for i,v in ipairs(splitedMessage) do
-			    key = key .. uncrypt(v, "letterToNumber")
+			    key = key .. " " .. uncrypt(v, "letterToNumber")
 			end
+			
+			key = string.sub(key, 2)
 
 			-- On enregistre la clé
 			vSave("key", key)

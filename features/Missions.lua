@@ -31,10 +31,12 @@ function startMission(key, stade)
 	-- On récupère le nombre de missions présentes dans la clé
 	-- Le divisant le nombre de caractère par deux (une mission = 2 caractères)
 	local maxStade = #key / 2
-	local mission = splitByChunk(vGet("key"), 2)[vGet("stade")]
+	local mission = split(vGet("key"), " ")[vGet("stade")]
 
-	local mission_type = splitByChunk(mission, 1)[1]
-	local setting = splitByChunk(mission, 1)[2]
+	local mission_type = string.sub(mission, 1, 1)
+	local setting = string.sub(mission, 2)
+
+	print(mission, mission_type, setting)
 
 	if stade > maxStade then
 		finishAllMissions(true)

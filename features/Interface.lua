@@ -249,11 +249,11 @@ end
 
 -- Cette fonction permet d'afficher toutes les missions effectuées SAUF celle en cours
 function displayMissions()
-	local missions = splitByChunk(vGet("key"), 2)
+	local mission = split(vGet("key"), " ")[vGet("stade")]
 
 	for i=1, vGet("stade") - 1 do
-		local mission_type = splitByChunk(missions[i], 1)[1]
-		local setting = splitByChunk(missions[i], 1)[2]
+		local mission_type = string.sub(mission, 1, 1)
+		local setting = string.sub(mission, 2)
 
 		addMissionLine("|cFF4A4A4A" .. getIndication(mission_type, setting), i)
 		addMissionSubLine("|cFF4A4A4ATerminé !", i)
@@ -274,10 +274,10 @@ function displayNewMission()
 		end
 	end
 
-	local missions = splitByChunk(vGet("key"), 2)
+	local mission = split(vGet("key"), " ")[vGet("stade")]
 
-	local mission_type = splitByChunk(missions[vGet("stade")], 1)[1]
-	local setting = splitByChunk(missions[vGet("stade")], 1)[2]
+	local mission_type = string.sub(mission, 1, 1)
+	local setting = string.sub(mission, 2)	
 
 	print(mission_type, setting)
 	addMissionLine(getIndication(mission_type, setting), vGet("stade"))
