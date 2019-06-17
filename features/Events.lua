@@ -56,27 +56,38 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			StaticPopup_Show("RELOAD")
 		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
 			if vGet("isStarted") == false then
-				local amount = 0
-				local id = nil
+				if string.find(message, "P.O.") then
+					local amount = 0
 
-				-- On récupère l'ID de l'item ajouté en récompense
-				string.gsub(message, "%((.-)%)", function(o)
-					id = o
-				end)
+					-- On récupère la quantité d'item ajouté en récompense
+					string.gsub(message, "x%d+", function(o)
+						amount = string.gsub(o, "x", "")
+					end)
 
-				-- On récupère la quantité d'item ajouté en récompense
-				string.gsub(message, "x%d+", function(o)
-					amount = string.gsub(o, "x", "")
-				end)
+					vSave("goldReward", amount)
+				else
+					local amount = 0
+					local id = nil
 
-				-- On précharge l'item demandé
-				GetItemInfo(id)
+					-- On récupère l'ID de l'item ajouté en récompense
+					string.gsub(message, "%((.-)%)", function(o)
+						id = o
+					end)
 
-				-- On ajoute l'item dans la liste des récompenses
-				local rewards = vGet("rewards")
-				table.insert(rewards, {id=id, amount=amount})
+					-- On récupère la quantité d'item ajouté en récompense
+					string.gsub(message, "x%d+", function(o)
+						amount = string.gsub(o, "x", "")
+					end)
 
-				vSave("rewards", rewards)
+					-- On précharge l'item demandé
+					GetItemInfo(id)
+
+					-- On ajoute l'item dans la liste des récompenses
+					local rewards = vGet("rewards")
+					table.insert(rewards, {id=id, amount=amount})
+
+					vSave("rewards", rewards)
+				end
 			end
 		elseif string.find(message, " a retiré une récompense.") then -- Lorsque une récompense est retirée
 			-- On ajoute l'item dans la liste des récompenses

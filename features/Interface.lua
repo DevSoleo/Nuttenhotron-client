@@ -213,7 +213,7 @@ end
 function addMissionSubLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber - 1) * 35 + 0))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 end
@@ -222,14 +222,14 @@ end
 function addIndication(text, tooltip, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 20))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] = CreateFrame("Frame", nil, NuttenhClient.main_frame.mission_list.content)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetFrameStrata("BACKGROUND")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetBackdropBorderColor(255, 0, 0, 1)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 75, 0 - ((lineNumber - 1) * 35 + 15))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 75, 0 - ((lineNumber - 1) * 35 + 19))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetWidth(15)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetHeight(15)
 
@@ -277,7 +277,7 @@ end
 function displayMissions()
 	local mission = split(vGet("key"), " ")[vGet("stade")]
 
-	for i=1, vGet("stade") - 1 do
+	for i=1, vGet("stade") do
 		local mission_type = string.sub(mission, 1, 1)
 		local setting = string.sub(mission, 2)
 

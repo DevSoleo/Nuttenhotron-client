@@ -30,7 +30,7 @@ function startMission(key, stade)
 
 	-- On récupère le nombre de missions présentes dans la clé
 	-- Le divisant le nombre de caractère par deux (une mission = 2 caractères)
-	local maxStade = #key / 2
+	local maxStade = getArraySize(split(vGet("key"), " ")) - 1
 	local mission = split(vGet("key"), " ")[vGet("stade")]
 
 	local mission_type = string.sub(mission, 1, 1)
