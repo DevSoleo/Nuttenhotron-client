@@ -24,10 +24,10 @@ function vSmoothClear()
 	wait(0.1, vSave("stade", 0))
 	wait(0.1, vSave("rewards", {}))
 	wait(0.1, vSave("kills", 0))
-	wait(0.1, vSave("endTime", nil))
-
+	wait(0.1, vSave("goldReward", 0))
+	--wait(0.1, vSave("endTime", nil))
 end
-	
+
 --[[function vDebug()
 	table.foreach(_AClient, function(k, v)
 		print(k .. "=" .. v)

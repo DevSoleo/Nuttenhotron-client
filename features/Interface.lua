@@ -31,8 +31,8 @@ NuttenhClient.main_frame:SetBackdrop({
 NuttenhClient.main_frame.close_button = CreateFrame("Button", "NuttenhClient_MainFrame_CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")
 NuttenhClient.main_frame.close_button:SetPoint("TOPRIGHT", 0, 0)
 NuttenhClient.main_frame.close_button:SetFrameLevel(1)
-NuttenhClient.main_frame.close_button:SetHeight(25)
-NuttenhClient.main_frame.close_button:SetWidth(25)
+NuttenhClient.main_frame.close_button:SetHeight(25.4)
+NuttenhClient.main_frame.close_button:SetWidth(25.4)
 
 NuttenhClient.main_frame.close_button.fontString = NuttenhClient.main_frame.close_button:CreateFontString(nil, "ARTWORK")
 NuttenhClient.main_frame.close_button.fontString:SetAllPoints()
@@ -47,10 +47,11 @@ NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 	if isMinimized == false then
 		NuttenhClient.main_frame:SetHeight(60)
 		NuttenhClient.main_frame.mission_list:Hide()
-
+		NuttenhClient.main_frame.rewardTitle:Hide()
 		NuttenhClient.main_frame.noReward:Hide()
 		NuttenhClient.main_frame.reward:Hide()
-			
+		NuttenhClient.main_frame.goldReward:Hide()
+
 		NuttenhClient.main_frame.close_button.fontString:SetText("+")
 		NuttenhClient.main_frame.close_button.fontString:SetFont("Fonts\\FRIZQT__.TTF", 16)
 
@@ -61,11 +62,15 @@ NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 		NuttenhClient.main_frame:SetHeight(450)
 		NuttenhClient.main_frame.mission_list:Show()
 
-		if getArraySize(NuttenhClient.main_frame.itemList) == 0 then
+		if getArraySize(NuttenhClient.main_frame.itemList) == 0 and vGet("goldReward") == 0 or vGet("goldReward") == nil then
 			NuttenhClient.main_frame.noReward:Show()
-		else
+		else 
+			NuttenhClient.main_frame.rewardTitle:Show()
 			NuttenhClient.main_frame.reward:Show()
+			NuttenhClient.main_frame.goldReward:Show()
+			NuttenhClient.main_frame.noReward:Hide()
 		end
+
 
 		NuttenhClient.main_frame.close_button.fontString:SetText("-")
 
@@ -156,29 +161,37 @@ NuttenhClient.main_frame.mission_list.content:SetSize(250, 250)
 
 NuttenhClient.main_frame.mission_list.scrollframe:SetScrollChild(NuttenhClient.main_frame.mission_list.content)
 
--- Rewards
+-- Rewards Title
+NuttenhClient.main_frame.rewardTitle = CreateFrame("Frame", nil, NuttenhClient.main_frame)
+NuttenhClient.main_frame.rewardTitle:SetPoint("BOTTOMLEFT", 0, 60)
+NuttenhClient.main_frame.rewardTitle:SetHeight(27)
+NuttenhClient.main_frame.rewardTitle:SetWidth(27)
+
+NuttenhClient.main_frame.rewardTitle.value = NuttenhClient.main_frame.rewardTitle:CreateFontString(nil, "OVERLAY")
+NuttenhClient.main_frame.rewardTitle.value:SetPoint("CENTER", NuttenhClient.main_frame.rewardTitle, "TOP", 100, 20)
+NuttenhClient.main_frame.rewardTitle.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
+NuttenhClient.main_frame.rewardTitle.value:SetTextColor(0, 0, 0, 0.8)
+NuttenhClient.main_frame.rewardTitle.value:SetText("Le vainqueur remportera :")
+
+-- Item Rewards
 NuttenhClient.main_frame.reward = CreateFrame("Frame", nil, NuttenhClient.main_frame)
 NuttenhClient.main_frame.reward:SetPoint("BOTTOMLEFT", 0, 60)
 NuttenhClient.main_frame.reward:SetHeight(27)
 NuttenhClient.main_frame.reward:SetWidth(27)
 
-NuttenhClient.main_frame.reward.value = NuttenhClient.main_frame.reward:CreateFontString(nil, "OVERLAY")
-NuttenhClient.main_frame.reward.value:SetPoint("CENTER", NuttenhClient.main_frame.reward, "TOP", 100, 20)
-NuttenhClient.main_frame.reward.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
-NuttenhClient.main_frame.reward.value:SetTextColor(0, 0, 0, 0.8)
-NuttenhClient.main_frame.reward.value:SetText("Le vainqueur remportera :")
-
 -- Gold reward
+
 NuttenhClient.main_frame.goldReward = CreateFrame("Frame", nil, NuttenhClient.main_frame)
-NuttenhClient.main_frame.goldReward:SetPoint("BOTTOMLEFT", 0, 60)
+NuttenhClient.main_frame.goldReward:SetPoint("BOTTOMLEFT", 0, -15)
 NuttenhClient.main_frame.goldReward:SetHeight(27)
-NuttenhClient.main_frame.goldReward:SetWidth(27)
+NuttenhClient.main_frame.goldReward:SetWidth(10)
 
 NuttenhClient.main_frame.goldReward.value = NuttenhClient.main_frame.goldReward:CreateFontString(nil, "OVERLAY")
-NuttenhClient.main_frame.goldReward.value:SetPoint("CENTER", NuttenhClient.main_frame.goldReward, "TOP", 100, 20)
+NuttenhClient.main_frame.goldReward.value:SetPoint("LEFT", NuttenhClient.main_frame.goldReward, "TOP", 10, 20)
 NuttenhClient.main_frame.goldReward.value:SetFont("Fonts\\FRIZQT__.ttf", 14)
 NuttenhClient.main_frame.goldReward.value:SetTextColor(0, 0, 0, 0.8)
-NuttenhClient.main_frame.goldReward.value:SetText(GetCoinTextureString(10 * 10000))
+NuttenhClient.main_frame.goldReward.value:SetText("")
+
 
 -- No rewards
 NuttenhClient.main_frame.noReward = NuttenhClient.main_frame:CreateFontString(nil, "ARTWORK")
@@ -314,50 +327,112 @@ function clearMissions()
 	end
 end
 
+function displayItemRewards()
+	for i=1, getArraySize(vGet("rewards")) do
+		local amount = _AClient["rewards"][i]["amount"]
+		local itemId = _AClient["rewards"][i]["id"]
+
+		local nList = getArraySize(NuttenhClient.main_frame.itemList)
+
+		NuttenhClient.main_frame.itemList[nList] = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
+		NuttenhClient.main_frame.itemList[nList]:SetFrameStrata("BACKGROUND")
+		NuttenhClient.main_frame.itemList[nList]:SetBackdropBorderColor(255, 0, 0, 1)
+		NuttenhClient.main_frame.itemList[nList]:SetPoint("CENTER", ((i - 1) * 42) + 18, 0)
+		NuttenhClient.main_frame.itemList[nList]:SetWidth(35) -- Set these to whatever height/width is needed 
+		NuttenhClient.main_frame.itemList[nList]:SetHeight(35) -- for your Texture
+
+		local t = NuttenhClient.main_frame.itemList[nList]:CreateTexture(nil,"BACKGROUND")
+		t:SetTexture(GetItemIcon(itemId))
+		t:SetAllPoints(NuttenhClient.main_frame.itemList[nList])
+		NuttenhClient.main_frame.itemList[nList].texture = t
+
+		GetItemInfo(itemId)
+
+		NuttenhClient.main_frame.itemList[nList]:SetScript("OnEnter", function(self)
+			local name, link = GetItemInfo(itemId)
+		  	GameTooltip:SetOwner(NuttenhClient.main_frame.itemList[nList], "ANCHOR_CURSOR")
+		  	GameTooltip:SetHyperlink(link)
+		  	GameTooltip:Show()
+		end)
+
+		NuttenhClient.main_frame.itemList[nList]:SetScript("OnLeave", function(self)
+			GameTooltip:Hide()
+		end)
+
+		NuttenhClient.main_frame.itemList[nList].text = NuttenhClient.main_frame.itemList[nList]:CreateFontString(nil, "OVERLAY")
+		NuttenhClient.main_frame.itemList[nList].text:SetPoint("BOTTOMRIGHT", NuttenhClient.main_frame.itemList[nList], 0, 0)
+		NuttenhClient.main_frame.itemList[nList].text:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
+		NuttenhClient.main_frame.itemList[nList].text:SetTextColor(255, 255, 255)
+		NuttenhClient.main_frame.itemList[nList].text:SetText(amount)
+	end
+end
+
 function displayRewards()
-	if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
-		NuttenhClient.main_frame.noReward:Show()
-		NuttenhClient.main_frame.reward:Hide()
+	--[[
+		1er Cas : 
+			Reward Objet = Oui
+			Reward Pièce = Oui
+
+		2e Cas :
+			Reward Objet = Oui
+			Reward Pièce = Non
+
+		3e Cas :
+			Reward Objet = Non
+			Reward Pièce = Oui
+
+		4e Cas :
+			Reward Objet = Non
+			Reward Pièce = Non
+	]]
+
+	local isRewardItem = false
+	local isRewardGold = false
+
+	if vGet("goldReward") == 0 or vGet("goldReward") == nil then
+		isRewardGold = false
 	else
-		NuttenhClient.main_frame.noReward:Hide()
-		NuttenhClient.main_frame.reward:Show()
+		isRewardGold = true
+	end
 
-		for i=1, getArraySize(vGet("rewards")) do
-			local amount = _AClient["rewards"][i]["amount"]
-			local itemId = _AClient["rewards"][i]["id"]
+	if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
+		isRewardItem = false
+	else
+		isRewardItem = true
+	end
 
-			local nList = getArraySize(NuttenhClient.main_frame.itemList)
 
-			NuttenhClient.main_frame.itemList[nList] = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
-			NuttenhClient.main_frame.itemList[nList]:SetFrameStrata("BACKGROUND")
-			NuttenhClient.main_frame.itemList[nList]:SetBackdropBorderColor(255, 0, 0, 1)
-			NuttenhClient.main_frame.itemList[nList]:SetPoint("CENTER", ((i - 1) * 42) + 18, 0)
-			NuttenhClient.main_frame.itemList[nList]:SetWidth(35) -- Set these to whatever height/width is needed 
-			NuttenhClient.main_frame.itemList[nList]:SetHeight(35) -- for your Texture
 
-			local t = NuttenhClient.main_frame.itemList[nList]:CreateTexture(nil,"BACKGROUND")
-			t:SetTexture(GetItemIcon(itemId))
-			t:SetAllPoints(NuttenhClient.main_frame.itemList[nList])
-			NuttenhClient.main_frame.itemList[nList].texture = t
 
-			GetItemInfo(itemId)
-
-			NuttenhClient.main_frame.itemList[nList]:SetScript("OnEnter", function(self)
-				local name, link = GetItemInfo(itemId)
-			  	GameTooltip:SetOwner(NuttenhClient.main_frame.itemList[nList], "ANCHOR_CURSOR")
-			  	GameTooltip:SetHyperlink(link)
-			  	GameTooltip:Show()
-			end)
-
-			NuttenhClient.main_frame.itemList[nList]:SetScript("OnLeave", function(self)
-				GameTooltip:Hide()
-			end)
-
-			NuttenhClient.main_frame.itemList[nList].text = NuttenhClient.main_frame.itemList[nList]:CreateFontString(nil, "OVERLAY")
-			NuttenhClient.main_frame.itemList[nList].text:SetPoint("BOTTOMRIGHT", NuttenhClient.main_frame.itemList[nList], 0, 0)
-			NuttenhClient.main_frame.itemList[nList].text:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
-			NuttenhClient.main_frame.itemList[nList].text:SetTextColor(255, 255, 255)
-			NuttenhClient.main_frame.itemList[nList].text:SetText(amount)
+	if isRewardItem == true and isRewardGold == true then
+		if vGet("goldReward") ~= 0 then
+			NuttenhClient.main_frame.goldReward.value:SetText(GetCoinTextureString(tonumber(vGet("goldReward") * 10000)))
 		end
+
+		displayItemRewards()
+
+		NuttenhClient.main_frame.reward:Show()
+		NuttenhClient.main_frame.goldReward:Show()
+		NuttenhClient.main_frame.noReward:Hide()
+	elseif isRewardItem == true and isRewardGold == false then
+		displayItemRewards()
+
+		NuttenhClient.main_frame.reward:Show()
+		NuttenhClient.main_frame.goldReward:Hide()
+		NuttenhClient.main_frame.noReward:Hide()
+	elseif isRewardItem == false and isRewardGold == true then
+		if vGet("goldReward") ~= 0 then
+			NuttenhClient.main_frame.goldReward:SetPoint("BOTTOMLEFT", 0, 25)
+			NuttenhClient.main_frame.goldReward.value:SetText(GetCoinTextureString(tonumber(vGet("goldReward") * 10000)))
+		end
+
+		NuttenhClient.main_frame.reward:Hide()
+		NuttenhClient.main_frame.goldReward:Show()
+		NuttenhClient.main_frame.noReward:Hide()
+	elseif isRewardItem == false and isRewardGold == false then
+		NuttenhClient.main_frame.reward:Hide()
+		NuttenhClient.main_frame.goldReward:Hide()
+		NuttenhClient.main_frame.rewardTitle:Hide()
+		NuttenhClient.main_frame.noReward:Show()
 	end
 end
