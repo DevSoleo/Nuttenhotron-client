@@ -27,7 +27,8 @@ function uncrypt(k, cType)
     	local c = ""
 
     	local t = {"tk", "u4", "0k", "2s", "ny", "dy", "9l", "nn", "31", "rm"}
-
+        t[0] = "kw"
+        
     	for i,v in ipairs(s) do
     	    c = c .. getArrayIndex(t, v)
     	end

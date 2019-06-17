@@ -4,7 +4,7 @@ LOCATIONS_LIST = {}
 ITEMS_LIST = {}
 KILL_LIST = {}
 
-NPC_LIST["1"] = {name={frFR="Miwana"}, indication="Elle se trouve quelque part à Orgrimmar"}
+NPC_LIST["1"] = {name={frFR="Miwana", enUS="Miwana"}, indication="Elle se trouve quelque part à Orgrimmar"}
 NPC_LIST["2"] = {name={frFR="Roturière taurène"}, indication="Elle se trouve quelque part à Orgrimmar"}
 NPC_LIST["3"] = {name={frFR="Opuno Corne-de-Fer"}, indication="Il se trouve quelque part à Orgrimmar"}
 NPC_LIST["4"] = {name={frFR="Lenedil Aile-de-Lune"}, indication="Il se trouve quelque part dans l'auberge de Nordrassil à Hyjal."}
