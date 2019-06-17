@@ -279,7 +279,6 @@ function displayNewMission()
 	local mission_type = string.sub(mission, 1, 1)
 	local setting = string.sub(mission, 2)	
 
-	print(mission_type, setting)
 	addMissionLine(getIndication(mission_type, setting), vGet("stade"))
 
 	if mission_type == "3" or mission_type == "4" then
