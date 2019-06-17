@@ -168,6 +168,19 @@ NuttenhClient.main_frame.reward.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
 NuttenhClient.main_frame.reward.value:SetTextColor(0, 0, 0, 0.8)
 NuttenhClient.main_frame.reward.value:SetText("Le vainqueur remportera :")
 
+-- Gold reward
+NuttenhClient.main_frame.goldReward = CreateFrame("Frame", nil, NuttenhClient.main_frame)
+NuttenhClient.main_frame.goldReward:SetPoint("BOTTOMLEFT", 0, 60)
+NuttenhClient.main_frame.goldReward:SetHeight(27)
+NuttenhClient.main_frame.goldReward:SetWidth(27)
+
+NuttenhClient.main_frame.goldReward.value = NuttenhClient.main_frame.goldReward:CreateFontString(nil, "OVERLAY")
+NuttenhClient.main_frame.goldReward.value:SetPoint("CENTER", NuttenhClient.main_frame.goldReward, "TOP", 100, 20)
+NuttenhClient.main_frame.goldReward.value:SetFont("Fonts\\FRIZQT__.ttf", 14)
+NuttenhClient.main_frame.goldReward.value:SetTextColor(0, 0, 0, 0.8)
+NuttenhClient.main_frame.goldReward.value:SetText(GetCoinTextureString(10 * 10000))
+
+-- No rewards
 NuttenhClient.main_frame.noReward = NuttenhClient.main_frame:CreateFontString(nil, "ARTWORK")
 NuttenhClient.main_frame.noReward:SetFont("Fonts\\ARIALN.ttf", 17)
 NuttenhClient.main_frame.noReward:SetPoint("BOTTOM", 0, 55)
