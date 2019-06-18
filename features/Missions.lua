@@ -33,129 +33,129 @@ function startMission(key, stade)
 	local maxStade = getArraySize(split(vGet("key"), " "))
 	local mission = nil
 
-	if string.find(vGet("key"), " ") then
-		mission = split(vGet("key"), " ")[vGet("stade")]
-	else
-		mission = vGet("key")
-	end
-
-	local mission_type = string.sub(mission, 1, 1)
-	local setting = string.sub(mission, 2)
-
-	print(mission, mission_type, setting)
-
 	if stade > maxStade then
 		finishAllMissions(true)
-	end
+	else
+		if string.find(key, " ") then
+			mission = split(key, " ")[tonumber(vGet("stade"))]
+		else
+			mission = vGet("key")
+		end
 
-	if stade <= maxStade then
-		displayNewMission()
-		if mission_type == "1" then
-		  	local t = CreateFrame("Frame")
-			t:RegisterEvent("UNIT_TARGET")
-			t:SetScript("OnEvent", function(pUnit, ...)
-				if tostring(UnitName("target")):sub(1, -1) == tostring(NPC_LIST[setting]["name"][GetLocale()]) then 
-					t:UnregisterEvent("UNIT_TARGET")
+		local mission_type = string.sub(mission, 1, 1)
+		local setting = string.sub(mission, 2)
 
-			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-					NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-			  		startMission(key, stade + 1)
-			  	end
-			end)
-		elseif mission_type == "2" then
-			local is = true
-			local function hookPlayerMove(...)
-				if is == true then
-					local margin = 0.2
-					local x = round(getPlayerCoords()["x"], 3)
-					local y = round(getPlayerCoords()["y"], 3)
-					local zoneText = getPlayerCoords()["zoneText"]
+		print(mission, mission_type, setting)
 
-					-- local subZoneText = getPlayerCoords()["subZoneText"]
-
-					local px = LOCATIONS_LIST[setting]["x"]
-					local py = LOCATIONS_LIST[setting]["y"]
-					local pZoneText = LOCATIONS_LIST[setting]["zoneText"][language]
-					-- local pSubZoneText = LOCATIONS_LIST[setting]["subZoneText"]
-
-					local minPx = px - margin
-					local maxPx = px + margin
-
-					local minPy = py - margin
-					local maxPy = py + margin
-					
-					-- and subZoneText == pSubZoneText
-					if x >= minPx and x <= maxPx and y >= minPy and y <= maxPy and zoneText == pZoneText then 
-						is = false
+		if stade <= maxStade then
+			displayNewMission()
+			if mission_type == "1" then
+			  	local t = CreateFrame("Frame")
+				t:RegisterEvent("UNIT_TARGET")
+				t:SetScript("OnEvent", function(pUnit, ...)
+					if tostring(UnitName("target")):sub(1, -1) == tostring(NPC_LIST[setting]["name"][GetLocale()]) then 
+						t:UnregisterEvent("UNIT_TARGET")
 
 				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				  		startMission(key, stade + 1)
-					end
-				end
-			end
+				  	end
+				end)
+			elseif mission_type == "2" then
+				local is = true
+				local function hookPlayerMove(...)
+					if is == true then
+						local margin = 0.2
+						local x = round(getPlayerCoords()["x"], 3)
+						local y = round(getPlayerCoords()["y"], 3)
+						local zoneText = getPlayerCoords()["zoneText"]
 
-			hooksecurefunc("MoveForwardStop", hookPlayerMove)
-		elseif mission_type == "3" then
-			local reqItemId = ITEMS_LIST[setting]["id"]
-					
-			getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+						-- local subZoneText = getPlayerCoords()["subZoneText"]
 
-			if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
-		  		wait(0.1, function()
-			  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-					NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-			  		startMission(key, stade + 1)
-			  	end)
-			else
-				local i = CreateFrame("Frame")
-				i:RegisterEvent("ITEM_PUSH")
-				i:SetScript("OnEvent", function(self, ...)
+						local px = LOCATIONS_LIST[setting]["x"]
+						local py = LOCATIONS_LIST[setting]["y"]
+						local pZoneText = LOCATIONS_LIST[setting]["zoneText"][language]
+						-- local pSubZoneText = LOCATIONS_LIST[setting]["subZoneText"]
 
-			  		wait(0.1, function()
+						local minPx = px - margin
+						local maxPx = px + margin
 
-						getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+						local minPy = py - margin
+						local maxPy = py + margin
+						
+						-- and subZoneText == pSubZoneText
+						if x >= minPx and x <= maxPx and y >= minPy and y <= maxPy and zoneText == pZoneText then 
+							is = false
 
-						if GetItemCount(reqItemId) >=  ITEMS_LIST[setting]["amount"] then
 					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 					  		startMission(key, stade + 1)
-							i:UnregisterEvent("ITEM_PUSH")
 						end
-					end)
-				end)
-			end
-		elseif mission_type == "4" then
-						local kills = 0
-
-			if vGet("kills") ~= nil and vGet("kills") ~= 0 then
-				kills = vGet("kills")
-			end
-
-			local i = CreateFrame("Frame")
-			i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED") -- CHAT_MSG_GUILD
-			i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
-				if sourceGUID == true and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
-					kills = kills + 1
-					vSave("kills", kills)
-
-					if kills <= KILL_LIST[setting]["amount"] then
-						RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"][GetLocale()] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
-						print(kills .. "/" .. KILL_LIST[setting]["amount"])
-						getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. KILL_LIST[setting]["amount"])
-					end
-
-					if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
-				  		-- print("|cFF00FF00Mission accomplie !")
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-			
-						vSave("kills", 0)
-				  		
-				  		startMission(key, stade + 1)
 					end
 				end
-			end)
+
+				hooksecurefunc("MoveForwardStop", hookPlayerMove)
+			elseif mission_type == "3" then
+				local reqItemId = ITEMS_LIST[setting]["id"]
+						
+				getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+
+				if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
+			  		wait(0.1, function()
+				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+				  		startMission(key, stade + 1)
+				  	end)
+				else
+					local i = CreateFrame("Frame")
+					i:RegisterEvent("ITEM_PUSH")
+					i:SetScript("OnEvent", function(self, ...)
+
+				  		wait(0.1, function()
+
+							getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+
+							if GetItemCount(reqItemId) >=  ITEMS_LIST[setting]["amount"] then
+						  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+								NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+						  		startMission(key, stade + 1)
+								i:UnregisterEvent("ITEM_PUSH")
+							end
+						end)
+					end)
+				end
+			elseif mission_type == "4" then
+							local kills = 0
+
+				if vGet("kills") ~= nil and vGet("kills") ~= 0 then
+					kills = vGet("kills")
+				end
+
+				local i = CreateFrame("Frame")
+				i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED") -- CHAT_MSG_GUILD
+				i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
+					if sourceGUID == true and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
+						kills = kills + 1
+						vSave("kills", kills)
+
+						if kills <= KILL_LIST[setting]["amount"] then
+							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"][GetLocale()] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
+							print(kills .. "/" .. KILL_LIST[setting]["amount"])
+							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. KILL_LIST[setting]["amount"])
+						end
+
+						if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
+					  		-- print("|cFF00FF00Mission accomplie !")
+					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+				
+							vSave("kills", 0)
+					  		
+					  		startMission(key, stade + 1)
+						end
+					end
+				end)
+			end
 		end
 	end
 end
@@ -180,6 +180,6 @@ function getSubIndication(mission_type, setting)
 	elseif mission_type == "3" then
 		return ITEMS_LIST[setting]["indication"]
 	elseif mission_type == "4" then 
-		return KILL_LIST[setting]["indication"]
+		return "Compteur : 0/" .. KILL_LIST[setting]["amount"]
 	end
 end
