@@ -125,16 +125,16 @@ function startMission(key, stade)
 					end)
 				end
 			elseif mission_type == "4" then
-							local kills = 0
+				local kills = 0
 
 				if vGet("kills") ~= nil and vGet("kills") ~= 0 then
 					kills = vGet("kills")
 				end
 
 				local i = CreateFrame("Frame")
-				i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED") -- CHAT_MSG_GUILD
+				i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED")
 				i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
-					if sourceGUID == true and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
+					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
 						kills = kills + 1
 						vSave("kills", kills)
 
