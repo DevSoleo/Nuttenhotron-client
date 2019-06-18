@@ -145,7 +145,6 @@ function startMission(key, stade)
 						end
 
 						if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
-					  		-- print("|cFF00FF00Mission accomplie !")
 					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				
