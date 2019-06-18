@@ -2,8 +2,8 @@
 ## Title: wow-event-addon-client
 ## Author: Soleo
 ## Version: 1.0.0-test
-## SavedVariables: _AClient
-## SavedVariablesPerCharacter: _PClient
+## SavedVariables: _PClient
+## SavedVariablesPerCharacter: _AClient
 ## X-Category: Guild, Quest
 
 functions\system_fn.lua
