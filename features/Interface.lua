@@ -288,7 +288,10 @@ function displayMissions()
 		local setting = string.sub(mission, 2)
 
 		addMissionLine("|cFF4A4A4A" .. getIndication(mission_type, setting), i)
-		addMissionSubLine("|cFF4A4A4ATerminé !", i)
+
+		if i ~= vGet("stade") then
+			addMissionSubLine("|cFF4A4A4ATerminé !", i)
+		end
 	end
 end
 
