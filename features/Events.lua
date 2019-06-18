@@ -110,8 +110,10 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		NuttenhClient.main_frame:Show()
 
 		-- On affiche les missions effectuées
-		displayMissions()
-
+		if vGet("stade") > 1 then
+			displayMissions()
+		end 
+		
 		NuttenhClient.main_frame.noReward:Hide()
 		NuttenhClient.main_frame.reward:Hide()
 

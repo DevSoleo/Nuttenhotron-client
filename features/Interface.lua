@@ -213,7 +213,7 @@ end
 function addMissionSubLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber - 1) * 35 + 0))
+	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber) * 35 - 20))
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 end
@@ -275,7 +275,13 @@ end
 
 -- Cette fonction permet d'afficher toutes les missions effectuées SAUF celle en cours
 function displayMissions()
-	local mission = split(vGet("key"), " ")[vGet("stade")]
+	local mission = nil
+
+	if string.find(vGet("key"), " ") then
+		mission = split(vGet("key"), " ")[vGet("stade")]
+	else
+		mission = vGet("key")
+	end
 
 	for i=1, vGet("stade") do
 		local mission_type = string.sub(mission, 1, 1)
