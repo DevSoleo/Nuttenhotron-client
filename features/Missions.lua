@@ -23,6 +23,7 @@ function finishAllMissions(isWinner)
 end
 
 function startMission(key, stade)
+	-- DoEmote("victory")
 	-- On actualise le stade
 	vSave("stade", stade)
 
@@ -31,8 +32,8 @@ function startMission(key, stade)
 		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:Hide()
 	else
 		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:Show()
-		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetMinMaxValues(1, 7 + (tonumber(vGet("stade")) - 7) * 35 + 8)
-		wait(1, NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetValue(7 + (tonumber(vGet("stade")) - 7) * 35 + 8)) 
+		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetMinMaxValues(1, 7 + (tonumber(vGet("stade")) - 7) * 35 + 12)
+		wait(1, NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetValue(7 + (tonumber(vGet("stade")) - 7) * 35 + 12)) 
 	end
 
 	PlaySound("QUESTADDED", "SFX")
@@ -54,8 +55,6 @@ function startMission(key, stade)
 		local mission_type = string.sub(mission, 1, 1)
 		local setting = string.sub(mission, 2)
 						
-		print("o" .. stade, maxStade)
-
 		if stade <= maxStade then
 			displayNewMission()
 			if mission_type == "1" then
