@@ -109,6 +109,10 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		-- On affiche le journal
 		NuttenhClient.main_frame:Show()
 
+		-- On actualise la barre de pourcentage
+  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
+		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
+
 		-- On affiche les missions effectuées
 		if vGet("stade") > 1 then
 			displayMissions()

@@ -276,11 +276,12 @@ function addIndication(text, tooltip, lineNumber, tType)
 			  	whileDead = true,
 			  	hideOnEscape = true,
 			  	hasEditBox = true,
+			  	enterClicksFirstButton = true,
 
 			  	OnAccept = function(self)
 					if self.editBox:GetText():lower() == ANSWER_LIST[setting]["answer"]:lower() then
 				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("stade"), " ")))) .. "%")
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
 			  			
 			  			startMission(vGet("key"), vGet("stade") + 1)
 					else

@@ -53,8 +53,8 @@ function startMission(key, stade)
 
 		local mission_type = string.sub(mission, 1, 1)
 		local setting = string.sub(mission, 2)
-
-		print(mission, mission_type, setting)
+						
+		print("o" .. stade, maxStade)
 
 		if stade <= maxStade then
 			displayNewMission()
@@ -163,8 +163,6 @@ function startMission(key, stade)
 						end
 					end
 				end)
-			elseif mission_type == "5" then
-				print(NuttenhClient.answer)
 			end
 		end
 	end
