@@ -18,6 +18,7 @@ functions\array_fn.lua
 functions\guild_fn.lua
 functions\party_fn.lua
 functions\player_fn.lua
+functions\key_fn.lua
 
 features\Lists.lua
 features\Missions.lua

@@ -141,10 +141,10 @@ NuttenhClient.main_frame.mission_list.scrollframe = NuttenhClient.main_frame.mis
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar = CreateFrame("Slider", nil, NuttenhClient.main_frame.mission_list.scrollframe, "UIPanelScrollBarTemplate") 
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetPoint("TOPLEFT", NuttenhClient.main_frame.mission_list, "TOPRIGHT", -20, -18) 
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetPoint("BOTTOMLEFT", NuttenhClient.main_frame.mission_list, "BOTTOMRIGHT", -20, 18) 
-NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetMinMaxValues(1, 200) 
-NuttenhClient.main_frame.mission_list.scrollframe.scrollbar.scrollStep = 200 / 100
+NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetMinMaxValues(1, 1) 
+NuttenhClient.main_frame.mission_list.scrollframe.scrollbar.scrollStep = 1
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetValueStep(NuttenhClient.main_frame.mission_list.scrollframe.scrollbar.scrollStep) 
-NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetValue(0) 
+NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetValue(6) 
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetWidth(16) 
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetFrameLevel(1)
 NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetScript("OnValueChanged", function (self, value) 
@@ -219,34 +219,79 @@ function addMissionSubLine(text, lineNumber)
 end
 
 -- Cette fonction sert à afficher un tooltip au passage de la souris sur la sub line
-function addIndication(text, tooltip, lineNumber)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 20))
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+function addIndication(text, tooltip, lineNumber, tType)
+	if tType == 1 then
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 20))
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] = CreateFrame("Frame", nil, NuttenhClient.main_frame.mission_list.content)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetFrameStrata("BACKGROUND")
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetBackdropBorderColor(255, 0, 0, 1)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 75, 0 - ((lineNumber - 1) * 35 + 19))
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetWidth(15)
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetHeight(15)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] = CreateFrame("Frame", nil, NuttenhClient.main_frame.mission_list.content)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetFrameStrata("BACKGROUND")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetBackdropBorderColor(255, 0, 0, 1)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 75, 0 - ((lineNumber - 1) * 35 + 19))
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetWidth(15)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetHeight(15)
 
-	local t = NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:CreateTexture(nil,"BACKGROUND")
-	t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
-	t:SetAllPoints(NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"])
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"].texture = t
+		local t = NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:CreateTexture(nil,"BACKGROUND")
+		t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+		t:SetAllPoints(NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"])
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"].texture = t
 
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnEnter", function(self)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnEnter", function(self)
 	  	GameTooltip:SetOwner(NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"], "ANCHOR_CURSOR")
 	  	GameTooltip:SetText(tooltip)
-	  	GameTooltip:Show()
-	end)
+		  	GameTooltip:Show()
+		end)
 
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnLeave", function(self)
-		GameTooltip:Hide()
-	end)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnLeave", function(self)
+			GameTooltip:Hide()
+		end)
+	elseif tType == 2 then
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 20))
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] = CreateFrame("Button", "MainFrame_MissionList_Content_Button" .. lineNumber, NuttenhClient.main_frame.mission_list.content, "GameMenuButtonTemplate")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 5, 0 - ((lineNumber - 1) * 35 + 19))
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetWidth(90)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetHeight(20)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetText("Question")
+
+		local readedKey = readKey(vGet("key"), vGet("stade"))
+		local max_stade = readedKey["max_stade"]
+		local setting = readedKey["setting"]
+
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnClick", function(self)
+			StaticPopupDialogs["QUESTION_1"] = {
+			  	text = ANSWER_LIST[setting]["question"],
+			  	
+			  	button1 = "Valider",
+			  	button2 = "Fermer",
+
+			  	timeout = 0,
+			  	whileDead = true,
+			  	hideOnEscape = true,
+			  	hasEditBox = true,
+
+			  	OnAccept = function(self)
+					if self.editBox:GetText():lower() == ANSWER_LIST[setting]["answer"]:lower() then
+				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("stade"), " ")))) .. "%")
+			  			
+			  			startMission(vGet("key"), vGet("stade") + 1)
+					else
+						print("Réponse incorrecte !")
+					end
+			  	end
+			}
+
+			StaticPopup_Show("QUESTION_1")
+		end)
+	end
 end
 
 function getLine(lineNumber)
@@ -275,17 +320,10 @@ end
 
 -- Cette fonction permet d'afficher toutes les missions effectuées SAUF celle en cours
 function displayMissions()
-	local mission = nil
-
-	if string.find(vGet("key"), " ") then
-		mission = split(vGet("key"), " ")[vGet("stade")]
-	else
-		mission = vGet("key")
-	end
-
-	for i=1, vGet("stade") do
-		local mission_type = string.sub(mission, 1, 1)
-		local setting = string.sub(mission, 2)
+	for i=1, vGet("stade") do		
+		local readedKey = readKey(vGet("key"), i)
+		local mission_type = readedKey["mission_type"]
+		local setting = readedKey["setting"]
 
 		addMissionLine("|cFF4A4A4A" .. getIndication(mission_type, setting), i)
 
@@ -318,8 +356,10 @@ function displayNewMission()
 
 	if mission_type == "3" or mission_type == "4" then
 		addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
+	elseif mission_type == "5" then
+		addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"), 2)
 	else
-		addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"))
+		addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"), 1)
 	end
 end
 

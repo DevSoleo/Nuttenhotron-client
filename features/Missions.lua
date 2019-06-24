@@ -26,6 +26,15 @@ function startMission(key, stade)
 	-- On actualise le stade
 	vSave("stade", stade)
 
+	-- On actualise la scrollbar
+	if vGet("stade") <= 6 then
+		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:Hide()
+	else
+		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:Show()
+		NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetMinMaxValues(1, 7 + (tonumber(vGet("stade")) - 7) * 35 + 8)
+		wait(1, NuttenhClient.main_frame.mission_list.scrollframe.scrollbar:SetValue(7 + (tonumber(vGet("stade")) - 7) * 35 + 8)) 
+	end
+
 	PlaySound("QUESTADDED", "SFX")
 
 	-- On récupère le nombre de missions présentes dans la clé
@@ -154,6 +163,8 @@ function startMission(key, stade)
 						end
 					end
 				end)
+			elseif mission_type == "5" then
+				print(NuttenhClient.answer)
 			end
 		end
 	end
@@ -168,6 +179,8 @@ function getIndication(mission_type, setting)
 		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()]
 	elseif mission_type == "4" then
 		return "Tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()]
+	elseif mission_type == "5" then
+		return "Répondez à la question suivante :"
 	end
 end
 
@@ -180,5 +193,7 @@ function getSubIndication(mission_type, setting)
 		return ITEMS_LIST[setting]["indication"]
 	elseif mission_type == "4" then 
 		return "Compteur : 0/" .. KILL_LIST[setting]["amount"]
+	elseif mission_type == "5" then
+		return ANSWER_LIST[setting]["indication"]
 	end
 end
