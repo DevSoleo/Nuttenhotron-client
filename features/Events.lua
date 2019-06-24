@@ -110,7 +110,6 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		NuttenhClient.main_frame:Show()
 
 		-- On actualise la barre de pourcentage
-		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
   		NuttenhClient.main_frame.statusbar:SetValue((vGet("stade") - 1) * 100 / getArraySize(split(vGet("key"), " ")))
 		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round((vGet("stade") - 1) * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
 
