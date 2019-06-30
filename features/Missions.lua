@@ -162,6 +162,8 @@ function startMission(key, stade)
 						end
 					end
 				end)
+			elseif mission_type == "6" then
+				getRandomItems(NuttenhAdmin.memo.boxes / 2)
 			end
 		end
 	end
@@ -178,6 +180,8 @@ function getIndication(mission_type, setting)
 		return "Tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()]
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
+	elseif mission_type == "6" then
+		return GAMES_LIST[setting]["name"][GetLocale()]
 	end
 end
 
@@ -192,5 +196,7 @@ function getSubIndication(mission_type, setting)
 		return "Compteur : 0/" .. KILL_LIST[setting]["amount"]
 	elseif mission_type == "5" then
 		return ANSWER_LIST[setting]["indication"]
+	elseif mission_type == "6" then
+		return GAMES_LIST[setting]["name"][GetLocale()]
 	end
 end

@@ -21,6 +21,7 @@ functions\player_fn.lua
 functions\key_fn.lua
 
 features\Lists.lua
+features\Memo.lua
 features\Missions.lua
 
 features\Interface.lua

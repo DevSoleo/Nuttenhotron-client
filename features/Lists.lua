@@ -32,3 +32,6 @@ ITEMS_LIST["1"] = {id=2070, name={frFR="Bleu de Darnassus", enUS="Darnassian Ble
 
 KILL_LIST["1"] = {name={frFR="Pourceau adulte sauvage", enUS=""}, amount=5, indication="Devant Orgrimmar !"}
 KILL_LIST["2"] = {name={frFR="Ecrevisse boueuse", enUS="Muddy Crawfish", esES="Centollo fangoso"}, amount=5, indication="Petites ecrevisses !"}
+
+MEMO_ITEMS_LIST = {71805, 78478, 71998, 36942, 77950, 71086, 32458, 50818, 18607, 18606, 20567,
+20572,20566, 20392, 16955, 52736, 77992, 62680, 49623, 19019, 44168, 32838, 55054, 34334}
