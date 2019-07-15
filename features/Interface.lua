@@ -292,6 +292,28 @@ function addIndication(text, tooltip, lineNumber, tType)
 
 			StaticPopup_Show("QUESTION_1")
 		end)
+	elseif tType == 3 then
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15,  0 - ((lineNumber - 1) * 35 + 20))
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
+
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"] = CreateFrame("Button", "MainFrame_MissionList_Content_Button" .. lineNumber, NuttenhClient.main_frame.mission_list.content, "GameMenuButtonTemplate")
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetPoint("TOPLEFT", 5, 0 - ((lineNumber - 1) * 35 + 19))
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetWidth(90)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetHeight(20)
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetText("Fermer")
+
+		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnClick", function(self)
+			if NuttenhClient.memo.memo_frame:IsShown() then
+				NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetText("Ouvrir")
+				NuttenhClient.memo.memo_frame:Hide()
+			else
+				NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetText("Fermer")
+				NuttenhClient.memo.memo_frame:Show()
+			end
+		end)
 	end
 end
 
@@ -359,6 +381,8 @@ function displayNewMission()
 		addMissionSubLine(getSubIndication(mission_type, setting), vGet("stade"))
 	elseif mission_type == "5" then
 		addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"), 2)
+	elseif mission_type == "6" then
+		addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"), 3)
 	else
 		addIndication("INDICE", getSubIndication(mission_type, setting), vGet("stade"), 1)
 	end
@@ -489,55 +513,3 @@ end
 
 ---------------------------------------------------------------------------------------
 
--- Create minimap button
- 
-local minibtn = CreateFrame("Button", nil, Minimap)
-minibtn:SetFrameLevel(8)
-minibtn:SetSize(32,32)
-minibtn:SetMovable(true)
- 
--- minibtn:SetNormalTexture("Interface/AddOns/AutoSell/Leatrix_Plus_Up.blp")
--- minibtn:SetPushedTexture("Interface/AddOns/AutoSell/Leatrix_Plus_Up.blp")
--- minibtn:SetHighlightTexture("Interface/AddOns/AutoSell/Leatrix_Plus_Up.blp")
- 
-minibtn:SetNormalTexture("Interface/ICONS/Thumbsup.png")
-minibtn:SetPushedTexture("Interface/ICONS/Thumbsup.png")
-minibtn:SetHighlightTexture("Interface/ICONS/Thumbsup.png")
- 
-local myIconPos = 0
- 
--- Control movement
-local function UpdateMapBtn()
-    local Xpoa, Ypoa = GetCursorPosition()
-    local Xmin, Ymin = Minimap:GetLeft(), Minimap:GetBottom()
-    Xpoa = Xmin - Xpoa / Minimap:GetEffectiveScale() + 70
-    Ypoa = Ypoa / Minimap:GetEffectiveScale() - Ymin - 70
-    myIconPos = math.deg(math.atan2(Ypoa, Xpoa))
-    minibtn:ClearAllPoints()
-    minibtn:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 52 - (80 * cos(myIconPos)), (80 * sin(myIconPos)) - 52)
-end
- 
-minibtn:RegisterForDrag("LeftButton")
-minibtn:SetScript("OnDragStart", function()
-    minibtn:StartMoving()
-    minibtn:SetScript("OnUpdate", UpdateMapBtn)
-end)
- 
-minibtn:SetScript("OnDragStop", function()
-    minibtn:StopMovingOrSizing();
-    minibtn:SetScript("OnUpdate", nil)
-    UpdateMapBtn();
-end)
- 
--- Set position
-minibtn:ClearAllPoints();
-minibtn:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 60 - (80 * cos(myIconPos)), (80 * sin(myIconPos)) - 90)
- 
--- Control clicks
-minibtn:SetScript("OnClick", function()
-	if NuttenhAdmin.main_frame:IsShown() == nil then
-    	NuttenhAdmin.main_frame:Show()
-    else
-    	NuttenhAdmin.main_frame:Hide()
-    end
-end)

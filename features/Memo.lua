@@ -1,12 +1,12 @@
-NuttenhAdmin.memo = {}
+NuttenhClient.memo = {}
 
 -- Création de la fenêtre principale
-NuttenhAdmin.memo.memo_frame = CreateFrame("Frame", nil, UIParent)
-NuttenhAdmin.memo.memo_frame:SetFrameStrata("BACKGROUND")
-NuttenhAdmin.memo.memo_frame:SetWidth(250)
-NuttenhAdmin.memo.memo_frame:SetHeight(250)
+NuttenhClient.memo.memo_frame = CreateFrame("Frame", nil, UIParent)
+NuttenhClient.memo.memo_frame:SetFrameStrata("BACKGROUND")
+NuttenhClient.memo.memo_frame:SetWidth(250)
+NuttenhClient.memo.memo_frame:SetHeight(250)
 
-NuttenhAdmin.memo.memo_frame:SetBackdrop({
+NuttenhClient.memo.memo_frame:SetBackdrop({
 	bgFile="Interface/Tooltips/UI-Tooltip-Background", 
 	edgeFile="Interface/Tooltips/UI-Tooltip-Border",
 	tile=false,
@@ -20,134 +20,134 @@ NuttenhAdmin.memo.memo_frame:SetBackdrop({
 	}
 })
 
-NuttenhAdmin.memo.memo_frame:SetBackdropColor(0, 0, 0)
-NuttenhAdmin.memo.memo_frame:SetPoint("CENTER", 0, 20)
+NuttenhClient.memo.memo_frame:SetBackdropColor(0, 0, 0)
+NuttenhClient.memo.memo_frame:SetPoint("CENTER", 0, 20)
 
-NuttenhAdmin.memo.memo_frame:Hide()
+NuttenhClient.memo.memo_frame:Hide()
 
-NuttenhAdmin.memo.title = NuttenhAdmin.memo.memo_frame:CreateFontString(nil, "ARTWORK")
-NuttenhAdmin.memo.title:SetFont("Fonts\\FRIZQT__.TTF", 14)
-NuttenhAdmin.memo.title:SetPoint("TOP", 0, -30)
-NuttenhAdmin.memo.title:SetText("Résolvez le mémo suivant :")
-NuttenhAdmin.memo.title:SetTextColor(255, 255, 255, 1)
+NuttenhClient.memo.title = NuttenhClient.memo.memo_frame:CreateFontString(nil, "ARTWORK")
+NuttenhClient.memo.title:SetFont("Fonts\\FRIZQT__.TTF", 14)
+NuttenhClient.memo.title:SetPoint("TOP", 0, -30)
+NuttenhClient.memo.title:SetText("Résolvez le mémo suivant :")
+NuttenhClient.memo.title:SetTextColor(255, 255, 255, 1)
 
-NuttenhAdmin.memo.itemsFrames = {}
--- NuttenhAdmin.memo.openedFrames : stocke le nombre de frames d'items actuellement ouvertes
-NuttenhAdmin.memo.openedFrames = 0
+NuttenhClient.memo.itemsFrames = {}
+-- NuttenhClient.memo.openedFrames : stocke le nombre de frames d'items actuellement ouvertes
+NuttenhClient.memo.openedFrames = 0
 
--- NuttenhAdmin.memo.totalMove : stocke le nombre TOTAL de tours
-NuttenhAdmin.memo.totalMoves = 0
+-- NuttenhClient.memo.totalMove : stocke le nombre TOTAL de tours
+NuttenhClient.memo.totalMoves = 0
 
--- NuttenhAdmin.memo.points : stocke le nombre de points gagnés par le joueur
-NuttenhAdmin.memo.points = 0
+-- NuttenhClient.memo.points : stocke le nombre de points gagnés par le joueur
+NuttenhClient.memo.points = 0
 
-NuttenhAdmin.memo.move = nil
+NuttenhClient.memo.move = nil
 
-NuttenhAdmin.memo.moveOne = {}
-NuttenhAdmin.memo.moveTwo = {}
+NuttenhClient.memo.moveOne = {}
+NuttenhClient.memo.moveTwo = {}
 
-NuttenhAdmin.memo.moveOne.id = nil
-NuttenhAdmin.memo.moveTwo.id = nil
+NuttenhClient.memo.moveOne.id = nil
+NuttenhClient.memo.moveTwo.id = nil
 
-NuttenhAdmin.memo.moveOne.pos = nil
-NuttenhAdmin.memo.moveTwo.pos = nil
+NuttenhClient.memo.moveOne.pos = nil
+NuttenhClient.memo.moveTwo.pos = nil
 
-NuttenhAdmin.memo.points = 0
-NuttenhAdmin.memo.boxes = 12
+NuttenhClient.memo.points = 0
+NuttenhClient.memo.boxes = 12
 
-NuttenhAdmin.memo.itemPositions = {}
+NuttenhClient.memo.itemPositions = {}
 
-NuttenhAdmin.memo.inCooldown = false
+NuttenhClient.memo.inCooldown = false
 
 function addIcon(itemId, x, y)
-	local i = getArraySize(NuttenhAdmin.memo.itemsFrames)
+	local i = getArraySize(NuttenhClient.memo.itemsFrames)
 
-	NuttenhAdmin.memo.itemsFrames[i] = CreateFrame("Frame", nil, NuttenhAdmin.memo.memo_frame)
-	NuttenhAdmin.memo.itemsFrames[i]:SetSize(35, 35)
-	NuttenhAdmin.memo.itemsFrames[i]:SetPoint("BOTTOM", x, y)
+	NuttenhClient.memo.itemsFrames[i] = CreateFrame("Frame", nil, NuttenhClient.memo.memo_frame)
+	NuttenhClient.memo.itemsFrames[i]:SetSize(35, 35)
+	NuttenhClient.memo.itemsFrames[i]:SetPoint("BOTTOM", x, y)
 
-	NuttenhAdmin.memo.itemsFrames[i]["itemId"] = itemId
+	NuttenhClient.memo.itemsFrames[i]["itemId"] = itemId
 
-	NuttenhAdmin.memo.itemsFrames[i]["texture"] = NuttenhAdmin.memo.itemsFrames[i]:CreateTexture()
-	NuttenhAdmin.memo.itemsFrames[i]["texture"]:SetAllPoints()
-	NuttenhAdmin.memo.itemsFrames[i]["texture"]:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
-	-- NuttenhAdmin.memo.itemsFrames[i]["texture"]:SetTexture(GetItemIcon(itemId)) -- A RETIRER
+	NuttenhClient.memo.itemsFrames[i]["texture"] = NuttenhClient.memo.itemsFrames[i]:CreateTexture()
+	NuttenhClient.memo.itemsFrames[i]["texture"]:SetAllPoints()
+	NuttenhClient.memo.itemsFrames[i]["texture"]:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+	-- NuttenhClient.memo.itemsFrames[i]["texture"]:SetTexture(GetItemIcon(itemId)) -- A RETIRER
 
-	NuttenhAdmin.memo.itemsFrames[i]["cooldown"] = CreateFrame("Cooldown", "Memo_Cooldown_" .. i, NuttenhAdmin.memo.itemsFrames[i], "CooldownFrameTemplate")
-	NuttenhAdmin.memo.itemsFrames[i]["cooldown"]:SetAllPoints()
+	NuttenhClient.memo.itemsFrames[i]["cooldown"] = CreateFrame("Cooldown", "Memo_Cooldown_" .. i, NuttenhClient.memo.itemsFrames[i], "CooldownFrameTemplate")
+	NuttenhClient.memo.itemsFrames[i]["cooldown"]:SetAllPoints()
 
-	NuttenhAdmin.memo.itemsFrames[i]["cooldown"]:SetCooldown(GetTime(), 0.1)
+	NuttenhClient.memo.itemsFrames[i]["cooldown"]:SetCooldown(GetTime(), 0.1)
 
-	NuttenhAdmin.memo.itemsFrames[i]["button"] = CreateFrame("Button", nil, NuttenhAdmin.memo.itemsFrames[i])
-	NuttenhAdmin.memo.itemsFrames[i]["button"]:SetFrameStrata("BACKGROUND")
-	NuttenhAdmin.memo.itemsFrames[i]["button"]:SetBackdropBorderColor(255, 0, 0, 1)
-	NuttenhAdmin.memo.itemsFrames[i]["button"]:SetAllPoints()
+	NuttenhClient.memo.itemsFrames[i]["button"] = CreateFrame("Button", nil, NuttenhClient.memo.itemsFrames[i])
+	NuttenhClient.memo.itemsFrames[i]["button"]:SetFrameStrata("BACKGROUND")
+	NuttenhClient.memo.itemsFrames[i]["button"]:SetBackdropBorderColor(255, 0, 0, 1)
+	NuttenhClient.memo.itemsFrames[i]["button"]:SetAllPoints()
 
-	NuttenhAdmin.memo.itemsFrames[i]["button"]:SetScript("OnClick", function(self)
-		if NuttenhAdmin.memo.inCooldown == false and i ~= NuttenhAdmin.memo.moveOne.pos then
+	NuttenhClient.memo.itemsFrames[i]["button"]:SetScript("OnClick", function(self)
+		if NuttenhClient.memo.inCooldown == false and i ~= NuttenhClient.memo.moveOne.pos then
 			local cooldown = 2
 
 			-- print("ID : " .. i)
 
-			NuttenhAdmin.memo.totalMoves = NuttenhAdmin.memo.totalMoves + 1
+			NuttenhClient.memo.totalMoves = NuttenhClient.memo.totalMoves + 1
 
-			NuttenhAdmin.memo.openedFrames = NuttenhAdmin.memo.openedFrames + 1
+			NuttenhClient.memo.openedFrames = NuttenhClient.memo.openedFrames + 1
 
-			if NuttenhAdmin.memo.totalMoves % 2 == 0 then
+			if NuttenhClient.memo.totalMoves % 2 == 0 then
 				-- Second tour
-				NuttenhAdmin.memo.moveTwo.id = NuttenhAdmin.memo.itemsFrames[i]["itemId"]
-				NuttenhAdmin.memo.moveTwo.pos = i
+				NuttenhClient.memo.moveTwo.id = NuttenhClient.memo.itemsFrames[i]["itemId"]
+				NuttenhClient.memo.moveTwo.pos = i
 
-				if NuttenhAdmin.memo.moveOne.id == NuttenhAdmin.memo.moveTwo.id then
-					NuttenhAdmin.memo.moveOne.id = nil
-					NuttenhAdmin.memo.moveTwo.id = nil
+				if NuttenhClient.memo.moveOne.id == NuttenhClient.memo.moveTwo.id then
+					NuttenhClient.memo.moveOne.id = nil
+					NuttenhClient.memo.moveTwo.id = nil
 
-					NuttenhAdmin.memo.itemsFrames[NuttenhAdmin.memo.moveOne.pos]:Hide()
-					NuttenhAdmin.memo.itemsFrames[NuttenhAdmin.memo.moveTwo.pos]:Hide()
+					NuttenhClient.memo.itemsFrames[NuttenhClient.memo.moveOne.pos]:Hide()
+					NuttenhClient.memo.itemsFrames[NuttenhClient.memo.moveTwo.pos]:Hide()
 
-					NuttenhAdmin.memo.points = NuttenhAdmin.memo.points + 1
+					NuttenhClient.memo.points = NuttenhClient.memo.points + 1
 
-					if NuttenhAdmin.memo.points >= NuttenhAdmin.memo.boxes / 2 then 
+					if NuttenhClient.memo.points >= NuttenhClient.memo.boxes / 2 then 
 						-- Victoire
-						NuttenhAdmin.memo.memo_frame:Hide()
+						NuttenhClient.memo.memo_frame:Hide()
 				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
 						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
 						startMission(vGet("key"), vGet("stade") + 1)
 					end
 				else
-					NuttenhAdmin.memo.itemsFrames[NuttenhAdmin.memo.moveOne.pos]["cooldown"]:SetCooldown(GetTime(), cooldown)
-					NuttenhAdmin.memo.itemsFrames[NuttenhAdmin.memo.moveTwo.pos]["cooldown"]:SetCooldown(GetTime(), cooldown)
+					NuttenhClient.memo.itemsFrames[NuttenhClient.memo.moveOne.pos]["cooldown"]:SetCooldown(GetTime(), cooldown)
+					NuttenhClient.memo.itemsFrames[NuttenhClient.memo.moveTwo.pos]["cooldown"]:SetCooldown(GetTime(), cooldown)
 
-					NuttenhAdmin.memo.inCooldown = true
+					NuttenhClient.memo.inCooldown = true
 
-					NuttenhAdmin.memo.moveOne.id = nil
-					NuttenhAdmin.memo.moveTwo.id = nil
+					NuttenhClient.memo.moveOne.id = nil
+					NuttenhClient.memo.moveTwo.id = nil
 
 					wait(cooldown, function()
-						NuttenhAdmin.memo.inCooldown = false
+						NuttenhClient.memo.inCooldown = false
 
-						NuttenhAdmin.memo.itemsFrames[NuttenhAdmin.memo.moveOne.pos]["texture"]:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
-						NuttenhAdmin.memo.itemsFrames[NuttenhAdmin.memo.moveTwo.pos]["texture"]:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+						NuttenhClient.memo.itemsFrames[NuttenhClient.memo.moveOne.pos]["texture"]:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+						NuttenhClient.memo.itemsFrames[NuttenhClient.memo.moveTwo.pos]["texture"]:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
 
-						NuttenhAdmin.memo.openedFrames =  NuttenhAdmin.memo.openedFrames - 1
+						NuttenhClient.memo.openedFrames =  NuttenhClient.memo.openedFrames - 1
 					end)
 				end
 			else
-				NuttenhAdmin.memo.moveTwo.id = nil
+				NuttenhClient.memo.moveTwo.id = nil
 
-				NuttenhAdmin.memo.moveTwo.pos = nil
+				NuttenhClient.memo.moveTwo.pos = nil
 				-- Premier tour
-				NuttenhAdmin.memo.moveOne.id = NuttenhAdmin.memo.itemsFrames[i]["itemId"]
-				NuttenhAdmin.memo.moveOne.pos = i
+				NuttenhClient.memo.moveOne.id = NuttenhClient.memo.itemsFrames[i]["itemId"]
+				NuttenhClient.memo.moveOne.pos = i
 			end
 
-			NuttenhAdmin.memo.itemsFrames[i]["texture"]:SetTexture(GetItemIcon(itemId))
+			NuttenhClient.memo.itemsFrames[i]["texture"]:SetTexture(GetItemIcon(itemId))
 		end
 	end)
 end
 
 function getRandomItems(amount)
-	NuttenhAdmin.memo.memo_frame:Show()
+	NuttenhClient.memo.memo_frame:Show()
 
 	local a = {}
 	for i=0, amount do
@@ -172,18 +172,18 @@ function getRandomItems(amount)
 			addIcon(b[pos], 90 - (60 * mod(e - 1, 4)), 145)
 		end
 
-		NuttenhAdmin.memo.itemPositions[getArraySize(NuttenhAdmin.memo.itemPositions)] = b[pos]
+		NuttenhClient.memo.itemPositions[getArraySize(NuttenhClient.memo.itemPositions)] = b[pos]
 	end
 end
 
-for i=0, getArraySize(NuttenhAdmin.memo.itemPositions) - 1 do
-	local nbSolutions = getArraySize(NuttenhAdmin.memo.itemPositions) / 2
+for i=0, getArraySize(NuttenhClient.memo.itemPositions) - 1 do
+	local nbSolutions = getArraySize(NuttenhClient.memo.itemPositions) / 2
 	local solutions = {}
 
 	if i <= nbSolutions then
 		-- Première partie (0-6)
-		solutions[i] = {id=NuttenhAdmin.memo.itemPositions[i], }
+		solutions[i] = {id=NuttenhClient.memo.itemPositions[i], }
 	end
 
-	print(i .. " : " .. NuttenhAdmin.memo.itemPositions[i])
+	print(i .. " : " .. NuttenhClient.memo.itemPositions[i])
 end

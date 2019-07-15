@@ -76,7 +76,6 @@ function startMission(key, stade)
 
 				local onUpdate = CreateFrame("Frame")
 				onUpdate:SetScript("OnUpdate", function(self, elapsed)
-					print("ok")
 				    lastUpdate = lastUpdate + elapsed;
 
 				    if lastUpdate > 0.1 then
@@ -106,7 +105,7 @@ function startMission(key, stade)
 	                            startMission(key, stade + 1)
 				            end
 				        else
-				        	self:SetScript("OnUpdate", function() end)
+				        	self:Hide()
 				        end
 
 				        lastUpdate = 0;
@@ -120,7 +119,6 @@ function startMission(key, stade)
 
 				local onUpdate = CreateFrame("Frame")
 				onUpdate:SetScript("OnUpdate", function(self, elapsed)
-					print("chauv")
 				    lastUpdate = lastUpdate + elapsed;
 
 				    if lastUpdate > 0.1 then
@@ -137,7 +135,7 @@ function startMission(key, stade)
 					            startMission(key, stade + 1)
 					        end
 				        else
-				        	self:SetScript("OnUpdate", function() end)
+				        	self:Hide()
 				        end
 
 				        lastUpdate = 0;
@@ -174,7 +172,7 @@ function startMission(key, stade)
 					end
 				end)
 			elseif mission_type == "6" then
-				getRandomItems(NuttenhAdmin.memo.boxes / 2)
+				getRandomItems(NuttenhClient.memo.boxes / 2)
 			end
 		end
 	end
@@ -184,7 +182,7 @@ function getIndication(mission_type, setting)
 	if mission_type == "1" then
 		return "Cibler : " .. NPC_LIST[setting]["name"][GetLocale()]
 	elseif mission_type == "2" then
-		return "Trouver : " .. LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
+		return "Trouver : " .. LOCATIONS_LIST[setting]["displayName"][GetLocale()]
 	elseif mission_type == "3" then
 		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()]
 	elseif mission_type == "4" then
@@ -192,7 +190,7 @@ function getIndication(mission_type, setting)
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
-		return GAMES_LIST[setting]["name"][GetLocale()]
+		return "Mini-jeu : " .. GAMES_LIST[setting]["name"][GetLocale()]
 	end
 end
 

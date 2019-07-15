@@ -3,6 +3,7 @@ ANSWER_LIST = {}
 LOCATIONS_LIST = {}
 ITEMS_LIST = {}
 KILL_LIST = {}
+GAMES_LIST = {}
 
 NPC_LIST["1"] = {name={frFR="Miwana", enUS="Miwana"}, indication="Elle se trouve quelque part à Orgrimmar"}
 NPC_LIST["2"] = {name={frFR="Roturière taurène"}, indication="Elle se trouve quelque part à Orgrimmar"}
@@ -26,7 +27,8 @@ NPC_LIST["19"] = {name={frFR="Xi'ri"}, indication="Xi'Ri est un Naaru que l'on p
 
 ANSWER_LIST["1"] = {question="Quel est le nom du créateur de cet addon ?", answer="soleo", indication="Quel est le nom du créateur de cet addon ?"}
 
-LOCATIONS_LIST["1"] = {x="38.9", y="48.7", zoneText={frFR="Maison longue de Miwana", enUS="Miwana's Longhouse"}, subZoneText={frFR="Maison longue de Miwana"}, indication="Elle se trouve quelque part à Orgrimmar"}
+LOCATIONS_LIST["1"] = {x="38.9", y="48.7", zoneText={frFR="Maison longue de Miwana", enUS="Miwana's Longhouse"}, indication="Elle se trouve quelque part à Orgrimmar", displayName={frFR="Maison longue de Miwana"}}
+LOCATIONS_LIST["2"] = {x="57.4", y="58.4", zoneText={frFR="Orgrimmar", enUS="Orgrimmar"}, indication="L'orphelinat se trouve quelque part à Orgrimmar", displayName={frFR="L'orphelinat d'Orgrimmar"}}
 
 ITEMS_LIST["1"] = {id=2070, name={frFR="Bleu de Darnassus", enUS="Darnassian Bleu"}, amount=10, indication="Bleu de Darnassus"}
 
@@ -35,3 +37,5 @@ KILL_LIST["2"] = {name={frFR="Ecrevisse boueuse", enUS="Muddy Crawfish", esES="C
 
 MEMO_ITEMS_LIST = {71805, 78478, 71998, 36942, 77950, 71086, 32458, 50818, 18607, 18606, 20567,
 20572,20566, 20392, 16955, 52736, 77992, 62680, 49623, 19019, 44168, 32838, 55054, 34334}
+
+GAMES_LIST["1"] = {name={frFR="Mémo"}}	
