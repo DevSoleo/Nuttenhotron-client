@@ -9,8 +9,6 @@
 functions\system_fn.lua
 functions\storage_fn.lua
 
-main.lua
-
 functions\math_fn.lua
 functions\string_fn.lua
 functions\array_fn.lua
@@ -19,6 +17,8 @@ functions\guild_fn.lua
 functions\party_fn.lua
 functions\player_fn.lua
 functions\key_fn.lua
+
+main.lua
 
 features\Lists.lua
 features\Memo.lua
