@@ -18,12 +18,13 @@ function finishAllMissions(isWinner)
 	if isWinner == true then
 		message("|cFFFFFFFFBravo ! Vous avez terminé l'évènement.\n Si vous êtes premier, allez récupérer vos récompenses auprès d'un officier !")
 
+		DoEmote("victory")
+
 		SendChatMessage("---- " .. UnitName("player") .. " a terminé l'event ! Bravo ! ----", "GUILD")
 	end
 end
 
 function startMission(key, stade)
-	-- DoEmote("victory")
 	-- On actualise le stade
 	vSave("stade", stade)
 
@@ -75,6 +76,7 @@ function startMission(key, stade)
 
 				local onUpdate = CreateFrame("Frame")
 				onUpdate:SetScript("OnUpdate", function(self, elapsed)
+					print("ok")
 				    lastUpdate = lastUpdate + elapsed;
 
 				    if lastUpdate > 0.1 then
@@ -86,8 +88,6 @@ function startMission(key, stade)
 				            local y = round(getPlayerCoords()["y"], 3)
 				            local zoneText = GetZoneText()
 
-				            -- local subZoneText = getPlayerCoords()["subZoneText"]
-
 				            local px = LOCATIONS_LIST[setting]["x"]
 				            local py = LOCATIONS_LIST[setting]["y"]
 				            local pZoneText = LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
@@ -98,7 +98,6 @@ function startMission(key, stade)
 				            local minPy = py - margin
 				            local maxPy = py + margin
 				            
-				            -- and subZoneText == pSubZoneText
 				            if x >= minPx and x <= maxPx and y >= minPy and y <= maxPy and zoneText == pZoneText then 
 				                is = false
 
@@ -106,6 +105,8 @@ function startMission(key, stade)
 	                            NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 	                            startMission(key, stade + 1)
 				            end
+				        else
+				        	self:SetScript("OnUpdate", function() end)
 				        end
 
 				        lastUpdate = 0;
@@ -114,32 +115,34 @@ function startMission(key, stade)
 			elseif mission_type == "3" then
 				local reqItemId = ITEMS_LIST[setting]["id"]
 						
-				getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+				local lastUpdate = 0
+				local is = true
 
-				if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
-			  		wait(0.1, function()
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-				  		startMission(key, stade + 1)
-				  	end)
-				else
-					local i = CreateFrame("Frame")
-					i:RegisterEvent("ITEM_PUSH")
-					i:SetScript("OnEvent", function(self, ...)
+				local onUpdate = CreateFrame("Frame")
+				onUpdate:SetScript("OnUpdate", function(self, elapsed)
+					print("chauv")
+				    lastUpdate = lastUpdate + elapsed;
 
-				  		wait(0.1, function()
+				    if lastUpdate > 0.1 then
+						
+						-- Début /0.1s
+				    	if is == true then
+					        getSubLine(vGet("stade")):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST["1"]["amount"])
 
-							getSubLine(stade):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST[setting]["amount"])
+					        if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
+					        	is = false
 
-							if GetItemCount(reqItemId) >=  ITEMS_LIST[setting]["amount"] then
-						  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-								NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-						  		startMission(key, stade + 1)
-								i:UnregisterEvent("ITEM_PUSH")
-							end
-						end)
-					end)
-				end
+					            NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+					            NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+					            startMission(key, stade + 1)
+					        end
+				        else
+				        	self:SetScript("OnUpdate", function() end)
+				        end
+
+				        lastUpdate = 0;
+				    end
+				end)
 			elseif mission_type == "4" then
 				local kills = 0
 

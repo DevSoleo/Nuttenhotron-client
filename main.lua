@@ -2,7 +2,7 @@ NuttenhClient = {}
 NuttenhClient.addonName = "Event-Client"
 
 
-local isRight = false
+--[[local isRight = false
 local isLeft = false
 
 local function test()
@@ -39,3 +39,4 @@ hooksecurefunc("TurnOrActionStop"  , leftClickStop)
 hooksecurefunc("ToggleAutoRun", function()
     print("apizjaeozhbehjaek")
 end)
+]]
