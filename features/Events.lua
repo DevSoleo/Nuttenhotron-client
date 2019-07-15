@@ -35,6 +35,33 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			-- On affiche les récompenses dans le journal
 			displayRewards()
 
+			-- On récupère l'heure de fin de l'event et on la stocke
+			local eventDurationHours = 4
+
+			local hour = tonumber(getServerDate("%H")) + eventDurationHours -- date("%H")
+			local endHour = hour - math.floor(hour / 24) * 24
+			local minutes = tonumber(getServerDate("%M")) -- date("%M")
+
+			local day = tonumber(getServerDate("%d"))
+
+			if endHour <= 4 then
+				day = day + 1
+			end
+
+			if #tostring(day) == 1 then
+				day = "0" .. tostring(day)
+			end
+
+			if #tostring(endHour) == 1 then
+				endHour = "0" .. tostring(endHour)
+			end
+
+			if #tostring(minutes) == 1 then
+				minutes = "0" .. tostring(minutes)
+			end
+
+			vSave("endTime", endHour .. ":" .. minutes) -- SAY
+
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
 		elseif string.find(message, "L'évènement est terminé !") then
@@ -130,6 +157,60 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		displayRewards()
 		-- On démarre la mission qui été en cours avant le reload
 		startMission(vGet("key"), vGet("stade"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	else
 		NuttenhClient.main_frame:Hide()
 		vSmoothClear()

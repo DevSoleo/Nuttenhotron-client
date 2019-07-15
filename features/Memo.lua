@@ -87,14 +87,13 @@ function addIcon(itemId, x, y)
 		if NuttenhAdmin.memo.inCooldown == false and i ~= NuttenhAdmin.memo.moveOne.pos then
 			local cooldown = 2
 
-			print("ID : " .. i)
+			-- print("ID : " .. i)
 
 			NuttenhAdmin.memo.totalMoves = NuttenhAdmin.memo.totalMoves + 1
 
 			NuttenhAdmin.memo.openedFrames = NuttenhAdmin.memo.openedFrames + 1
 
 			if NuttenhAdmin.memo.totalMoves % 2 == 0 then
-				print("SECOND TOUR !")
 				-- Second tour
 				NuttenhAdmin.memo.moveTwo.id = NuttenhAdmin.memo.itemsFrames[i]["itemId"]
 				NuttenhAdmin.memo.moveTwo.pos = i
@@ -111,6 +110,8 @@ function addIcon(itemId, x, y)
 					if NuttenhAdmin.memo.points >= NuttenhAdmin.memo.boxes / 2 then 
 						-- Victoire
 						NuttenhAdmin.memo.memo_frame:Hide()
+				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
 						startMission(vGet("key"), vGet("stade") + 1)
 					end
 				else
@@ -135,7 +136,6 @@ function addIcon(itemId, x, y)
 				NuttenhAdmin.memo.moveTwo.id = nil
 
 				NuttenhAdmin.memo.moveTwo.pos = nil
-				print("PREMIER TOUR !")
 				-- Premier tour
 				NuttenhAdmin.memo.moveOne.id = NuttenhAdmin.memo.itemsFrames[i]["itemId"]
 				NuttenhAdmin.memo.moveOne.pos = i

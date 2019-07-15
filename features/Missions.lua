@@ -70,39 +70,47 @@ function startMission(key, stade)
 				  	end
 				end)
 			elseif mission_type == "2" then
+				local lastUpdate = 0
 				local is = true
-				local function hookPlayerMove(...)
-					if is == true then
-						local margin = 0.2
-						local x = round(getPlayerCoords()["x"], 3)
-						local y = round(getPlayerCoords()["y"], 3)
-						local zoneText = getPlayerCoords()["zoneText"]
 
-						-- local subZoneText = getPlayerCoords()["subZoneText"]
+				local onUpdate = CreateFrame("Frame")
+				onUpdate:SetScript("OnUpdate", function(self, elapsed)
+				    lastUpdate = lastUpdate + elapsed;
 
-						local px = LOCATIONS_LIST[setting]["x"]
-						local py = LOCATIONS_LIST[setting]["y"]
-						local pZoneText = LOCATIONS_LIST[setting]["zoneText"][language]
-						-- local pSubZoneText = LOCATIONS_LIST[setting]["subZoneText"]
+				    if lastUpdate > 0.1 then
 
-						local minPx = px - margin
-						local maxPx = px + margin
+				        -- Début /0.1s
+				        if is == true then
+				            local margin = 0.2
+				            local x = round(getPlayerCoords()["x"], 3)
+				            local y = round(getPlayerCoords()["y"], 3)
+				            local zoneText = GetZoneText()
 
-						local minPy = py - margin
-						local maxPy = py + margin
-						
-						-- and subZoneText == pSubZoneText
-						if x >= minPx and x <= maxPx and y >= minPy and y <= maxPy and zoneText == pZoneText then 
-							is = false
+				            -- local subZoneText = getPlayerCoords()["subZoneText"]
 
-					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-					  		startMission(key, stade + 1)
-						end
-					end
-				end
+				            local px = LOCATIONS_LIST[setting]["x"]
+				            local py = LOCATIONS_LIST[setting]["y"]
+				            local pZoneText = LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
 
-				hooksecurefunc("MoveForwardStop", hookPlayerMove)
+				            local minPx = px - margin
+				            local maxPx = px + margin
+
+				            local minPy = py - margin
+				            local maxPy = py + margin
+				            
+				            -- and subZoneText == pSubZoneText
+				            if x >= minPx and x <= maxPx and y >= minPy and y <= maxPy and zoneText == pZoneText then 
+				                is = false
+
+	                            NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+	                            NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+	                            startMission(key, stade + 1)
+				            end
+				        end
+
+				        lastUpdate = 0;
+				    end
+				end)
 			elseif mission_type == "3" then
 				local reqItemId = ITEMS_LIST[setting]["id"]
 						
