@@ -1,8 +1,7 @@
 NuttenhClient = {}
 NuttenhClient.addonName = "Event-Client"
-
 NuttenhClient.stupid_race = {}
-
+--[[
 -- Création de la fenêtre principale
 NuttenhClient.stupid_race.frame = CreateFrame("Frame", nil, UIParent)
 NuttenhClient.stupid_race.frame:SetFrameStrata("BACKGROUND")
@@ -27,13 +26,14 @@ NuttenhClient.stupid_race.frame:SetBackdropColor(0, 0, 0)
 NuttenhClient.stupid_race.frame:SetPoint("CENTER", 0, 50)
 
 NuttenhClient.stupid_race.itemList = {}
-
+]]
 --[[
     Red = 0
     Yellow = 1
     Gray = 2
     Green = 3
 ]]
+--[[
 NuttenhClient.stupid_race.colors = {}
 NuttenhClient.stupid_race.colors[1] = "Interface\\COMMON\\Indicator-Red.png"
 NuttenhClient.stupid_race.colors[2] = "Interface\\COMMON\\Indicator-Yellow.png"
@@ -113,3 +113,4 @@ NuttenhClient.stupid_race.move_button:SetScript("OnClick", function(self)
     end
 end)
 
+]]

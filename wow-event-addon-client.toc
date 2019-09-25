@@ -23,6 +23,7 @@ main.lua
 features\Lists.lua
 features\Memo.lua
 features\Missions.lua
+features\Commands.lua
 
 features\Interface.lua
 features\Events.lua

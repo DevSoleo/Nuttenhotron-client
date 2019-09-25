@@ -1,18 +1,45 @@
--- Lorsqu'un message est envoyé dans le tchat de guilde cet évènement se déclenche
-local onGuildMessage = CreateFrame("Frame")
-onGuildMessage:RegisterEvent("CHAT_MSG_GUILD", "CHAT_MSG_WHISPER") -- CHAT_MSG_SAY
-onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
-	if sender == "Soleo" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" or sender == "Lethar" then
-		if string.find(message, "Clé d'évènement : ") then
+ local onWhisperMessage = CreateFrame("Frame")
+onWhisperMessage:RegisterEvent("CHAT_MSG_WHISPER")
+onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
+	if sender == "Soleo" or sender == "Maladina" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" then
+		if string.find(message, "Clé : ") then
 			-- On joue un son qui annonce le début de l'event
 			PlaySound("ReadyCheck", "SFX")
 
+			-- Clé : tktk tktk - MJ : Drubos - Heure max : XX/XX/XX XX:XX
+
+			message = "Clé : tktk tktk - MJ : Drubos - Heure max : XX/XX/XX XX:XX"
+
+			local splitedKey = split(message, "-")
+
+			for i,v in ipairs(splitedKey) do
+				if i == 1 then
+					local key = ""
+					local euh = split(string.gsub(v, "Clé : ", ""), " ")
+
+					for ia,va in ipairs(euh) do
+					    key = key .. " " .. uncrypt(va, "numberToLetter")
+					end
+
+					key = trim(key)
+
+					print(key)
+				elseif i == 2 then
+					print("MJ : " .. v)
+				elseif i == 3 then
+					print("Date : " .. v)
+				end
+			end
+
+
 			-- On récupère la clé reçue par message
-			local splitedMessage = split(string.gsub(message, "Clé d'évènement : ", ""), " ")
+			--[[
+			local splitedMessage = split(string.gsub(message, "Clé : ", ""), " ")
 			local key = ""
 
+				print(v)
 			for i,v in ipairs(splitedMessage) do
-			    key = key .. " " .. uncrypt(v, "letterToNumber")
+			    key = key .. " " .. uncrypt(v, "numberToLetter")
 			end
 			
 			key = string.sub(key, 2)
@@ -25,6 +52,52 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
 			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
+
+			-- On affiche le journal
+			NuttenhClient.main_frame:Show()
+
+			-- On affiche les récompenses dans le journal
+			displayRewards()
+
+			-- L'évènement commence ici
+			startMission(vGet("key"), 1)
+			]]			
+		end
+	end
+end)
+
+-- Lorsqu'un message est envoyé dans le tchat de guilde cet évènement se déclenche
+local onGuildMessage = CreateFrame("Frame")
+onGuildMessage:RegisterEvent("CHAT_MSG_GUILD") -- CHAT_MSG_SAY
+onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
+	if sender == "Soleo" or sender == "Maladina" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" then
+		if string.find(message, "Clé d'évènement : ") then
+			-- On joue un son qui annonce le début de l'event
+			PlaySound("ReadyCheck", "SFX")
+
+			-- On récupère la clé reçue par message
+			local splitedMessage = split(string.gsub(message, "Clé d'évènement : ", ""), " ")
+			local key = ""
+
+			for i,v in ipairs(splitedMessage) do
+			    key = key .. " " .. uncrypt(v, "numberToLetter")
+			end
+			
+			key = string.sub(key, 2)
+
+			-- On enregistre la clé
+			vSave("key", key)
+			-- On définit l'event comme : démarré
+			vSave("isStarted", true)
+
+			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
+			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
+		elseif string.find(message, "Le Maître du Jeu sera : ") then
+			local gm = string.gsub(message, "Le Maître du Jeu sera : ", "")
+			vSave("GM", gm)
+		elseif string.find(message, "Date maximale de fin : ") then
+			local maxTime = string.gsub(message, "Date maximale de fin : ", "")
+			vSave("maxTime", maxTime)
 		elseif string.find(message, "---- Départ de l'évènement dans ....") then
 			-- On joue un son qui annonce le départ de l'event
 			PlaySound("RaidWarning", "SFX")
@@ -159,19 +232,61 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		startMission(vGet("key"), vGet("stade"))
 
 
+		if vGet("maxTime") ~= "" and vGet("maxTime") ~= "Aucune" then
+			local date = split(split(vGet("maxTime"), " ")[1], "/")
+			local time = split(split(vGet("maxTime"), " ")[2], ":")
 
+			local day = date[1]
+			local month = date[2]
+			local year = date[3]
 
+			local hour = time[1]
+			local minute = time[2]
 
+			local a_year = tonumber(getServerDate("%y"))
+			local a_month = tonumber(getServerDate("%m"))
+			local a_day = tonumber(getServerDate("%d"))
+			local a_hour = tonumber(getServerDate("%H"))
+			local a_minute = tonumber(getServerDate("%M"))
 
+			if #tostring(a_month) == 1 then
+				a_month = "0" .. tostring(a_month)
+			end
 
+			if #tostring(a_day) == 1 then
+				a_day = "0" .. tostring(a_day)
+			end
 
+			if #tostring(a_hour) == 1 then
+				a_hour = "0" .. tostring(a_hour)
+			end
 
+			if #tostring(a_minute) == 1 then
+				a_minute = "0" .. tostring(a_minute)
+			end
 
+			local final_date = year .. month .. day .. hour .. minute
+			local a_fine_date = a_year .. a_month .. a_day .. a_hour .. a_minute
 
+			if a_fine_date >= final_date then
+				StaticPopupDialogs["RELOAD"] = {
+					text = "L'évènement est terminé, merci de cliquer sur le bouton ci-dessous :",
+					button1 = "Recharger l'interface !",
 
+					timeout = 0,
+					whileDead = true,
+					hideOnEscape = false,
 
+					OnAccept = function(self)
+						-- On force l'arrêt de l'event
+						finishAllMissions(false)
+						ReloadUI()
+					end
+				}
 
-
+				StaticPopup_Show("RELOAD")
+			end
+		end
 
 
 

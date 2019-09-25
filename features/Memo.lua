@@ -1,5 +1,8 @@
 NuttenhClient.memo = {}
 
+NuttenhClient.memo.MEMO_ITEMS_LIST = {71805, 78478, 71998, 36942, 77950, 71086, 32458, 50818, 18607, 18606, 20567,
+20572,20566, 20392, 16955, 52736, 77992, 62680, 49623, 19019, 44168, 32838, 55054, 34334}
+
 -- Création de la fenêtre principale
 NuttenhClient.memo.memo_frame = CreateFrame("Frame", nil, UIParent)
 NuttenhClient.memo.memo_frame:SetFrameStrata("BACKGROUND")
@@ -151,8 +154,8 @@ function getRandomItems(amount)
 
 	local a = {}
 	for i=0, amount do
-		local v = MEMO_ITEMS_LIST[math.random(#MEMO_ITEMS_LIST)]
-		table.remove(MEMO_ITEMS_LIST, getArrayIndex(MEMO_ITEMS_LIST, v))
+		local v = NuttenhClient.memo.MEMO_ITEMS_LIST[math.random(#NuttenhClient.memo.MEMO_ITEMS_LIST)]
+		table.remove(NuttenhClient.memo.MEMO_ITEMS_LIST, getArrayIndex(NuttenhClient.memo.MEMO_ITEMS_LIST, v))
 		a[getArraySize(a)] = v
 	end
 

@@ -279,7 +279,8 @@ function addIndication(text, tooltip, lineNumber, tType)
 			  	enterClicksFirstButton = true,
 
 			  	OnAccept = function(self)
-					if self.editBox:GetText():lower() == ANSWER_LIST[setting]["answer"]:lower() then
+			  	-- 123 TODO
+					if self.editBox:GetText():lower() == uncrypt(ANSWER_LIST[setting]["answer"]:lower(), "alphabetShuffle") then
 				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
 						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
 			  			

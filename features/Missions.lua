@@ -62,7 +62,7 @@ function startMission(key, stade)
 			  	local t = CreateFrame("Frame")
 				t:RegisterEvent("UNIT_TARGET")
 				t:SetScript("OnEvent", function(pUnit, ...)
-					if tostring(UnitName("target")):sub(1, -1) == tostring(NPC_LIST[setting]["name"][GetLocale()]) then 
+					if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(NPC_LIST[setting]["name"], "alphabetShuffle")) then 
 						t:UnregisterEvent("UNIT_TARGET")
 
 				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
@@ -89,7 +89,7 @@ function startMission(key, stade)
 
 				            local px = LOCATIONS_LIST[setting]["x"]
 				            local py = LOCATIONS_LIST[setting]["y"]
-				            local pZoneText = LOCATIONS_LIST[setting]["zoneText"][GetLocale()]
+				            local pZoneText = LOCATIONS_LIST[setting]["zoneText"]
 
 				            local minPx = px - margin
 				            local maxPx = px + margin
@@ -151,17 +151,17 @@ function startMission(key, stade)
 				local i = CreateFrame("Frame")
 				i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED")
 				i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
-					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == KILL_LIST[setting]["name"][GetLocale()] then
+					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == KILL_LIST[setting]["name"] then
 						kills = kills + 1
 						vSave("kills", kills)
 
 						if kills <= KILL_LIST[setting]["amount"] then
-							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"][GetLocale()] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
+							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
 							print(kills .. "/" .. KILL_LIST[setting]["amount"])
 							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. KILL_LIST[setting]["amount"])
 						end
 
-						if KILL_LIST[setting]["name"][GetLocale()] == killedMobName and kills == KILL_LIST[setting]["amount"] then
+						if KILL_LIST[setting]["name"] == killedMobName and kills == KILL_LIST[setting]["amount"] then
 					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				
@@ -180,23 +180,23 @@ end
 
 function getIndication(mission_type, setting)
 	if mission_type == "1" then
-		return "Cibler : " .. NPC_LIST[setting]["name"][GetLocale()]
+		return "Cibler : " .. uncrypt(NPC_LIST[setting]["name"], "alphabetShuffle")
 	elseif mission_type == "2" then
-		return "Trouver : " .. LOCATIONS_LIST[setting]["displayName"][GetLocale()]
+		return "Trouver : " .. LOCATIONS_LIST[setting]["displayName"]
 	elseif mission_type == "3" then
-		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"][GetLocale()]
+		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"]
 	elseif mission_type == "4" then
-		return "Tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"][GetLocale()]
+		return "Tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"]
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
-		return "Mini-jeu : " .. GAMES_LIST[setting]["name"][GetLocale()]
+		return "Mini-jeu : " .. GAMES_LIST[setting]["name"]
 	end
 end
 
 function getSubIndication(mission_type, setting)
 	if mission_type == "1" then
-		return NPC_LIST[setting]["indication"]
+		return uncrypt(NPC_LIST[setting]["indication"], "alphabetShuffle")
 	elseif mission_type == "2" then
 		return LOCATIONS_LIST[setting]["indication"]
 	elseif mission_type == "3" then
@@ -206,6 +206,6 @@ function getSubIndication(mission_type, setting)
 	elseif mission_type == "5" then
 		return ANSWER_LIST[setting]["indication"]
 	elseif mission_type == "6" then
-		return GAMES_LIST[setting]["name"][GetLocale()]
+		return GAMES_LIST[setting]["name"]
 	end
 end

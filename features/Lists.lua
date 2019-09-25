@@ -5,37 +5,70 @@ ITEMS_LIST = {}
 KILL_LIST = {}
 GAMES_LIST = {}
 
-NPC_LIST["1"] = {name={frFR="Miwana", enUS="Miwana"}, indication="Elle se trouve quelque part à Orgrimmar"}
-NPC_LIST["2"] = {name={frFR="Roturière taurène"}, indication="Elle se trouve quelque part à Orgrimmar"}
-NPC_LIST["3"] = {name={frFR="Opuno Corne-de-Fer"}, indication="Il se trouve quelque part à Orgrimmar"}
-NPC_LIST["4"] = {name={frFR="Lenedil Aile-de-Lune"}, indication="Il se trouve quelque part dans l'auberge de Nordrassil à Hyjal."}
-NPC_LIST["5"] = {name={frFR="Thrall"}, indication="Thrall se trouve à plusieurs endroits d'Azeroth, nottament à Hyjal."}
-NPC_LIST["6"] = {name={frFR="Kaemde"}, indication="Il s'agit de l'aubergiste à Ramkahen, à Uldum."}
-NPC_LIST["7"] = {name={frFR="Harrison Jones"}, indication="Harrison Jones se trouve à plusieurs endroits d'Azeroth, nottament à Uldum."}
-NPC_LIST["8"] = {name={frFR="Haut-commandant Kamses"}, indication="Il se trouve quelque part prêt de Ramkahen à Uldum."}
-NPC_LIST["9"] = {name={frFR="Malacraer"}, indication="Il est probablement AFK quelque part..."}
-NPC_LIST["10"] = {name={frFR="Aniwen"}, indication="Cherchez une lumière aveuglante !"}
-NPC_LIST["11"] = {name={frFR="Binoom"}, indication="Tracasse... tu vas  y arriver."}
-NPC_LIST["12"] = {name={frFR="Pommerameau"}, indication="Il vend des fruits à Dalaran."}
-NPC_LIST["13"] = {name={frFR="Frozo l'Illustre"}, indication="Vous le reconnaîtrez facilement, il s'agit d'un Gnome sur un tapis volant à Dalaran."}
-NPC_LIST["14"] = {name={frFR="Drugan Grande-goulée"}, indication="C'est un membre de ligue des explorateurs, on peut le trouver prêt du Tournoi d'Argent à la Couronne de glace."}
-NPC_LIST["15"] = {name={frFR="Joseph Wilson"}, indication="Joseph est un des secouriste au Tournoi d'Argent à la Couronne de glace."}
-NPC_LIST["16"] = {name={frFR="L'Etymidian"}, indication="C'est une grande statue, quelque part au Nord du Cratère d'Un'Goro."}
-NPC_LIST["17"] = {name={frFR="A'dal"}, indication="Il s'agit du Naaru de Shattrah."}
-NPC_LIST["18"] = {name={frFR="Khadgar"}, indication="Khadgar se trouve un peu partout en Azeroth, nottament à Shattrah."}
-NPC_LIST["19"] = {name={frFR="Xi'ri"}, indication="Xi'Ri est un Naaru que l'on peut retrouver à l'Est de la Vallée d'Ombrelune."}
+NPC_LIST["1"] = {name="Dtiuju", indication="Bqqb ab rckzwb hzbqhzb yucr à Kcsctdduc."}
+NPC_LIST["2"] = {name="Ckrzctècb ruzcèjb", indication="Bqqb ab rckzwb hzbqhzb yucr à Kcsctdduc."}
+NPC_LIST["3"] = {name="Kyzjk Okcjb-nb-Xbc", indication="Tq ab rckzwb hzbqhzb yucr à Kcsctdduc."}
+NPC_LIST["4"] = {name="Qbjbntq Utqb-nb-Qzjb", indication="Tq ab rckzwb hzbqhzb yucr nuja q'uzgbcsb nb Jkcncuaatq à Fpvuq."}
+NPC_LIST["5"] = {name="Rfcuqq", indication="Rfcuqq ab rckzwb à yqzatbzca bjncktra n'Umbckrf, jkrrudbjr à Fpvuq."}
+NPC_LIST["6"] = {name="Eubdnb", indication="Tq a'ustr nb q'uzgbcstarb à Cudeufbj, à Zqnzd."}
+NPC_LIST["7"] = {name="Fucctakj Vkjba", indication="Fucctakj Vkjba ab rckzwb à yqzatbzca bjncktra n'Umbckrf, jkrrudbjr à Zqnzd."}
+NPC_LIST["8"] = {name="Fuzr-okddujnujr Eudaba", indication="Tq ab rckzwb hzbqhzb yucr ycêr nb Cudeufbj à Zqnzd."}
+NPC_LIST["9"] = {name="Duquocubc", indication="Tq bar yckgugqbdbjr UXE hzbqhzb yucr..."}
+NPC_LIST["10"] = {name="Ujtibj", indication="Ofbcofbm zjb qzdtècb uwbzsqujrb !"}
+NPC_LIST["11"] = {name="Gtjkkd", indication="Rcuouaab... Rz wua p ucctwbc."}
+NPC_LIST["12"] = {name="Ykddbcudbuz", indication="Tq wbjn nba xcztra à Nuqucuj."}
+NPC_LIST["13"] = {name="Xckmk q'Tqqzarcb", indication="Wkza qb cbokjjuîrcbm xuotqbdbjr, tq a'ustr n'zj Sjkdb azc zj ruyta wkqujr à Nuqucuj."}
+NPC_LIST["14"] = {name="Nczsuj Scujnb-skzqéb", indication="O'bar zj dbdgcb nb qtszb nba blyqkcurbzca, kj ybzr qb rckzwbc ycêr nz Rkzcjkt n'Ucsbjr à qu Okzckjjb nb squob."}
+NPC_LIST["15"] = {name="Vkabyf Itqakj", indication="Vkabyf bar zj nba abokzctarb uz Rkzcjkt n'Ucsbjr à qu Okzckjjb nb squob."}
+NPC_LIST["16"] = {name="Q'Brpdtntuj", indication="O'bar zjb scujnb arurzb, hzbqhzb yucr uz Jkcn nz Ocurècb n'Zj'Skck."}
+NPC_LIST["17"] = {name="U'nuq", indication="Tq a'ustr nz Juucz nb Afurrcuf."}
+NPC_LIST["18"] = {name="Efunsuc", indication="Efunsuc ab rckzwb zj ybz yucrkzr bj Umbckrf, jkrrudbjr à Afurrcuf."}
+NPC_LIST["19"] = {name="Lt'ct", indication="Lt'Ct bar zj Juucz hzb q'kj ybzr cbrckzwbc à q'Bar nb qu Wuqqéb n'Kdgcbqzjb."}
 
-ANSWER_LIST["1"] = {question="Quel est le nom du créateur de cet addon ?", answer="soleo", indication="Quel est le nom du créateur de cet addon ?"}
+ANSWER_LIST["1"] = {question="Quel est le nom du créateur de cet addon ?", answer="soleo"}
 
-LOCATIONS_LIST["1"] = {x="38.9", y="48.7", zoneText={frFR="Maison longue de Miwana", enUS="Miwana's Longhouse"}, indication="Elle se trouve quelque part à Orgrimmar", displayName={frFR="Maison longue de Miwana"}}
-LOCATIONS_LIST["2"] = {x="57.4", y="58.4", zoneText={frFR="Orgrimmar", enUS="Orgrimmar"}, indication="L'orphelinat se trouve quelque part à Orgrimmar", displayName={frFR="L'orphelinat d'Orgrimmar"}}
+LOCATIONS_LIST["1"] = {x="38.9", y="48.7", zoneText="Maison longue de Miwana", indication="Elle se trouve quelque part à Orgrimmar", displayName="Maison longue de Miwana"}
+LOCATIONS_LIST["2"] = {x="57.4", y="58.4", zoneText="Orgrimmar", indication="L'orphelinat se trouve quelque part à Orgrimmar", displayName="L'orphelinat d'Orgrimmar"}
 
-ITEMS_LIST["1"] = {id=2070, name={frFR="Bleu de Darnassus", enUS="Darnassian Bleu"}, amount=10, indication="Bleu de Darnassus"}
+ITEMS_LIST["1"] = {id=2070, name="Bleu de Darnassus", amount=10}
 
-KILL_LIST["1"] = {name={frFR="Pourceau adulte sauvage", enUS=""}, amount=5, indication="Devant Orgrimmar !"}
-KILL_LIST["2"] = {name={frFR="Ecrevisse boueuse", enUS="Muddy Crawfish", esES="Centollo fangoso"}, amount=5, indication="Petites ecrevisses !"}
+KILL_LIST["1"] = {name="Pourceau adulte sauvage", amount=5}
+KILL_LIST["2"] = {name="Ecrevisse boueuse", amount=5}
 
-MEMO_ITEMS_LIST = {71805, 78478, 71998, 36942, 77950, 71086, 32458, 50818, 18607, 18606, 20567,
-20572,20566, 20392, 16955, 52736, 77992, 62680, 49623, 19019, 44168, 32838, 55054, 34334}
+GAMES_LIST["1"] = {name="Mémo"}
 
-GAMES_LIST["1"] = {name={frFR="Mémo"}}	
+--[[
+StaticPopupDialogs["a"] = {
+   text = "Text à crypter : ",
+
+   button1 = "Valider",
+   button2 = "Fermer",
+   
+   timeout = 0,
+   whileDead = true,
+   hideOnEscape = true,
+   hasEditBox = true,
+   
+   OnAccept = function(self)
+   		local t = enc(self.editBox:GetText())
+
+	   StaticPopupDialogs["b"] = {
+		   text = "Résultat : ",
+		   
+		   button2 = "Fermer",
+		   
+		   timeout = 0,
+		   whileDead = true,
+		   hideOnEscape = true,
+		   hasEditBox = true,
+		   
+		   OnShow = function(self)
+		      self.editBox:SetText(t)
+		   end
+		}
+
+		StaticPopup_Show("b")
+
+   end
+}
+]]
