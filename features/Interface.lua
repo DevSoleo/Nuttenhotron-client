@@ -198,6 +198,7 @@ NuttenhClient.main_frame.noReward = NuttenhClient.main_frame:CreateFontString(ni
 NuttenhClient.main_frame.noReward:SetFont("Fonts\\ARIALN.ttf", 17)
 NuttenhClient.main_frame.noReward:SetPoint("BOTTOM", 0, 55)
 NuttenhClient.main_frame.noReward:SetText("Les officiers n'ont déterminé \n aucune récompense pour cet évènement")
+
 NuttenhClient.main_frame.noReward:SetTextColor(0, 0, 0, 1)
 
 NuttenhClient.main_frame.itemList = {}
@@ -513,4 +514,3 @@ function displayRewards()
 end
 
 ---------------------------------------------------------------------------------------
-

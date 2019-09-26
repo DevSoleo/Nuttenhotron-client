@@ -2,13 +2,9 @@
 onWhisperMessage:RegisterEvent("CHAT_MSG_WHISPER")
 onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 	if sender == "Soleo" or sender == "Maladina" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" then
-		if string.find(message, "Clé : ") then
+		if string.find(message, "Clé : ") then			
 			-- On joue un son qui annonce le début de l'event
 			PlaySound("ReadyCheck", "SFX")
-
-			-- Clé : tktk tktk - MJ : Drubos - Heure max : XX/XX/XX XX:XX
-
-			message = "Clé : tktk tktk - MJ : Drubos - Heure max : XX/XX/XX XX:XX"
 
 			local splitedKey = split(message, "-")
 
@@ -23,29 +19,14 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 
 					key = trim(key)
 
-					print(key)
+					-- On enregistre la clé
+					vSave("key", key)
 				elseif i == 2 then
-					print("MJ : " .. v)
+					vSave("GM", v)
 				elseif i == 3 then
-					print("Date : " .. v)
+					vSave("maxTime", v)
 				end
 			end
-
-
-			-- On récupère la clé reçue par message
-			--[[
-			local splitedMessage = split(string.gsub(message, "Clé : ", ""), " ")
-			local key = ""
-
-				print(v)
-			for i,v in ipairs(splitedMessage) do
-			    key = key .. " " .. uncrypt(v, "numberToLetter")
-			end
-			
-			key = string.sub(key, 2)
-
-			-- On enregistre la clé
-			vSave("key", key)
 
 			-- On définit l'event comme : démarré
 			vSave("isStarted", true)
@@ -59,9 +40,13 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 			-- On affiche les récompenses dans le journal
 			displayRewards()
 
+			if vGet("isLate") == true then
+				NuttenhClient.main_frame.noReward:SetText("Pour connaître les récompenses \n demandez à un officier.")	
+			end
+
+
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
-			]]			
 		end
 	end
 end)
@@ -227,10 +212,11 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 			NuttenhClient.main_frame.reward:Show()
 		end
 
+		print("o")
 		displayRewards()
+
 		-- On démarre la mission qui été en cours avant le reload
 		startMission(vGet("key"), vGet("stade"))
-
 
 		if vGet("maxTime") ~= "" and vGet("maxTime") ~= "Aucune" then
 			local date = split(split(vGet("maxTime"), " ")[1], "/")

@@ -27,6 +27,7 @@ function vSmoothClear()
 	wait(0.1, vSave("goldReward", 0))
 	wait(0.1, vSave("GM", ""))
 	wait(0.1, vSave("maxTime", ""))
+	wait(0.1, vSave("isLate", false))
 
 	--wait(0.1, vSave("endTime", nil))
 end
