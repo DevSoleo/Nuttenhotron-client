@@ -12,7 +12,7 @@ NuttenhClient.main_frame:SetFrameLevel(0)
 NuttenhClient.main_frame:SetPoint("RIGHT", -20, -40)
 
 NuttenhClient.main_frame:SetBackdrop({
-	bgFile="Interface\\Addons\\wow-event-addon-client\\textures\\UI-Background",
+	bgFile="Interface\\Addons\\Nuttenh_Event_Manager_Client\\textures\\UI-Background",
 	edgeFile="Interface/DialogFrame/UI-DialogBox-Border",
 	tile=false,
 	tileSize=64, 

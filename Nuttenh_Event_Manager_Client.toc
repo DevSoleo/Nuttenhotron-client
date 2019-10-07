@@ -1,6 +1,6 @@
 ## Interface: 40300
-## Title: wow-event-addon-client
-## Author: Soleo
+## Title NuttenhEventManagerClient
+## Author: Soleo, Aniwen
 ## Version: 1.0.0-test
 ## SavedVariables: _PClient
 ## SavedVariablesPerCharacter: _AClient

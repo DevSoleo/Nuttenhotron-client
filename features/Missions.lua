@@ -24,7 +24,7 @@ function finishAllMissions(isWinner)
 
 		-- On génère ici la clé de victoire
 
-		SendChatMessage("---- " .. UnitName("player") .. " a gagné ! Bravo ! Clé de victoire : " .. a .. b ..  " ----", "GUILD")
+		SendChatMessage("---- " .. UnitName("player") .. " a gagné ! Bravo ! Clé de victoire : ? ----", "GUILD")
 	end
 end
 
