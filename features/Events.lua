@@ -1,4 +1,4 @@
- local onWhisperMessage = CreateFrame("Frame")
+local onWhisperMessage = CreateFrame("Frame")
 onWhisperMessage:RegisterEvent("CHAT_MSG_WHISPER")
 onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 	if sender == "Soleo" or sender == "Maladina" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" then
@@ -48,6 +48,12 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
+		elseif string.find(message, "Accès temporaire : ") then
+			local key = string.gsub(message, "Accès temporaire : ", "")
+
+			vSave("proof-key", key)
+
+			vSave("proof-maxtime", time() + 600)
 		end
 	end
 end)
@@ -77,6 +83,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			vSave("key", key)
 			-- On définit l'event comme : démarré
 			vSave("isStarted", true)
+			vSave("isWinner", false)
 
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
 			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
@@ -253,45 +260,6 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 				StaticPopup_Show("RELOAD")
 			end
 		end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	else
 		NuttenhClient.main_frame:Hide()
 		vSmoothClear()

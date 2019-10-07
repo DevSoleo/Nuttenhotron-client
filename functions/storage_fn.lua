@@ -28,12 +28,4 @@ function vSmoothClear()
 	wait(0.1, vSave("GM", ""))
 	wait(0.1, vSave("maxTime", ""))
 	wait(0.1, vSave("isLate", false))
-
-	--wait(0.1, vSave("endTime", nil))
 end
-
---[[function vDebug()
-	table.foreach(_AClient, function(k, v)
-		print(k .. "=" .. v)
-	end)
-end]]

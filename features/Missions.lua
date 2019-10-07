@@ -23,8 +23,25 @@ function finishAllMissions(isWinner)
 		DoEmote("victory")
 
 		-- On génère ici la clé de victoire
+		local time = str_split_chunk(time(), 1)
+		local result = ""
 
-		SendChatMessage("---- " .. UnitName("player") .. " a gagné ! Bravo ! Clé de victoire : ? ----", "GUILD")
+		local alphabet = {"N", "Y", "e", "F", "g", "H", "G", "D", "a"}
+		alphabet[0] = "i"
+
+		for i=1, array_size(time) - 4 do
+		   result = result .. alphabet[tonumber(math.random(0, 9))]
+		end
+
+		for i=1, array_size(time) do
+		   if i > array_size(time) - 4 then
+		      result = result .. alphabet[tonumber(time[i])]
+		   end
+		end
+
+		vSave("isWinner", true)
+
+		SendChatMessage("---- " .. UnitName("player") .. " a gagné ! Clé de victoire : " .. result .. " ----", "GUILD")
 	end
 end
 

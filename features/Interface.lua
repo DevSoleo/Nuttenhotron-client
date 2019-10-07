@@ -9,6 +9,7 @@ NuttenhClient.main_frame:SetScript("OnDragStop", NuttenhClient.main_frame.StopMo
 NuttenhClient.main_frame:SetWidth(300)
 NuttenhClient.main_frame:SetHeight(450)
 NuttenhClient.main_frame:SetFrameLevel(0)
+NuttenhClient.main_frame:SetClampedToScreen(true)
 NuttenhClient.main_frame:SetPoint("RIGHT", -20, -40)
 
 NuttenhClient.main_frame:SetBackdrop({
