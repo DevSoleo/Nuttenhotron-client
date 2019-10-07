@@ -8,6 +8,10 @@ function getServerDate(args)
 	args = string.gsub(args, "%%d", day)
 	args = string.gsub(args, "%%y", year)
 
+	if #args == 1 then
+	   args = 0 .. args
+	end
+
 	return args
 end
 

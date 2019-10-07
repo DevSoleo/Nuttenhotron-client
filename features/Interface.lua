@@ -9,7 +9,7 @@ NuttenhClient.main_frame:SetScript("OnDragStop", NuttenhClient.main_frame.StopMo
 NuttenhClient.main_frame:SetWidth(300)
 NuttenhClient.main_frame:SetHeight(450)
 NuttenhClient.main_frame:SetFrameLevel(0)
-NuttenhClient.main_frame:SetPoint("TOP", 20, -20)
+NuttenhClient.main_frame:SetPoint("RIGHT", -20, -40)
 
 NuttenhClient.main_frame:SetBackdrop({
 	bgFile="Interface\\Addons\\wow-event-addon-client\\textures\\UI-Background",
@@ -62,7 +62,7 @@ NuttenhClient.main_frame.close_button:SetScript("OnClick", function(self, arg1)
 		NuttenhClient.main_frame:SetHeight(450)
 		NuttenhClient.main_frame.mission_list:Show()
 
-		if getArraySize(NuttenhClient.main_frame.itemList) == 0 and vGet("goldReward") == 0 or vGet("goldReward") == nil then
+		if array_size(NuttenhClient.main_frame.itemList) == 0 and vGet("goldReward") == 0 or vGet("goldReward") == nil then
 			NuttenhClient.main_frame.noReward:Show()
 		else 
 			NuttenhClient.main_frame.rewardTitle:Show()
@@ -215,7 +215,7 @@ function addMissionSubLine(text, lineNumber)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"] = NuttenhClient.main_frame.mission_list.content:CreateFontString(nil, "ARTWORK")
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetFont("Fonts\\ARIALN.ttf", 15)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetPoint("TOPLEFT", 15, 0 - ((lineNumber) * 35 - 20))
-	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
+	-- NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetText("- " .. text)
 	NuttenhClient.main_frame.mission_list.content[lineNumber]["sub"]:SetTextColor(0, 0, 0, 1)
 end
 
@@ -268,7 +268,7 @@ function addIndication(text, tooltip, lineNumber, tType)
 
 		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnClick", function(self)
 			StaticPopupDialogs["QUESTION_1"] = {
-			  	text = ANSWER_LIST[setting]["question"],
+			  	text = uncrypt(QUESTIONS_LIST[setting]["question"]),
 			  	
 			  	button1 = "Valider",
 			  	button2 = "Fermer",
@@ -281,9 +281,9 @@ function addIndication(text, tooltip, lineNumber, tType)
 
 			  	OnAccept = function(self)
 			  	-- 123 TODO
-					if self.editBox:GetText():lower() == uncrypt(ANSWER_LIST[setting]["answer"]:lower(), "alphabetShuffle") then
-				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
+					if self.editBox:GetText():lower() == uncrypt(QUESTIONS_LIST[setting]["answer"]):lower() then
+				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / array_size(str_split(vGet("key"), " ")))
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / array_size(str_split(vGet("key"), " ")))) .. "%")
 			  			
 			  			startMission(vGet("key"), vGet("stade") + 1)
 					else
@@ -372,7 +372,7 @@ function displayNewMission()
 		end
 	end
 
-	local mission = split(vGet("key"), " ")[vGet("stade")]
+	local mission = str_split(vGet("key"), " ")[vGet("stade")]
 
 	local mission_type = string.sub(mission, 1, 1)
 	local setting = string.sub(mission, 2)	
@@ -404,11 +404,11 @@ function clearMissions()
 end
 
 function displayItemRewards()
-	for i=1, getArraySize(vGet("rewards")) do
+	for i=1, array_size(vGet("rewards")) do
 		local amount = _AClient["rewards"][i]["amount"]
 		local itemId = _AClient["rewards"][i]["id"]
 
-		local nList = getArraySize(NuttenhClient.main_frame.itemList)
+		local nList = array_size(NuttenhClient.main_frame.itemList)
 
 		NuttenhClient.main_frame.itemList[nList] = CreateFrame("Frame", nil, NuttenhClient.main_frame.reward)
 		NuttenhClient.main_frame.itemList[nList]:SetFrameStrata("BACKGROUND")
@@ -471,7 +471,7 @@ function displayRewards()
 		isRewardGold = true
 	end
 
-	if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
+	if array_size(vGet("rewards")) == 0 or array_size(vGet("rewards")) == nil then
 		isRewardItem = false
 	else
 		isRewardItem = true

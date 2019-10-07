@@ -63,7 +63,7 @@ NuttenhClient.memo.itemPositions = {}
 NuttenhClient.memo.inCooldown = false
 
 function addIcon(itemId, x, y)
-	local i = getArraySize(NuttenhClient.memo.itemsFrames)
+	local i = array_size(NuttenhClient.memo.itemsFrames)
 
 	NuttenhClient.memo.itemsFrames[i] = CreateFrame("Frame", nil, NuttenhClient.memo.memo_frame)
 	NuttenhClient.memo.itemsFrames[i]:SetSize(35, 35)
@@ -113,8 +113,8 @@ function addIcon(itemId, x, y)
 					if NuttenhClient.memo.points >= NuttenhClient.memo.boxes / 2 then 
 						-- Victoire
 						NuttenhClient.memo.memo_frame:Hide()
-				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
+				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / array_size(str_split(vGet("key"), " ")))
+						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / array_size(str_split(vGet("key"), " ")))) .. "%")
 						startMission(vGet("key"), vGet("stade") + 1)
 					end
 				else
@@ -155,17 +155,17 @@ function getRandomItems(amount)
 	local a = {}
 	for i=0, amount do
 		local v = NuttenhClient.memo.MEMO_ITEMS_LIST[math.random(#NuttenhClient.memo.MEMO_ITEMS_LIST)]
-		table.remove(NuttenhClient.memo.MEMO_ITEMS_LIST, getArrayIndex(NuttenhClient.memo.MEMO_ITEMS_LIST, v))
-		a[getArraySize(a)] = v
+		table.remove(NuttenhClient.memo.MEMO_ITEMS_LIST, array_search(NuttenhClient.memo.MEMO_ITEMS_LIST, v))
+		a[array_size(a)] = v
 	end
 
-	local b = concatArray(a, a)
+	local b = array_merge(a, a)
 	local positions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 
 	-- Génération du tableau
 	for e=1, 12 do
 		local pos = positions[math.random(#positions)]
-		table.remove(positions, getArrayIndex(positions, pos))
+		table.remove(positions, array_search(positions, pos))
 
 		if e <= 4 then
 			addIcon(b[pos], 90 - (60 * mod(e - 1, 4)), 25)
@@ -175,12 +175,12 @@ function getRandomItems(amount)
 			addIcon(b[pos], 90 - (60 * mod(e - 1, 4)), 145)
 		end
 
-		NuttenhClient.memo.itemPositions[getArraySize(NuttenhClient.memo.itemPositions)] = b[pos]
+		NuttenhClient.memo.itemPositions[array_size(NuttenhClient.memo.itemPositions)] = b[pos]
 	end
 end
 
-for i=0, getArraySize(NuttenhClient.memo.itemPositions) - 1 do
-	local nbSolutions = getArraySize(NuttenhClient.memo.itemPositions) / 2
+for i=0, array_size(NuttenhClient.memo.itemPositions) - 1 do
+	local nbSolutions = array_size(NuttenhClient.memo.itemPositions) / 2
 	local solutions = {}
 
 	if i <= nbSolutions then

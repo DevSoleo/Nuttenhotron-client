@@ -1,4 +1,4 @@
-function getArrayIndex(array, value)
+function array_search(array, value)
 	local index = {}
   
 	for k, v in pairs(array) do
@@ -8,7 +8,7 @@ function getArrayIndex(array, value)
  	return index[value]
 end
 
-function getArraySize(array)
+function array_size(array)
 	if array ~= nil then
 		local counter = 0
 
@@ -22,7 +22,7 @@ function getArraySize(array)
 	end
 end
 
-function concatArray(t1, t2)
+function array_merge(t1, t2)
     for i=1, #t2 do
         t1[#t1 + 1] = t2[i]
     end
@@ -30,7 +30,7 @@ function concatArray(t1, t2)
     return t1
 end
 
-function shuffleTable(t)
+function array_shuffle(t)
     local rand = math.random 
     assert(t, "table.shuffle() expected a table, got nil")
     local iterations = #t
@@ -40,4 +40,15 @@ function shuffleTable(t)
         j = rand(i)
         t[i], t[j] = t[j], t[i]
     end
+end
+
+-------------------------------------------------------------------------------------------------
+
+-- Cette fonction renvoie la taille des variables des types suivant : string, table
+function sizeof(variable)
+	if type(variable) == "string" then
+		return #variable
+	elseif type(variable) == "table" then
+		return array_size(variable)
+	end
 end

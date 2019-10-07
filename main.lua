@@ -1,7 +1,9 @@
 NuttenhClient = {}
 NuttenhClient.addonName = "Event-Client"
-NuttenhClient.stupid_race = {}
 --[[
+
+NuttenhClient.stupid_race = {}
+
 -- Création de la fenêtre principale
 NuttenhClient.stupid_race.frame = CreateFrame("Frame", nil, UIParent)
 NuttenhClient.stupid_race.frame:SetFrameStrata("BACKGROUND")
@@ -46,7 +48,7 @@ local selectedColor = NuttenhClient.stupid_race.colors[selectedColorId]
 table.remove(NuttenhClient.stupid_race.colors, selectedColorId)
 table.sort(NuttenhClient.stupid_race.colors)
 
-shuffleTable(NuttenhClient.stupid_race.colors)
+array_shuffle(NuttenhClient.stupid_race.colors)
 
 -- Affichage des colonnes
 for a = 0, 3 do
@@ -114,3 +116,23 @@ NuttenhClient.stupid_race.move_button:SetScript("OnClick", function(self)
 end)
 
 ]]
+
+
+
+function victoryKey()
+    eventKey = crypt(crypt(eventKey))
+
+    local time = tostring(time())
+
+    local k = {"V", "5", "^", "{", "1", "f", "P", "@", "#"}
+    k[0] = "è"
+
+    local c = ""
+    local s = str_split_chunk(time, 1)
+
+    for i,v in ipairs(s) do
+       c = c .. k[tonumber(v)]
+    end
+
+    print(c)
+end

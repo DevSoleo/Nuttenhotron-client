@@ -1,6 +1,8 @@
 -- Cette fonction se déclenche lorsqu'un joueur termine l'event
 function finishAllMissions(isWinner)
-		-- On clear toutes les variables
+	local eventKey = vGet("key")
+
+	-- On clear toutes les variables
 	vSmoothClear()
 
 	-- On masque supprime toutes le missions présentes dans le journal
@@ -20,7 +22,9 @@ function finishAllMissions(isWinner)
 
 		DoEmote("victory")
 
-		SendChatMessage("---- " .. UnitName("player") .. " a terminé l'event ! Bravo ! ----", "GUILD")
+		-- On génère ici la clé de victoire
+
+		SendChatMessage("---- " .. UnitName("player") .. " a gagné ! Bravo ! Clé de victoire : " .. a .. b ..  " ----", "GUILD")
 	end
 end
 
@@ -41,14 +45,14 @@ function startMission(key, stade)
 
 	-- On récupère le nombre de missions présentes dans la clé
 	-- Le divisant le nombre de caractère par deux (une mission = 2 caractères)
-	local maxStade = getArraySize(split(vGet("key"), " "))
+	local maxStade = array_size(str_split(vGet("key"), " "))
 	local mission = nil
 
 	if stade > maxStade then
 		finishAllMissions(true)
 	else
 		if string.find(key, " ") then
-			mission = split(key, " ")[tonumber(vGet("stade"))]
+			mission = str_split(key, " ")[tonumber(vGet("stade"))]
 		else
 			mission = vGet("key")
 		end
@@ -62,7 +66,7 @@ function startMission(key, stade)
 			  	local t = CreateFrame("Frame")
 				t:RegisterEvent("UNIT_TARGET")
 				t:SetScript("OnEvent", function(pUnit, ...)
-					if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(NPC_LIST[setting]["name"], "alphabetShuffle")) then 
+					if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(TARGETS_LIST[setting]["npc_name"])) then 
 						t:UnregisterEvent("UNIT_TARGET")
 
 				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
@@ -89,7 +93,7 @@ function startMission(key, stade)
 
 				            local px = LOCATIONS_LIST[setting]["x"]
 				            local py = LOCATIONS_LIST[setting]["y"]
-				            local pZoneText = LOCATIONS_LIST[setting]["zoneText"]
+				            local pZoneText = uncrypt(LOCATIONS_LIST[setting]["zone"])
 
 				            local minPx = px - margin
 				            local maxPx = px + margin
@@ -112,8 +116,8 @@ function startMission(key, stade)
 				    end
 				end)
 			elseif mission_type == "3" then
-				local reqItemId = ITEMS_LIST[setting]["id"]
-						
+				local reqItemId = tonumber(uncrypt(ITEMS_LIST[setting]["items_id"]))
+
 				local lastUpdate = 0
 				local is = true
 
@@ -127,7 +131,7 @@ function startMission(key, stade)
 				    	if is == true then
 					        getSubLine(vGet("stade")):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST["1"]["amount"])
 
-					        if GetItemCount(reqItemId) >= ITEMS_LIST[setting]["amount"] then
+					        if GetItemCount(reqItemId) >= tonumber(ITEMS_LIST[setting]["amount"]) then
 					        	is = false
 
 					            NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
@@ -151,17 +155,17 @@ function startMission(key, stade)
 				local i = CreateFrame("Frame")
 				i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED")
 				i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
-					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == KILL_LIST[setting]["name"] then
+					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == uncrypt(KILLS_LIST[setting]["mob_name"]) then
 						kills = kills + 1
 						vSave("kills", kills)
 
-						if kills <= KILL_LIST[setting]["amount"] then
-							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  KILL_LIST[setting]["name"] .." tué(e)s : ".. kills .. "/" .. KILL_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
-							print(kills .. "/" .. KILL_LIST[setting]["amount"])
-							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. KILL_LIST[setting]["amount"])
+						if kills <= tonumber(uncrypt(KILLS_LIST[setting]["amount"])) then
+							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  uncrypt(KILLS_LIST[setting]["mob_name"]) .." tué(e)s : ".. kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]), ChatTypeInfo["COMBAT_XP_GAIN"]);
+							-- print(kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]))
+							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]))
 						end
 
-						if KILL_LIST[setting]["name"] == killedMobName and kills == KILL_LIST[setting]["amount"] then
+						if uncrypt(KILLS_LIST[setting]["mob_name"]) == killedMobName and kills == tonumber(uncrypt(KILLS_LIST[setting]["amount"])) then
 					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				
@@ -180,13 +184,13 @@ end
 
 function getIndication(mission_type, setting)
 	if mission_type == "1" then
-		return "Cibler : " .. uncrypt(NPC_LIST[setting]["name"], "alphabetShuffle")
+		return "Cibler : " .. uncrypt(TARGETS_LIST[setting]["npc_name"])
 	elseif mission_type == "2" then
-		return "Trouver : " .. LOCATIONS_LIST[setting]["displayName"]
+		return "Trouver : " .. uncrypt(LOCATIONS_LIST[setting]["location_name"])
 	elseif mission_type == "3" then
-		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. ITEMS_LIST[setting]["name"]
+		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(ITEMS_LIST[setting]["items_name"])
 	elseif mission_type == "4" then
-		return "Tuer : x" .. KILL_LIST[setting]["amount"] .. " " .. KILL_LIST[setting]["name"]
+		return "Tuer : x" .. uncrypt(KILLS_LIST[setting]["amount"] .. " " .. KILLS_LIST[setting]["mob_name"])
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
@@ -196,15 +200,11 @@ end
 
 function getSubIndication(mission_type, setting)
 	if mission_type == "1" then
-		return uncrypt(NPC_LIST[setting]["indication"], "alphabetShuffle")
+		return uncrypt(TARGETS_LIST[setting]["indication"])
 	elseif mission_type == "2" then
-		return LOCATIONS_LIST[setting]["indication"]
-	elseif mission_type == "3" then
-		return ITEMS_LIST[setting]["indication"]
+		return uncrypt(LOCATIONS_LIST[setting]["indication"])
 	elseif mission_type == "4" then 
-		return "Compteur : 0/" .. KILL_LIST[setting]["amount"]
-	elseif mission_type == "5" then
-		return ANSWER_LIST[setting]["indication"]
+		return "Compteur : 0/" .. uncrypt(KILLS_LIST[setting]["amount"])
 	elseif mission_type == "6" then
 		return GAMES_LIST[setting]["name"]
 	end

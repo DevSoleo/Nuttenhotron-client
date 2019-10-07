@@ -6,16 +6,18 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 			-- On joue un son qui annonce le début de l'event
 			PlaySound("ReadyCheck", "SFX")
 
-			local splitedKey = split(message, "-")
+			local splitedKey = str_split(message, "-")
 
 			for i,v in ipairs(splitedKey) do
 				if i == 1 then
 					local key = ""
-					local euh = split(string.gsub(v, "Clé : ", ""), " ")
+					local euh = str_split(string.gsub(v, "Clé : ", ""), " ")
 
 					for ia,va in ipairs(euh) do
-					    key = key .. " " .. uncrypt(va, "numberToLetter")
+					    key = key .. " " .. uncrypt(va)
 					end
+
+					key = key:gsub("%µ", " "):gsub("%$", " "):gsub("%^", " "):gsub("%@", " "):gsub("%}", " "):gsub("%#", " "):gsub("%{", " "):gsub("%&", " "):gsub("%¤", " "):gsub("%°", " ")
 
 					key = trim(key)
 
@@ -44,7 +46,6 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 				NuttenhClient.main_frame.noReward:SetText("Pour connaître les récompenses \n demandez à un officier.")	
 			end
 
-
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
 		end
@@ -61,14 +62,16 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			PlaySound("ReadyCheck", "SFX")
 
 			-- On récupère la clé reçue par message
-			local splitedMessage = split(string.gsub(message, "Clé d'évènement : ", ""), " ")
+			local splitedMessage = str_split(string.gsub(message, "Clé d'évènement : ", ""), " ")
 			local key = ""
 
 			for i,v in ipairs(splitedMessage) do
-			    key = key .. " " .. uncrypt(v, "numberToLetter")
+			    key = key .. " " .. uncrypt(v)
 			end
+
+			key = key:gsub("%µ", " "):gsub("%$", " "):gsub("%^", " "):gsub("%@", " "):gsub("%}", " "):gsub("%#", " "):gsub("%{", " "):gsub("%&", " "):gsub("%¤", " "):gsub("%°", " ")
 			
-			key = string.sub(key, 2)
+			key = trim(string.sub(key, 2))
 
 			-- On enregistre la clé
 			vSave("key", key)
@@ -83,6 +86,9 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 		elseif string.find(message, "Date maximale de fin : ") then
 			local maxTime = string.gsub(message, "Date maximale de fin : ", "")
 			vSave("maxTime", maxTime)
+		elseif string.find(message, "Date de départ : ") then
+			local startDate = string.gsub(message, "Date de départ : ", "")
+			vSave("startDate", startDate)
 		elseif string.find(message, "---- Départ de l'évènement dans ....") then
 			-- On joue un son qui annonce le départ de l'event
 			PlaySound("RaidWarning", "SFX")
@@ -92,33 +98,6 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 
 			-- On affiche les récompenses dans le journal
 			displayRewards()
-
-			-- On récupère l'heure de fin de l'event et on la stocke
-			local eventDurationHours = 4
-
-			local hour = tonumber(getServerDate("%H")) + eventDurationHours -- date("%H")
-			local endHour = hour - math.floor(hour / 24) * 24
-			local minutes = tonumber(getServerDate("%M")) -- date("%M")
-
-			local day = tonumber(getServerDate("%d"))
-
-			if endHour <= 4 then
-				day = day + 1
-			end
-
-			if #tostring(day) == 1 then
-				day = "0" .. tostring(day)
-			end
-
-			if #tostring(endHour) == 1 then
-				endHour = "0" .. tostring(endHour)
-			end
-
-			if #tostring(minutes) == 1 then
-				minutes = "0" .. tostring(minutes)
-			end
-
-			vSave("endTime", endHour .. ":" .. minutes) -- SAY
 
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
@@ -177,7 +156,7 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 		elseif string.find(message, " a retiré une récompense.") then -- Lorsque une récompense est retirée
 			-- On ajoute l'item dans la liste des récompenses
 			local rewards = vGet("rewards")
-			table.remove(rewards, getArraySize(rewards))
+			table.remove(rewards, array_size(rewards))
 
 			vSave("rewards", rewards)
 		elseif string.find(message, "Date maximale de fin : ") then
@@ -195,8 +174,8 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		NuttenhClient.main_frame:Show()
 
 		-- On actualise la barre de pourcentage
-  		NuttenhClient.main_frame.statusbar:SetValue((vGet("stade") - 1) * 100 / getArraySize(split(vGet("key"), " ")))
-		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round((vGet("stade") - 1) * 100 / getArraySize(split(vGet("key"), " ")))) .. "%")
+  		NuttenhClient.main_frame.statusbar:SetValue((vGet("stade") - 1) * 100 / array_size(str_split(vGet("key"), " ")))
+		NuttenhClient.main_frame.statusbar.value:SetText(tostring(round((vGet("stade") - 1) * 100 / array_size(str_split(vGet("key"), " ")))) .. "%")
 
 		-- On affiche les missions effectuées
 		if vGet("stade") > 1 then
@@ -206,28 +185,29 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		NuttenhClient.main_frame.noReward:Hide()
 		NuttenhClient.main_frame.reward:Hide()
 
-		if getArraySize(vGet("rewards")) == 0 or getArraySize(vGet("rewards")) == nil then
+		if array_size(vGet("rewards")) == 0 or array_size(vGet("rewards")) == nil then
 			NuttenhClient.main_frame.noReward:Show()
 		else
 			NuttenhClient.main_frame.reward:Show()
 		end
 
-		print("o")
 		displayRewards()
 
 		-- On démarre la mission qui été en cours avant le reload
 		startMission(vGet("key"), vGet("stade"))
 
 		if vGet("maxTime") ~= "" and vGet("maxTime") ~= "Aucune" then
-			local date = split(split(vGet("maxTime"), " ")[1], "/")
-			local time = split(split(vGet("maxTime"), " ")[2], ":")
+			local date = str_split(str_split(vGet("maxTime"), " ")[1], "-")
+			local time = str_split(str_split(vGet("maxTime"), " ")[2], ":")
 
-			local day = date[1]
+			local year = date[1]
 			local month = date[2]
-			local year = date[3]
+			local day = date[3]
+
 
 			local hour = time[1]
 			local minute = time[2]
+			local seconds = time[3]
 
 			local a_year = tonumber(getServerDate("%y"))
 			local a_month = tonumber(getServerDate("%m"))
