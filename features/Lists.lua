@@ -42,8 +42,8 @@ QUESTIONS_LIST["9"] = {question="wfkmxGR u N-P-xX 5G 0f7XG7eb 5xqqéeGRPGb tf7e 
 QUESTIONS_LIST["10"] = {question="jG E7GXXG RNPxfRNXxPé GbP XG lxRxbPeG dxRffk ?", answer="dGX2G"}
 QUESTIONS_LIST["11"] = {question="jNRb E7GXXG pxXXG lNXN0eNGe, 0KGq 5Gb 17PPGRK Lukb, tNbbG-P-xX XG tX7b 0XNxe 5G bfR PGktb ?", answer="B7eXGpGRP"}
 
-LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="10", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
-LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="10", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
+LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
+LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 
 ITEMS_LIST["1"] = {items_id="yUJU", items_name="dXG7 5G jNeRNbb7b", amount="10"}
 ITEMS_LIST["2"] = {items_id="y9Qo", items_name="ÉPfqqG 5G XxR", amount="40"}

@@ -83,13 +83,15 @@ function startMission(key, stade)
 			  	local t = CreateFrame("Frame")
 				t:RegisterEvent("UNIT_TARGET")
 				t:SetScript("OnEvent", function(pUnit, ...)
-					if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(TARGETS_LIST[setting]["npc_name"])) then 
-						t:UnregisterEvent("UNIT_TARGET")
+					if UnitGUID("target") ~= nil then
+						if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(TARGETS_LIST[setting]["npc_name"])) and get_target_type(UnitGUID("target")) == "player" or get_target_type(UnitGUID("target")) == "npc" then 
+							t:UnregisterEvent("UNIT_TARGET")
 
-				  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-				  		startMission(key, stade + 1)
-				  	end
+					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+					  		startMission(key, stade + 1)
+					  	end
+					end
 				end)
 			elseif mission_type == "2" then
 				local lastUpdate = 0
@@ -103,7 +105,7 @@ function startMission(key, stade)
 
 				        -- Début /0.1s
 				        if is == true then
-				            local margin = 0.2
+				            local margin = tonumber(uncrypt(LOCATIONS_LIST[setting]["margin"]))
 				            local x = round(getPlayerCoords()["x"], 3)
 				            local y = round(getPlayerCoords()["y"], 3)
 				            local zoneText = GetZoneText()

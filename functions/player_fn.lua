@@ -31,3 +31,12 @@ function getClassColor(className)
 
     return classes[className]
 end    
+
+function get_target_type(e)
+    local id = tonumber(e:sub(5, 5), 16) % 8
+    local types = {
+        [0] = "player", [3] = "npc", [4] = "pet", [5] = "vehicle"
+    }
+
+    return types[id]
+end

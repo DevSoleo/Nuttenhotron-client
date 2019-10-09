@@ -13,7 +13,7 @@ NuttenhClient.main_frame:SetClampedToScreen(true)
 NuttenhClient.main_frame:SetPoint("RIGHT", -20, -40)
 
 NuttenhClient.main_frame:SetBackdrop({
-	bgFile="Interface\\Addons\\Nuttenh_Event_Manager_Client\\textures\\UI-Background",
+	bgFile="Interface\\Addons\\Nuttenh-o-tron\\textures\\UI-Background",
 	edgeFile="Interface/DialogFrame/UI-DialogBox-Border",
 	tile=false,
 	tileSize=64, 
@@ -25,8 +25,6 @@ NuttenhClient.main_frame:SetBackdrop({
 		bottom=4
 	}
 })
-
--- NuttenhClient.main_frame:Hide()
 
 -- Close button
 NuttenhClient.main_frame.close_button = CreateFrame("Button", "NuttenhClient_MainFrame_CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")

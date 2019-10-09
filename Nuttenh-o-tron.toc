@@ -1,7 +1,7 @@
 ## Interface: 40300
-## Title NuttenhEventManagerClient
+## Title Nuttenh-o-tron
 ## Author: Soleo, Aniwen
-## Version: 1.0.0-test
+## Version: 1.0.0
 ## SavedVariables: _PClient
 ## SavedVariablesPerCharacter: _AClient
 ## X-Category: Guild, Quest
