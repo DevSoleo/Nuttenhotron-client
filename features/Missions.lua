@@ -105,14 +105,14 @@ function startMission(key, stade)
 
 				        -- Début /0.1s
 				        if is == true then
-				            local margin = tonumber(uncrypt(LOCATIONS_LIST[setting]["margin"]))
+				            local margin = tonumber(uncrypt(CLIENT_LOCATIONS_LIST[setting]["margin"]))
 				            local x = round(getPlayerCoords()["x"], 3)
 				            local y = round(getPlayerCoords()["y"], 3)
 				            local zoneText = GetZoneText()
 
-				            local px = LOCATIONS_LIST[setting]["x"]
-				            local py = LOCATIONS_LIST[setting]["y"]
-				            local pZoneText = uncrypt(LOCATIONS_LIST[setting]["zone"])
+				            local px = CLIENT_LOCATIONS_LIST[setting]["x"]
+				            local py = CLIENT_LOCATIONS_LIST[setting]["y"]
+				            local pZoneText = uncrypt(CLIENT_LOCATIONS_LIST[setting]["zone"])
 
 				            local minPx = px - margin
 				            local maxPx = px + margin
@@ -135,7 +135,7 @@ function startMission(key, stade)
 				    end
 				end)
 			elseif mission_type == "3" then
-				local reqItemId = tonumber(uncrypt(ITEMS_LIST[setting]["items_id"]))
+				local reqItemId = tonumber(uncrypt(ITEMS_LIST[setting]["item_id"]))
 
 				local lastUpdate = 0
 				local is = true
@@ -205,11 +205,11 @@ function getIndication(mission_type, setting)
 	if mission_type == "1" then
 		return "Cibler : " .. uncrypt(TARGETS_LIST[setting]["npc_name"])
 	elseif mission_type == "2" then
-		return "Trouver : " .. uncrypt(LOCATIONS_LIST[setting]["location_name"])
+		return "Trouver : " .. uncrypt(CLIENT_LOCATIONS_LIST[setting]["location_name"])
 	elseif mission_type == "3" then
-		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(ITEMS_LIST[setting]["items_name"])
+		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(ITEMS_LIST[setting]["item_name"])
 	elseif mission_type == "4" then
-		return "Tuer : x" .. uncrypt(KILLS_LIST[setting]["amount"] .. " " .. KILLS_LIST[setting]["mob_name"])
+		return "Tuer : x" .. KILLS_LIST[setting]["amount"] .. " " .. uncrypt(KILLS_LIST[setting]["mob_name"])
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
@@ -218,13 +218,11 @@ function getIndication(mission_type, setting)
 end
 
 function getSubIndication(mission_type, setting)
-	if mission_type == "1" then
-		return uncrypt(TARGETS_LIST[setting]["indication"])
-	elseif mission_type == "2" then
-		return uncrypt(LOCATIONS_LIST[setting]["indication"])
-	elseif mission_type == "4" then 
+	if mission_type == "4" then 
 		return "Compteur : 0/" .. uncrypt(KILLS_LIST[setting]["amount"])
 	elseif mission_type == "6" then
 		return GAMES_LIST[setting]["name"]
+	else
+		return ""
 	end
 end

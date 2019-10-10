@@ -1,6 +1,7 @@
 TARGETS_LIST = {}
 QUESTIONS_LIST = {}
 LOCATIONS_LIST = {}
+CLIENT_LOCATIONS_LIST = {}
 ITEMS_LIST = {}
 KILLS_LIST = {}
 GAMES_LIST = {}
@@ -42,30 +43,33 @@ QUESTIONS_LIST["9"] = {question="wfkmxGR u N-P-xX 5G 0f7XG7eb 5xqqéeGRPGb tf7e 
 QUESTIONS_LIST["10"] = {question="jG E7GXXG RNPxfRNXxPé GbP XG lxRxbPeG dxRffk ?", answer="dGX2G"}
 QUESTIONS_LIST["11"] = {question="jNRb E7GXXG pxXXG lNXN0eNGe, 0KGq 5Gb 17PPGRK Lukb, tNbbG-P-xX XG tX7b 0XNxe 5G bfR PGktb ?", answer="B7eXGpGRP"}
 
+CLIENT_LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
+CLIENT_LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
+
 LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 
-ITEMS_LIST["1"] = {items_id="yUJU", items_name="dXG7 5G jNeRNbb7b", amount="10"}
-ITEMS_LIST["2"] = {items_id="y9Qo", items_name="ÉPfqqG 5G XxR", amount="40"}
-ITEMS_LIST["3"] = {items_id="y9oy", items_name="ÉPfqqG 5G XNxRG", amount="40"}
-ITEMS_LIST["4"] = {items_id="ZsUD", items_name="ÉPfqqG 5G bfxG", amount="40"}
-ITEMS_LIST["5"] = {items_id="CZUZJ", items_name="ÉPfqqG e7RxE7G", amount="40"}
-ITEMS_LIST["6"] = {items_id="yCQJJ", items_name="ÉPfqqG 5G PxbbG-RéNRP", amount="40"}
-ITEMS_LIST["7"] = {items_id="ssZJU", items_name="ÉPfqqG 5G PxbbG-2xpeG", amount="40"}
-ITEMS_LIST["8"] = {items_id="9sUCU", items_name="ÉPfqqG 5G meNxbG-bfxG", amount="1"}
-ITEMS_LIST["9"] = {items_id="sZyZ", items_name="df7E7GP 5G efbGb RfxeGb", amount="20"}
-ITEMS_LIST["10"] = {items_id="yDJy", items_name="TxNR5G 5G Xf7t kNx2eG", amount="40"}
-ITEMS_LIST["11"] = {items_id="JJZ", items_name="lNXN0KxPG", amount="1"}
-ITEMS_LIST["12"] = {items_id="9ZyQ", items_name="WR XxpeG 5G 07xbxRG GMfPxE7G", amount="1"}
-ITEMS_LIST["13"] = {items_id="9Css", items_name="vébxGe b7xRPNRP", amount="1"}
-ITEMS_LIST["14"] = {items_id="9DUss", items_name="nfXx 0NxXXf7", amount="5"}
-ITEMS_LIST["15"] = {items_id="9ZDyJ", items_name="aXG7e qNRéG", amount="5"}
-ITEMS_LIST["16"] = {items_id="CDQQy", items_name="wfqqeGP GR5fkkN2é", amount="2"}
-ITEMS_LIST["17"] = {items_id="sDQ9", items_name="3G7q 5G eNtPfe", amount="15"}
-ITEMS_LIST["18"] = {items_id="yo9DC", items_name="aék7e 5G 5eN2fR", amount="10"}
-ITEMS_LIST["19"] = {items_id="CJUQ", items_name="1G0PNe b70eé", amount="5"}
-ITEMS_LIST["20"] = {items_id="DZZJ", items_name="df70XxGe GR é0NxXXGb 5G PfeP7G 7bé", amount="1"}
-ITEMS_LIST["21"] = {items_id="sUUU", items_name="8NPPG 5G XNtxR", amount="1"}
+ITEMS_LIST["1"] = {item_id="yUJU", item_name="dXG7 5G jNeRNbb7b", amount="10"}
+ITEMS_LIST["2"] = {item_id="y9Qo", item_name="ÉPfqqG 5G XxR", amount="40"}
+ITEMS_LIST["3"] = {item_id="y9oy", item_name="ÉPfqqG 5G XNxRG", amount="40"}
+ITEMS_LIST["4"] = {item_id="ZsUD", item_name="ÉPfqqG 5G bfxG", amount="40"}
+ITEMS_LIST["5"] = {item_id="CZUZJ", item_name="ÉPfqqG e7RxE7G", amount="40"}
+ITEMS_LIST["6"] = {item_id="yCQJJ", item_name="ÉPfqqG 5G PxbbG-RéNRP", amount="40"}
+ITEMS_LIST["7"] = {item_id="ssZJU", item_name="ÉPfqqG 5G PxbbG-2xpeG", amount="40"}
+ITEMS_LIST["8"] = {item_id="9sUCU", item_name="ÉPfqqG 5G meNxbG-bfxG", amount="1"}
+ITEMS_LIST["9"] = {item_id="sZyZ", item_name="df7E7GP 5G efbGb RfxeGb", amount="20"}
+ITEMS_LIST["10"] = {item_id="yDJy", item_name="TxNR5G 5G Xf7t kNx2eG", amount="40"}
+ITEMS_LIST["11"] = {item_id="JJZ", item_name="lNXN0KxPG", amount="1"}
+ITEMS_LIST["12"] = {item_id="9ZyQ", item_name="WR XxpeG 5G 07xbxRG GMfPxE7G", amount="1"}
+ITEMS_LIST["13"] = {item_id="9Css", item_name="vébxGe b7xRPNRP", amount="1"}
+ITEMS_LIST["14"] = {item_id="9DUss", item_name="nfXx 0NxXXf7", amount="5"}
+ITEMS_LIST["15"] = {item_id="9ZDyJ", item_name="aXG7e qNRéG", amount="5"}
+ITEMS_LIST["16"] = {item_id="CDQQy", item_name="wfqqeGP GR5fkkN2é", amount="2"}
+ITEMS_LIST["17"] = {item_id="sDQ9", item_name="3G7q 5G eNtPfe", amount="15"}
+ITEMS_LIST["18"] = {item_id="yo9DC", item_name="aék7e 5G 5eN2fR", amount="10"}
+ITEMS_LIST["19"] = {item_id="CJUQ", item_name="1G0PNe b70eé", amount="5"}
+ITEMS_LIST["20"] = {item_id="DZZJ", item_name="df70XxGe GR é0NxXXGb 5G PfeP7G 7bé", amount="1"}
+ITEMS_LIST["21"] = {item_id="sUUU", item_name="8NPPG 5G XNtxR", amount="1"}
 
 KILLS_LIST["1"] = {mob_name="8f7e0GN7 N57XPG bN7pN2G", amount="9"}
 KILLS_LIST["2"] = {mob_name="g0eGpxbbG mf7G7bG", amount="9"}

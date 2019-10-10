@@ -1,7 +1,7 @@
 ## Interface: 40300
 ## Title Nuttenh-o-tron
 ## Author: Soleo, Aniwen
-## Version: 1.0.0
+## Version: 1.2.0
 ## SavedVariables: _PClient
 ## SavedVariablesPerCharacter: _AClient
 ## X-Category: Guild, Quest

@@ -1,3 +1,5 @@
+NuttenhClient.goodVersion = true
+
 local onWhisperMessage = CreateFrame("Frame")
 onWhisperMessage:RegisterEvent("CHAT_MSG_WHISPER")
 onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
@@ -34,7 +36,7 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 			vSave("isStarted", true)
 
 			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
-			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
+			SendChatMessage(UnitName("player") .. " participe à l'event !", "GUILD")
 
 			-- On affiche le journal
 			NuttenhClient.main_frame:Show()
@@ -63,51 +65,35 @@ local onGuildMessage = CreateFrame("Frame")
 onGuildMessage:RegisterEvent("CHAT_MSG_GUILD") -- CHAT_MSG_SAY
 onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 	if sender == "Soleo" or sender == "Maladina" or sender == "Drubos" or sender == "Aniwen" or sender == "Malacraer" or sender == "Binoom" then
-		if string.find(message, "Clé d'évènement : ") then
-			-- On joue un son qui annonce le début de l'event
-			PlaySound("ReadyCheck", "SFX")
+		
+		if string.find(message, "Version de l'addon : ") then
+			local version = string.gsub(message, "Version de l'addon : ", "")
+			local value = GetAddOnMetadata("Nuttenh-o-tron", "Version")
 
-			-- On récupère la clé reçue par message
-			local splitedMessage = str_split(string.gsub(message, "Clé d'évènement : ", ""), " ")
-			local key = ""
-
-			for i,v in ipairs(splitedMessage) do
-			    key = key .. " " .. uncrypt(v)
+			if value ~= version then
+				NuttenhClient.goodVersion = false
 			end
-
-			key = key:gsub("%µ", " "):gsub("%$", " "):gsub("%^", " "):gsub("%@", " "):gsub("%}", " "):gsub("%#", " "):gsub("%{", " "):gsub("%&", " "):gsub("%¤", " "):gsub("%°", " ")
-			
-			key = trim(string.sub(key, 2))
-
-			-- On enregistre la clé
-			vSave("key", key)
-			-- On définit l'event comme : démarré
-			vSave("isStarted", true)
-			vSave("isWinner", false)
-
-			-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
-			SendChatMessage("[" .. NuttenhClient.addonName .. "] " .. UnitName("player") .. " participe à l'event !", "GUILD")
-		elseif string.find(message, "Le Maître du Jeu sera : ") then
-			local gm = string.gsub(message, "Le Maître du Jeu sera : ", "")
-			vSave("GM", gm)
-		elseif string.find(message, "Date maximale de fin : ") then
-			local maxTime = string.gsub(message, "Date maximale de fin : ", "")
-			vSave("maxTime", maxTime)
-		elseif string.find(message, "Date de départ : ") then
-			local startDate = string.gsub(message, "Date de départ : ", "")
-			vSave("startDate", startDate)
-		elseif string.find(message, "---- Départ de l'évènement dans ....") then
-			-- On joue un son qui annonce le départ de l'event
-			PlaySound("RaidWarning", "SFX")
 		elseif string.find(message, "---- L'évènement Nuttenh Ayms automatisé débute ! ----") then
-			-- On affiche le journal
-			NuttenhClient.main_frame:Show()
+			if NuttenhClient.goodVersion == false then
+				wait(0.1, function()
+					print("|cffff0000Vous ne disposez pas de la bonne version, veuillez mettre votre Nuttenh-o-tron à jour.")
+				end)
 
-			-- On affiche les récompenses dans le journal
-			displayRewards()
+				StaticPopupDialogs["VERSION"] = {
+					text = "Vous ne disposez pas de la bonne version, veuillez mettre votre Nuttenh-o-tron à jour.",
+					button1 = "Compris !",
 
-			-- L'évènement commence ici
-			startMission(vGet("key"), 1)
+					timeout = 0,
+					whileDead = true,
+					hideOnEscape = false,
+
+					OnAccept = function(self)
+						self:Hide()
+					end
+				}
+
+				StaticPopup_Show("VERSION")
+			end
 		elseif string.find(message, "L'évènement est terminé !") then
 			StaticPopupDialogs["RELOAD"] = {
 				text = "L'évènement est terminé, merci de cliquer sur le bouton ci-dessous :",
@@ -125,49 +111,98 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			}
 
 			StaticPopup_Show("RELOAD")
-		elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
-			if vGet("isStarted") == false then
-				if string.find(message, "P.O.") then
-					local amount = 0
+		end
 
-					-- On récupère la quantité d'item ajouté en récompense
-					string.gsub(message, "x%d+", function(o)
-						amount = string.gsub(o, "x", "")
-					end)
+		if NuttenhClient.goodVersion == true then
+			if string.find(message, "Clé d'évènement : ") then
+				-- On joue un son qui annonce le début de l'event
+				PlaySound("ReadyCheck", "SFX")
 
-					vSave("goldReward", amount)
-				else
-					local amount = 0
-					local id = nil
+				-- On récupère la clé reçue par message
+				local splitedMessage = str_split(string.gsub(message, "Clé d'évènement : ", ""), " ")
+				local key = ""
 
-					-- On récupère l'ID de l'item ajouté en récompense
-					string.gsub(message, "%((.-)%)", function(o)
-						id = o
-					end)
-
-					-- On récupère la quantité d'item ajouté en récompense
-					string.gsub(message, "x%d+", function(o)
-						amount = string.gsub(o, "x", "")
-					end)
-
-					-- On précharge l'item demandé
-					GetItemInfo(id)
-
-					-- On ajoute l'item dans la liste des récompenses
-					local rewards = vGet("rewards")
-					table.insert(rewards, {id=id, amount=amount})
-
-					vSave("rewards", rewards)
+				for i,v in ipairs(splitedMessage) do
+				    key = key .. " " .. uncrypt(v)
 				end
+
+				key = key:gsub("%µ", " "):gsub("%$", " "):gsub("%^", " "):gsub("%@", " "):gsub("%}", " "):gsub("%#", " "):gsub("%{", " "):gsub("%&", " "):gsub("%¤", " "):gsub("%°", " ")
+				
+				key = trim(string.sub(key, 2))
+
+				-- On enregistre la clé
+				vSave("key", key)
+				-- On définit l'event comme : démarré
+				vSave("isStarted", true)
+				vSave("isWinner", false)
+
+				-- Le joueur réponds qu'il sera présent pour l'event (la réponse est automatique)
+				SendChatMessage(UnitName("player") .. " participe à l'event !", "GUILD")
+			elseif string.find(message, "Le Maître du Jeu sera : ") then
+				local gm = string.gsub(message, "Le Maître du Jeu sera : ", "")
+				vSave("GM", gm)
+			elseif string.find(message, "Date maximale de fin : ") then
+				local maxTime = string.gsub(message, "Date maximale de fin : ", "")
+				vSave("maxTime", maxTime)
+			elseif string.find(message, "Date de départ : ") then
+				local startDate = string.gsub(message, "Date de départ : ", "")
+				vSave("startDate", startDate)
+			elseif string.find(message, "---- Départ de l'évènement dans ....") then
+				-- On joue un son qui annonce le départ de l'event
+				PlaySound("RaidWarning", "SFX")
+			elseif string.find(message, "---- L'évènement Nuttenh Ayms automatisé débute ! ----") then
+				-- On affiche le journal
+				NuttenhClient.main_frame:Show()
+
+				-- On affiche les récompenses dans le journal
+				displayRewards()
+
+				-- L'évènement commence ici
+				startMission(vGet("key"), 1)
+			elseif string.find(message, "a ajouté") and string.find(message, "en récompense !") then
+				if vGet("isStarted") == false then
+					if string.find(message, "P.O.") then
+						local amount = 0
+
+						-- On récupère la quantité d'item ajouté en récompense
+						string.gsub(message, "x%d+", function(o)
+							amount = string.gsub(o, "x", "")
+						end)
+
+						vSave("goldReward", amount)
+					else
+						local amount = 0
+						local id = nil
+
+						-- On récupère l'ID de l'item ajouté en récompense
+						string.gsub(message, "%((.-)%)", function(o)
+							id = o
+						end)
+
+						-- On récupère la quantité d'item ajouté en récompense
+						string.gsub(message, "x%d+", function(o)
+							amount = string.gsub(o, "x", "")
+						end)
+
+						-- On précharge l'item demandé
+						GetItemInfo(id)
+
+						-- On ajoute l'item dans la liste des récompenses
+						local rewards = vGet("rewards")
+						table.insert(rewards, {id=id, amount=amount})
+
+						vSave("rewards", rewards)
+					end
+				end
+			elseif string.find(message, " a retiré une récompense.") then -- Lorsque une récompense est retirée
+				-- On ajoute l'item dans la liste des récompenses
+				local rewards = vGet("rewards")
+				table.remove(rewards, array_size(rewards))
+
+				vSave("rewards", rewards)
+			elseif string.find(message, "Date maximale de fin : ") then
+
 			end
-		elseif string.find(message, " a retiré une récompense.") then -- Lorsque une récompense est retirée
-			-- On ajoute l'item dans la liste des récompenses
-			local rewards = vGet("rewards")
-			table.remove(rewards, array_size(rewards))
-
-			vSave("rewards", rewards)
-		elseif string.find(message, "Date maximale de fin : ") then
-
 		end
 	end
 end)
