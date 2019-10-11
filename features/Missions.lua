@@ -84,13 +84,15 @@ function startMission(key, stade)
 				t:RegisterEvent("UNIT_TARGET")
 				t:SetScript("OnEvent", function(pUnit, ...)
 					if UnitGUID("target") ~= nil then
-						if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(TARGETS_LIST[setting]["npc_name"])) and get_target_type(UnitGUID("target")) == "player" or get_target_type(UnitGUID("target")) == "npc" then 
-							t:UnregisterEvent("UNIT_TARGET")
+						if tostring(UnitName("target")):sub(1, -1) == tostring(uncrypt(TARGETS_LIST[setting]["npc_name"])) then 
+							if get_target_type(UnitGUID("target")) == "player" or get_target_type(UnitGUID("target")) == "npc" then
+								t:UnregisterEvent("UNIT_TARGET")
 
-					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
-							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
-					  		startMission(key, stade + 1)
-					  	end
+						  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
+								NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
+						  		startMission(key, stade + 1)
+						  	end
+						end
 					end
 				end)
 			elseif mission_type == "2" then
@@ -135,7 +137,7 @@ function startMission(key, stade)
 				    end
 				end)
 			elseif mission_type == "3" then
-				local reqItemId = tonumber(uncrypt(ITEMS_LIST[setting]["item_id"]))
+				local reqItemId = tonumber(uncrypt(CLIENT_ITEMS_LIST[setting]["item_id"]))
 
 				local lastUpdate = 0
 				local is = true
@@ -148,9 +150,9 @@ function startMission(key, stade)
 						
 						-- Début /0.1s
 				    	if is == true then
-					        getSubLine(vGet("stade")):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. ITEMS_LIST["1"]["amount"])
+					        getSubLine(vGet("stade")):SetText("- Compteur : " .. GetItemCount(reqItemId) .. "/" .. CLIENT_ITEMS_LIST[setting]["amount"])
 
-					        if GetItemCount(reqItemId) >= tonumber(ITEMS_LIST[setting]["amount"]) then
+					        if GetItemCount(reqItemId) >= tonumber(CLIENT_ITEMS_LIST[setting]["amount"]) then
 					        	is = false
 
 					            NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
@@ -174,17 +176,17 @@ function startMission(key, stade)
 				local i = CreateFrame("Frame")
 				i:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "UNIT_DESTROYED", "UNIT_DIED")
 				i:SetScript("OnEvent", function(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, killedMobName, destRaidFlags)
-					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == uncrypt(KILLS_LIST[setting]["mob_name"]) then
+					if sourceName == UnitGUID("player") and hideCaster == "PARTY_KILL" and killedMobName == uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) then
 						kills = kills + 1
 						vSave("kills", kills)
 
-						if kills <= tonumber(uncrypt(KILLS_LIST[setting]["amount"])) then
-							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  uncrypt(KILLS_LIST[setting]["mob_name"]) .." tué(e)s : ".. kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]), ChatTypeInfo["COMBAT_XP_GAIN"]);
+						if kills <= tonumber(uncrypt(CLIENT_KILLS_LIST[setting]["amount"])) then
+							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) .." tué(e)s : ".. kills .. "/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"]), ChatTypeInfo["COMBAT_XP_GAIN"]);
 							-- print(kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]))
-							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]))
+							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"]))
 						end
 
-						if uncrypt(KILLS_LIST[setting]["mob_name"]) == killedMobName and kills == tonumber(uncrypt(KILLS_LIST[setting]["amount"])) then
+						if uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) == killedMobName and kills == tonumber(uncrypt(CLIENT_KILLS_LIST[setting]["amount"])) then
 					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				
@@ -207,9 +209,9 @@ function getIndication(mission_type, setting)
 	elseif mission_type == "2" then
 		return "Trouver : " .. uncrypt(CLIENT_LOCATIONS_LIST[setting]["location_name"])
 	elseif mission_type == "3" then
-		return "Posséder : x" .. ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(ITEMS_LIST[setting]["item_name"])
+		return "Posséder : x" .. CLIENT_ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(CLIENT_ITEMS_LIST[setting]["item_name"])
 	elseif mission_type == "4" then
-		return "Tuer : x" .. KILLS_LIST[setting]["amount"] .. " " .. uncrypt(KILLS_LIST[setting]["mob_name"])
+		return "Tuer : x" .. CLIENT_KILLS_LIST[setting]["amount"] .. " " .. uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"])
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
@@ -219,7 +221,7 @@ end
 
 function getSubIndication(mission_type, setting)
 	if mission_type == "4" then 
-		return "Compteur : 0/" .. uncrypt(KILLS_LIST[setting]["amount"])
+		return "Compteur : 0/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"])
 	elseif mission_type == "6" then
 		return GAMES_LIST[setting]["name"]
 	else

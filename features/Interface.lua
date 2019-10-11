@@ -267,7 +267,7 @@ function addIndication(text, tooltip, lineNumber, tType)
 
 		NuttenhClient.main_frame.mission_list.content[lineNumber]["icon"]:SetScript("OnClick", function(self)
 			StaticPopupDialogs["QUESTION_1"] = {
-			  	text = uncrypt(QUESTIONS_LIST[setting]["question"]),
+			  	text = uncrypt(CLIENT_QUESTIONS_LIST[setting]["question"]),
 			  	
 			  	button1 = "Valider",
 			  	button2 = "Fermer",
@@ -280,7 +280,7 @@ function addIndication(text, tooltip, lineNumber, tType)
 
 			  	OnAccept = function(self)
 			  	-- 123 TODO
-					if self.editBox:GetText():lower() == uncrypt(QUESTIONS_LIST[setting]["answer"]):lower() then
+					if self.editBox:GetText():lower() == uncrypt(CLIENT_QUESTIONS_LIST[setting]["answer"]):lower() then
 				  		NuttenhClient.main_frame.statusbar:SetValue(vGet("stade") * 100 / array_size(str_split(vGet("key"), " ")))
 						NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(vGet("stade") * 100 / array_size(str_split(vGet("key"), " ")))) .. "%")
 			  			

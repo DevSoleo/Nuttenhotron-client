@@ -1,9 +1,9 @@
 TARGETS_LIST = {}
-QUESTIONS_LIST = {}
+CLIENT_QUESTIONS_LIST = {}
 LOCATIONS_LIST = {}
 CLIENT_LOCATIONS_LIST = {}
-ITEMS_LIST = {}
-KILLS_LIST = {}
+CLIENT_ITEMS_LIST = {}
+CLIENT_KILLS_LIST = {}
 GAMES_LIST = {}
 
 TARGETS_LIST["1"] = {npc_name="lxINRN", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
@@ -31,17 +31,17 @@ TARGETS_LIST["22"] = {npc_name="SKGeNiNRG", indication="dx2 lNkN b7epGxXXG XGb S
 TARGETS_LIST["23"] = {npc_name="v7e2PKf0Y", indication="6Gb eGefXXb pfRP bf7pGRP X7x 5GkNR5Ge 7RG NekG."}
 TARGETS_LIST["24"] = {npc_name="v7X'5NR", indication="Tf7b tf7pGi XG Pef7pGe qN0G à 7RG éPGR57G 5G aGX."}
 
-QUESTIONS_LIST["1"] = {question="H7GX GbP XG Rfk 57 0eéNPG7e 5G 0GP N55fR ?", answer="FfXGf"}
-QUESTIONS_LIST["2"] = {question="jNRb E7GX 0fRPxRGRP bG Pef7pG L70KxR5f7R ?", answer="37PeGPGeeG"}
-QUESTIONS_LIST["3"] = {question="H7GX GbP XG Rfk 5G XN ifRG 5G 5étNeP 5Gb vfmGXxRb ?", answer="AGiNR"}
-QUESTIONS_LIST["4"] = {question="H7'GbP 0G E7x b'éXèpG qxèeGkGRP N7 0GRPeG 57 weNPêeG j'7R'vfef ?", answer="6N 0eêPG 5G XN af7eRNxbG"}
-QUESTIONS_LIST["5"] = {question="H7GX PxPeG 5fRRG-P-fR N7M fqqx0xGeb 5G XN 27xX5G ?", answer="lxRxbPeG"}
-QUESTIONS_LIST["6"] = {question="jNRb E7GXXG 0NPé2fexG XN 27xX5G N-P-GXXG XG tX7b N007k7Xé 5G BN7Pb-qNxPb ?", answer="jfRhfRb & eNx5b"}
-QUESTIONS_LIST["7"] = {question="H7GX GbP XG RxpGN7 kxRxk7k tf7e 0KGpN70KGe 7RG kfRP7eG pfXNRPG ?", answer="DU"}
-QUESTIONS_LIST["8"] = {question="Fx X'fR k7XPxtXxG XG RfkmeG 5G XGPPeGb 0fktfbNRPb XG Rfk 5G XN 27xX5G tNe J, 0fkmxGR fmPxGRP-fR ?", answer="oQ"}
-QUESTIONS_LIST["9"] = {question="wfkmxGR u N-P-xX 5G 0f7XG7eb 5xqqéeGRPGb tf7e XGb kNeE7G7eb 5G PGeeNxR 5G eNx5 ?", answer="9"}
-QUESTIONS_LIST["10"] = {question="jG E7GXXG RNPxfRNXxPé GbP XG lxRxbPeG dxRffk ?", answer="dGX2G"}
-QUESTIONS_LIST["11"] = {question="jNRb E7GXXG pxXXG lNXN0eNGe, 0KGq 5Gb 17PPGRK Lukb, tNbbG-P-xX XG tX7b 0XNxe 5G bfR PGktb ?", answer="B7eXGpGRP"}
+CLIENT_QUESTIONS_LIST["1"] = {question="H7GX GbP XG Rfk 57 0eéNPG7e 5G 0GP N55fR ?", answer="FfXGf"}
+CLIENT_QUESTIONS_LIST["2"] = {question="jNRb E7GX 0fRPxRGRP bG Pef7pG L70KxR5f7R ?", answer="37PeGPGeeG"}
+CLIENT_QUESTIONS_LIST["3"] = {question="H7GX GbP XG Rfk 5G XN ifRG 5G 5étNeP 5Gb vfmGXxRb ?", answer="AGiNR"}
+CLIENT_QUESTIONS_LIST["4"] = {question="H7'GbP 0G E7x b'éXèpG qxèeGkGRP N7 0GRPeG 57 weNPêeG j'7R'vfef ?", answer="6N 0eêPG 5G XN af7eRNxbG"}
+CLIENT_QUESTIONS_LIST["5"] = {question="H7GX PxPeG 5fRRG-P-fR N7M fqqx0xGeb 5G XN 27xX5G ?", answer="lxRxbPeG"}
+CLIENT_QUESTIONS_LIST["6"] = {question="jNRb E7GXXG 0NPé2fexG XN 27xX5G N-P-GXXG XG tX7b N007k7Xé 5G BN7Pb-qNxPb ?", answer="jfRhfRb & eNx5b"}
+CLIENT_QUESTIONS_LIST["7"] = {question="H7GX GbP XG RxpGN7 kxRxk7k tf7e 0KGpN70KGe 7RG kfRP7eG pfXNRPG ?", answer="DU"}
+CLIENT_QUESTIONS_LIST["8"] = {question="Fx X'fR k7XPxtXxG XG RfkmeG 5G XGPPeGb 0fktfbNRPb XG Rfk 5G XN 27xX5G tNe J, 0fkmxGR fmPxGRP-fR ?", answer="oQ"}
+CLIENT_QUESTIONS_LIST["9"] = {question="wfkmxGR u N-P-xX 5G 0f7XG7eb 5xqqéeGRPGb tf7e XGb kNeE7G7eb 5G PGeeNxR 5G eNx5 ?", answer="9"}
+CLIENT_QUESTIONS_LIST["10"] = {question="jG E7GXXG RNPxfRNXxPé GbP XG lxRxbPeG dxRffk ?", answer="dGX2G"}
+CLIENT_QUESTIONS_LIST["11"] = {question="jNRb E7GXXG pxXXG lNXN0eNGe, 0KGq 5Gb 17PPGRK Lukb, tNbbG-P-xX XG tX7b 0XNxe 5G bfR PGktb ?", answer="B7eXGpGRP"}
 
 CLIENT_LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 CLIENT_LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
@@ -49,29 +49,29 @@ CLIENT_LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6
 LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 
-ITEMS_LIST["1"] = {item_id="yUJU", item_name="dXG7 5G jNeRNbb7b", amount="10"}
-ITEMS_LIST["2"] = {item_id="y9Qo", item_name="ÉPfqqG 5G XxR", amount="40"}
-ITEMS_LIST["3"] = {item_id="y9oy", item_name="ÉPfqqG 5G XNxRG", amount="40"}
-ITEMS_LIST["4"] = {item_id="ZsUD", item_name="ÉPfqqG 5G bfxG", amount="40"}
-ITEMS_LIST["5"] = {item_id="CZUZJ", item_name="ÉPfqqG e7RxE7G", amount="40"}
-ITEMS_LIST["6"] = {item_id="yCQJJ", item_name="ÉPfqqG 5G PxbbG-RéNRP", amount="40"}
-ITEMS_LIST["7"] = {item_id="ssZJU", item_name="ÉPfqqG 5G PxbbG-2xpeG", amount="40"}
-ITEMS_LIST["8"] = {item_id="9sUCU", item_name="ÉPfqqG 5G meNxbG-bfxG", amount="1"}
-ITEMS_LIST["9"] = {item_id="sZyZ", item_name="df7E7GP 5G efbGb RfxeGb", amount="20"}
-ITEMS_LIST["10"] = {item_id="yDJy", item_name="TxNR5G 5G Xf7t kNx2eG", amount="40"}
-ITEMS_LIST["11"] = {item_id="JJZ", item_name="lNXN0KxPG", amount="1"}
-ITEMS_LIST["12"] = {item_id="9ZyQ", item_name="WR XxpeG 5G 07xbxRG GMfPxE7G", amount="1"}
-ITEMS_LIST["13"] = {item_id="9Css", item_name="vébxGe b7xRPNRP", amount="1"}
-ITEMS_LIST["14"] = {item_id="9DUss", item_name="nfXx 0NxXXf7", amount="5"}
-ITEMS_LIST["15"] = {item_id="9ZDyJ", item_name="aXG7e qNRéG", amount="5"}
-ITEMS_LIST["16"] = {item_id="CDQQy", item_name="wfqqeGP GR5fkkN2é", amount="2"}
-ITEMS_LIST["17"] = {item_id="sDQ9", item_name="3G7q 5G eNtPfe", amount="15"}
-ITEMS_LIST["18"] = {item_id="yo9DC", item_name="aék7e 5G 5eN2fR", amount="10"}
-ITEMS_LIST["19"] = {item_id="CJUQ", item_name="1G0PNe b70eé", amount="5"}
-ITEMS_LIST["20"] = {item_id="DZZJ", item_name="df70XxGe GR é0NxXXGb 5G PfeP7G 7bé", amount="1"}
-ITEMS_LIST["21"] = {item_id="sUUU", item_name="8NPPG 5G XNtxR", amount="1"}
+CLIENT_ITEMS_LIST["1"] = {item_id="yUJU", item_name="dXG7 5G jNeRNbb7b", amount="10"}
+CLIENT_ITEMS_LIST["2"] = {item_id="y9Qo", item_name="ÉPfqqG 5G XxR", amount="40"}
+CLIENT_ITEMS_LIST["3"] = {item_id="y9oy", item_name="ÉPfqqG 5G XNxRG", amount="40"}
+CLIENT_ITEMS_LIST["4"] = {item_id="ZsUD", item_name="ÉPfqqG 5G bfxG", amount="40"}
+CLIENT_ITEMS_LIST["5"] = {item_id="CZUZJ", item_name="ÉPfqqG e7RxE7G", amount="40"}
+CLIENT_ITEMS_LIST["6"] = {item_id="yCQJJ", item_name="ÉPfqqG 5G PxbbG-RéNRP", amount="40"}
+CLIENT_ITEMS_LIST["7"] = {item_id="ssZJU", item_name="ÉPfqqG 5G PxbbG-2xpeG", amount="40"}
+CLIENT_ITEMS_LIST["8"] = {item_id="9sUCU", item_name="ÉPfqqG 5G meNxbG-bfxG", amount="1"}
+CLIENT_ITEMS_LIST["9"] = {item_id="sZyZ", item_name="df7E7GP 5G efbGb RfxeGb", amount="20"}
+CLIENT_ITEMS_LIST["10"] = {item_id="yDJy", item_name="TxNR5G 5G Xf7t kNx2eG", amount="40"}
+CLIENT_ITEMS_LIST["11"] = {item_id="JJZ", item_name="lNXN0KxPG", amount="1"}
+CLIENT_ITEMS_LIST["12"] = {item_id="9ZyQ", item_name="WR XxpeG 5G 07xbxRG GMfPxE7G", amount="1"}
+CLIENT_ITEMS_LIST["13"] = {item_id="9Css", item_name="vébxGe b7xRPNRP", amount="1"}
+CLIENT_ITEMS_LIST["14"] = {item_id="9DUss", item_name="nfXx 0NxXXf7", amount="5"}
+CLIENT_ITEMS_LIST["15"] = {item_id="9ZDyJ", item_name="aXG7e qNRéG", amount="5"}
+CLIENT_ITEMS_LIST["16"] = {item_id="CDQQy", item_name="wfqqeGP GR5fkkN2é", amount="2"}
+CLIENT_ITEMS_LIST["17"] = {item_id="sDQ9", item_name="3G7q 5G eNtPfe", amount="15"}
+CLIENT_ITEMS_LIST["18"] = {item_id="yo9DC", item_name="aék7e 5G 5eN2fR", amount="10"}
+CLIENT_ITEMS_LIST["19"] = {item_id="CJUQ", item_name="1G0PNe b70eé", amount="5"}
+CLIENT_ITEMS_LIST["20"] = {item_id="DZZJ", item_name="df70XxGe GR é0NxXXGb 5G PfeP7G 7bé", amount="1"}
+CLIENT_ITEMS_LIST["21"] = {item_id="sUUU", item_name="8NPPG 5G XNtxR", amount="1"}
 
-KILLS_LIST["1"] = {mob_name="8f7e0GN7 N57XPG bN7pN2G", amount="9"}
-KILLS_LIST["2"] = {mob_name="g0eGpxbbG mf7G7bG", amount="9"}
+CLIENT_KILLS_LIST["1"] = {mob_name="8f7e0GN7 N57XPG bN7pN2G", amount="9"}
+CLIENT_KILLS_LIST["2"] = {mob_name="g0eGpxbbG mf7G7bG", amount="9"}
 
 GAMES_LIST["1"] = {name="Mémo"}
