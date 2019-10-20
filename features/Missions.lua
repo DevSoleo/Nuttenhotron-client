@@ -181,13 +181,13 @@ function startMission(key, stade)
 						kills = kills + 1
 						vSave("kills", kills)
 
-						if kills <= tonumber(uncrypt(CLIENT_KILLS_LIST[setting]["amount"])) then
-							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) .." tué(e)s : ".. kills .. "/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"]), ChatTypeInfo["COMBAT_XP_GAIN"]);
+						if kills <= tonumber(CLIENT_KILLS_LIST[setting]["amount"]) then
+							RaidNotice_AddMessage(RaidBossEmoteFrame, "|cFFffb923" ..  uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) .." tué(e)s : ".. kills .. "/" .. CLIENT_KILLS_LIST[setting]["amount"], ChatTypeInfo["COMBAT_XP_GAIN"]);
 							-- print(kills .. "/" .. uncrypt(KILLS_LIST[setting]["amount"]))
-							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"]))
+							getSubLine(stade):SetText("- Compteur : " .. kills .. "/" .. CLIENT_KILLS_LIST[setting]["amount"])
 						end
 
-						if uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) == killedMobName and kills == tonumber(uncrypt(CLIENT_KILLS_LIST[setting]["amount"])) then
+						if uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"]) == killedMobName and kills == tonumber(CLIENT_KILLS_LIST[setting]["amount"]) then
 					  		NuttenhClient.main_frame.statusbar:SetValue(stade * 100 / maxStade)
 							NuttenhClient.main_frame.statusbar.value:SetText(tostring(round(stade * 100 / maxStade)) .. "%")
 				
@@ -212,7 +212,7 @@ function getIndication(mission_type, setting)
 	elseif mission_type == "3" then
 		return "Posséder : x" .. CLIENT_ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(CLIENT_ITEMS_LIST[setting]["item_name"])
 	elseif mission_type == "4" then
-		return "Tuer : x" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"]) .. " " .. uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"])
+		return "Tuer : x" .. CLIENT_KILLS_LIST[setting]["amount"] .. " " .. uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"])
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
@@ -226,7 +226,7 @@ function getSubIndication(mission_type, setting)
 	elseif mission_type == "2" then
 		return uncrypt(CLIENT_LOCATIONS_LIST[setting]["indication"])
 	elseif mission_type == "4" then 
-		return "Compteur : 0/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"])
+		return "Compteur : 0/" .. CLIENT_KILLS_LIST[setting]["amount"]
 	elseif mission_type == "6" then
 		return GAMES_LIST[setting]["name"]
 	else

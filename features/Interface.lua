@@ -172,7 +172,7 @@ NuttenhClient.main_frame.rewardTitle:SetHeight(27)
 NuttenhClient.main_frame.rewardTitle:SetWidth(27)
 
 NuttenhClient.main_frame.rewardTitle.value = NuttenhClient.main_frame.rewardTitle:CreateFontString(nil, "OVERLAY")
-NuttenhClient.main_frame.rewardTitle.value:SetPoint("CENTER", NuttenhClient.main_frame.rewardTitle, "TOP", 100, 20)
+NuttenhClient.main_frame.rewardTitle.value:SetPoint("CENTER", NuttenhClient.main_frame.rewardTitle, "TOP", 120, 20)
 NuttenhClient.main_frame.rewardTitle.value:SetFont("Fonts\\MORPHEUS.ttf", 18)
 NuttenhClient.main_frame.rewardTitle.value:SetTextColor(0, 0, 0, 0.8)
 NuttenhClient.main_frame.rewardTitle.value:SetText("Le vainqueur remportera :")
