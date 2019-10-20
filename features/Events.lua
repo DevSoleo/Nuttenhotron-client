@@ -50,8 +50,8 @@ onWhisperMessage:SetScript("OnEvent", function(self, event, message, sender, ...
 
 			-- L'évènement commence ici
 			startMission(vGet("key"), 1)
-		elseif string.find(message, "Accès temporaire : ") then
-			local key = string.gsub(message, "Accès temporaire : ", "")
+		elseif string.find(message, "Clé d'accès temporaire : ") then
+			local key = string.gsub(message, "Clé d'accès temporaire : ", "")
 
 			vSave("proof-key", key)
 
@@ -144,6 +144,8 @@ onGuildMessage:SetScript("OnEvent", function(self, event, message, sender, ...)
 			elseif string.find(message, "Date maximale de fin : ") then
 				local maxTime = string.gsub(message, "Date maximale de fin : ", "")
 				vSave("maxTime", maxTime)
+
+				NuttenhClient.main_frame.endTime:SetText("Date de fin : " .. vGet("maxTime"))
 			elseif string.find(message, "Date de départ : ") then
 				local startDate = string.gsub(message, "Date de départ : ", "")
 				vSave("startDate", startDate)
@@ -232,6 +234,8 @@ onLoading:SetScript("OnEvent", function(self, event, ...)
 		else
 			NuttenhClient.main_frame.reward:Show()
 		end
+
+		NuttenhClient.main_frame.endTime:SetText("Date de fin : " .. vGet("maxTime"))
 
 		displayRewards()
 

@@ -6,7 +6,7 @@ NuttenhClient.main_frame:EnableMouse(true)
 NuttenhClient.main_frame:RegisterForDrag("LeftButton") -- Définit le clic gauche comme le bouton à utiliser pour déplacer la fenêtre
 NuttenhClient.main_frame:SetScript("OnDragStart", NuttenhClient.main_frame.StartMoving)
 NuttenhClient.main_frame:SetScript("OnDragStop", NuttenhClient.main_frame.StopMovingOrSizing)
-NuttenhClient.main_frame:SetWidth(300)
+NuttenhClient.main_frame:SetWidth(400)
 NuttenhClient.main_frame:SetHeight(450)
 NuttenhClient.main_frame:SetFrameLevel(0)
 NuttenhClient.main_frame:SetClampedToScreen(true)
@@ -25,6 +25,11 @@ NuttenhClient.main_frame:SetBackdrop({
 		bottom=4
 	}
 })
+
+NuttenhClient.main_frame.endTime = NuttenhClient.main_frame:CreateFontString(nil, "ARTWORK")
+NuttenhClient.main_frame.endTime:SetFont("Fonts\\ARIALN.ttf", 15)
+NuttenhClient.main_frame.endTime:SetPoint("TOP", 0, -52)
+NuttenhClient.main_frame.endTime:SetTextColor(0, 0, 0, 1)
 
 -- Close button
 NuttenhClient.main_frame.close_button = CreateFrame("Button", "NuttenhClient_MainFrame_CloseButton", NuttenhClient.main_frame, "GameMenuButtonTemplate")
@@ -109,7 +114,7 @@ NuttenhClient.main_frame.statusbar.value:SetText("0%")
 
 -- Mission List
 NuttenhClient.main_frame.mission_list = CreateFrame("Frame", "NuttenhClient_MainFrame_MissionList", NuttenhClient.main_frame)
-NuttenhClient.main_frame.mission_list:SetWidth(250)
+NuttenhClient.main_frame.mission_list:SetWidth(350)
 NuttenhClient.main_frame.mission_list:SetHeight(250)
 NuttenhClient.main_frame.mission_list:SetPoint("TOP", 0, -70)
 NuttenhClient.main_frame.mission_list:SetBackdrop({

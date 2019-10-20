@@ -1,6 +1,5 @@
 TARGETS_LIST = {}
 CLIENT_QUESTIONS_LIST = {}
-LOCATIONS_LIST = {}
 CLIENT_LOCATIONS_LIST = {}
 CLIENT_ITEMS_LIST = {}
 CLIENT_KILLS_LIST = {}
@@ -45,9 +44,8 @@ CLIENT_QUESTIONS_LIST["11"] = {question="jNRb E7GXXG pxXXG lNXN0eNGe, 0KGq 5Gb 1
 
 CLIENT_LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
 CLIENT_LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
-
-LOCATIONS_LIST["1"] = {x="38.9", y="48.7", margin="U.y", location_name="lNxbfR XfR27G 5G lxNINRN", zone="lNxbfR XfR27G 5G lxINRN", sub_zone="", indication="gXXG bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
-LOCATIONS_LIST["2"] = {x="57.4", y="58.4", margin="U.y", location_name="6'fetKGXxRNP 5'3e2exkkNe", zone="3e2exkkNe", sub_zone="", indication="6'fetKGXxRNP bG Pef7pG E7GXE7G tNeP à 3e2exkkNe."}
+CLIENT_LOCATIONS_LIST["3"] = {x="72.54", y="65.4", margin="C", location_name="FPNP7G 5G XN XxmGePé GRPGeeéG", zone="6f0K lf5NR", sub_zone="gM0NpNPxfRb 5G dN27GqGe", indication="gXXG GbP GRbGpGXxG, E7GXE7G tNeP 5NRb 7R bxPG Ne0KéfXf2xE7G à 6f0K lf5NR."}
+CLIENT_LOCATIONS_LIST["4"] = {x="87.14", y="72.41", margin="9", location_name="8eftexéPé texpéG GR mfe5 5G kGe", zone="BN7PGb-PGeeGb LeNPKxGb", sub_zone="6N kGe cRPGe5xPG", indication="gXXG bG bxP7G GRPeG XGb BN7PGb-PGeeGb 57 weét7b07XG GP XGb BxRPGeXNR5b."}
 
 CLIENT_ITEMS_LIST["1"] = {item_id="yUJU", item_name="dXG7 5G jNeRNbb7b", amount="10"}
 CLIENT_ITEMS_LIST["2"] = {item_id="y9Qo", item_name="ÉPfqqG 5G XxR", amount="40"}

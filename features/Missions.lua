@@ -76,9 +76,10 @@ function startMission(key, stade)
 
 		local mission_type = string.sub(mission, 1, 1)
 		local setting = string.sub(mission, 2)
-						
 		if stade <= maxStade then
+
 			displayNewMission()
+
 			if mission_type == "1" then
 			  	local t = CreateFrame("Frame")
 				t:RegisterEvent("UNIT_TARGET")
@@ -103,7 +104,7 @@ function startMission(key, stade)
 				onUpdate:SetScript("OnUpdate", function(self, elapsed)
 				    lastUpdate = lastUpdate + elapsed;
 
-				    if lastUpdate > 0.1 then
+				    if lastUpdate > 0.1 and not WorldMapFrame:IsVisible() then
 
 				        -- Début /0.1s
 				        if is == true then
@@ -211,7 +212,7 @@ function getIndication(mission_type, setting)
 	elseif mission_type == "3" then
 		return "Posséder : x" .. CLIENT_ITEMS_LIST[setting]["amount"] .. " " .. uncrypt(CLIENT_ITEMS_LIST[setting]["item_name"])
 	elseif mission_type == "4" then
-		return "Tuer : x" .. CLIENT_KILLS_LIST[setting]["amount"] .. " " .. uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"])
+		return "Tuer : x" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"]) .. " " .. uncrypt(CLIENT_KILLS_LIST[setting]["mob_name"])
 	elseif mission_type == "5" then
 		return "Répondez à la question suivante :"
 	elseif mission_type == "6" then
@@ -220,7 +221,11 @@ function getIndication(mission_type, setting)
 end
 
 function getSubIndication(mission_type, setting)
-	if mission_type == "4" then 
+	if mission_type == "1" then
+		return uncrypt(TARGETS_LIST[setting]["indication"])
+	elseif mission_type == "2" then
+		return uncrypt(CLIENT_LOCATIONS_LIST[setting]["indication"])
+	elseif mission_type == "4" then 
 		return "Compteur : 0/" .. uncrypt(CLIENT_KILLS_LIST[setting]["amount"])
 	elseif mission_type == "6" then
 		return GAMES_LIST[setting]["name"]
